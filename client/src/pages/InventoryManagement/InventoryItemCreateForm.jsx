@@ -116,94 +116,147 @@
         };
 
         return (
-            <div className='flex'>
+            <div className='flex min-h-screen bg-gray-950'>
                 <SideBar />
-                <div className='flex-1'>
-                    <div className='bg-paleblue justify-between flex px-10 py-8'>
-                        <h1 className='text-4xl font-bold text-blue'>Add new Inventory Item</h1>
-                        <div className='flex gap-2'>
-                            <img className='w-12 h-12 border-2 border-white rounded-full' src="https://avatars.githubusercontent.com/u/127751216?…00&u=f53b685eb62a23a72baeda2f44a671c04b804c86&v=4" alt="triss merigold" />
-                            <div className="flex w-full flex-col gap-0.5">
-                                <div className="flex items-center justify-between font-bold">
-                                    <h1>Kavindu Dasanayaka</h1>
-                                </div>
-                                <p className='text-xs '>Inventory Manager</p>
-                            </div>
-                        </div>
+                <div className='flex-1 overflow-auto'>
+                    <div className='px-6 py-6'>
+                        <h1 className='text-2xl font-bold text-white'>Add New Medicine</h1>
+                        <p className='text-gray-500 text-sm mt-1'>Fill in the details to add a new medicine to inventory</p>
                     </div>
-                    <div className="p-10 bg-paleblue m-10 rounded-3xl max-w-7xl border-2 border-light-blue shadow-lg">
-                            <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-40'>
-                                <div className='flex flex-col gap-1 flex-1'>
-                                    <label className='font-semibold text-black'>Medicine Name</label>
-                                    <input type="text"  placeholder='Enter Medicine Name' id="Mname" name="Mname" value={value.Mname} onChange={handleChange} className='border-2 border-gray outline-none rounded-md p-2 mb-4 shadow-sm' required/>
+                    <div className="mx-6 mb-6 bg-gray-900 rounded-xl border border-gray-800 p-6">
+                            <form onSubmit={handleSubmit} className='grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4'>
+                                {/* Left Column */}
+                                <div className='flex flex-col gap-4'>
+                                    <div>
+                                        <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Medicine Name *</label>
+                                        <input type="text" placeholder='e.g. Panadol 500mg' name="Mname" value={value.Mname} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm' required/>
+                                    </div>
 
-                                    <label className='font-semibold text-black'>Unit Price(Rs.)</label>
-                                    <input type="Number" placeholder='Enter Unit price' id="Mprice" name="Mprice" value={value.Mprice} onChange={handleChange} className='border-2 border-gray outline-none rounded-md p-2 mb-4 shadow-sm' required/>
-                                    {error && <span className="text-red-500">{error}</span>}
-
-                                    <label className='font-semibold text-black'>Quantity</label>
-                                    <input type="Number" placeholder='Enter Quantity' id="Mquantity" name="Mquantity" value={value.Mquantity} onChange={handleChange} className='border-2 border-gray outline-none rounded-md p-2 mb-4 shadow-sm' required/>
-                                    {error && <span className="text-red-500">{error}</span>}
-
-                                    <label className='font-semibold text-black'>Supplier</label>
-                                    <input type="text" placeholder='Enter Supplier name' id="Msupplier" name="Msupplier" value={value.Msupplier} onChange={handleChange} className='border-2 border-gray outline-none rounded-md p-2 mb-4 shadow-sm' required/>
-
-                                    <label className='font-semibold text-black'>Store Condition</label>
-                                    <textarea type="textarea" placeholder='Enter Optimal storage conditions' id="Mdescription" name="storageCondition" value={value.storageCondition} onChange={handleChange} className='border-2 border-gray outline-none rounded-md p-2 mb-4 max-h-20 min-h-10 shadow-sm'  required/>
-
-                                    <div className="flex  gap-10 ">
-                                        <div className="flex-col">
-                                            <label className='font-semibold text-black '>Manufactures Date</label>
-                                            <input type="date" id="manuAt" name="manuAt" value={value.manuAt} onChange={handleChange} className='border-2 border-gray outline-none rounded-md p-2 mb-4 w-full shadow-sm' required/>
+                                    <div className='grid grid-cols-2 gap-4'>
+                                        <div>
+                                            <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Selling Price (Rs.) *</label>
+                                            <input type="Number" placeholder='0' name="Mprice" value={value.Mprice} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm' required/>
                                         </div>
-
-                                        <div className="">
-                                            <label className='font-semibold text-black'>Expire Date</label>
-                                            <input type="date" id="expirAt" name="expirAt" value={value.expirAt} onChange={handleChange} className='border-2 border-gray outline-none rounded-md p-2 mb-4 w-full shadow-sm' required/>
+                                        <div>
+                                            <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Cost Price (Rs.)</label>
+                                            <input type="Number" placeholder='0' name="McostPrice" value={value.McostPrice || ''} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm'/>
                                         </div>
                                     </div>
-                                
+                                    {error && <span className="text-red-400 text-xs">{error}</span>}
 
+                                    <div className='grid grid-cols-2 gap-4'>
+                                        <div>
+                                            <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Quantity *</label>
+                                            <input type="Number" placeholder='0' name="Mquantity" value={value.Mquantity} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm' required/>
+                                        </div>
+                                        <div>
+                                            <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Reorder Level</label>
+                                            <input type="Number" placeholder='20' name="reorderLevel" value={value.reorderLevel || ''} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm'/>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Supplier *</label>
+                                        <input type="text" placeholder='e.g. GSK Pakistan' name="Msupplier" value={value.Msupplier} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm' required/>
+                                    </div>
+
+                                    <div>
+                                        <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Storage Condition *</label>
+                                        <textarea placeholder='e.g. Room Temperature (15-25°C)' name="storageCondition" value={value.storageCondition} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm min-h-[60px] max-h-[80px]' required/>
+                                    </div>
+
+                                    <div className='grid grid-cols-2 gap-4'>
+                                        <div>
+                                            <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Manufacture Date *</label>
+                                            <input type="date" name="manuAt" value={value.manuAt} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 text-sm' required/>
+                                        </div>
+                                        <div>
+                                            <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Expiry Date *</label>
+                                            <input type="date" name="expirAt" value={value.expirAt} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 text-sm' required/>
+                                        </div>
+                                    </div>
                                 </div>
 
-
-                                <div className='flex flex-col gap-1 flex-1'>
-                                    <label className='font-semibold text-black'>Type</label>
-                                    <select id="type" name="type" value={value.type} onChange={handleChange} className='border-2 border-gray outline-none rounded-md p-2 mb-4 shadow-sm' required>
-                                        <option value="Capsule">Capsule</option>
-                                        <option value="Tablet">Tablet</option>
-                                        <option value="Liquid">Liquid</option>
-                                        <option value="Other">Other</option>
-
-                                    </select>
-
-                                    <label className='font-semibold text-black' htmlFor='Enter image'>Enter image:</label>
-
-                                    <div className='flex flex-row flex-0 items-center gap-10'>
-                                        <input onChange={(e) => setFiles(e.target.files)} className='p-3 border border-gray-300 rounded w-3/4' type='file' id='imageUrl' accept='image' />
-                                        <button onClick = {handleImageSubmit} type='button' disabled={uploading}className='border w-1/3 border-green-700 bg-light-blue text-white rounded uppercase hover:shadow-lg disabled:opacity-80 h-12'>
-                                            {uploading ? 'Uploading...' : 'Upload'}
-                                        </button>           
+                                {/* Right Column */}
+                                <div className='flex flex-col gap-4'>
+                                    <div className='grid grid-cols-2 gap-4'>
+                                        <div>
+                                            <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Type *</label>
+                                            <select name="type" value={value.type} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 text-sm' required>
+                                                <option value="Capsule">Capsule</option>
+                                                <option value="Tablet">Tablet</option>
+                                                <option value="Liquid">Liquid</option>
+                                                <option value="Analgesic">Analgesic</option>
+                                                <option value="Antibiotic">Antibiotic</option>
+                                                <option value="Anti-inflammatory">Anti-inflammatory</option>
+                                                <option value="Antacid">Antacid</option>
+                                                <option value="Antifungal">Antifungal</option>
+                                                <option value="Antihistamine">Antihistamine</option>
+                                                <option value="Vitamin">Vitamin</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Unit</label>
+                                            <select name="unit" value={value.unit || 'Strip'} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 text-sm'>
+                                                <option value="Strip">Strip</option>
+                                                <option value="Bottle">Bottle</option>
+                                                <option value="Tube">Tube</option>
+                                                <option value="Box">Box</option>
+                                                <option value="Packet">Packet</option>
+                                                <option value="Tablet">Tablet</option>
+                                                <option value="Injection">Injection</option>
+                                                <option value="Syrup">Syrup</option>
+                                                <option value="Cream">Cream</option>
+                                                <option value="Drops">Drops</option>
+                                                <option value="Inhaler">Inhaler</option>
+                                                <option value="Sachet">Sachet</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    {imageUploadError && <p className='text-red-700'>{imageUploadError}</p>}
-                                    {!files && <p className='text-red-700'>Please upload an image</p>}
 
-
-                                
-                                    <div className=' p-2 flex items-center gap-2'>
-                                        <label className='font-semibold text-black'>Available</label>
-                                        <input type="checkbox" name="status" id="active" checked={value.status === 'Active'} disabled hidden className='w-5 shadow-sm'/>
+                                    <div className='grid grid-cols-2 gap-4'>
+                                        <div>
+                                            <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Batch Number</label>
+                                            <input type="text" placeholder='e.g. B2026-001' name="batchNumber" value={value.batchNumber || ''} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm'/>
+                                        </div>
+                                        <div>
+                                            <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Shelf Location</label>
+                                            <input type="text" placeholder='e.g. A3-R2' name="shelfLocation" value={value.shelfLocation || ''} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm'/>
+                                        </div>
                                     </div>
 
-                                    <input 
-                                        type="submit" 
-                                        value="Submit" 
-                                        className='bg-light-blue hover:bg-blue text-white font-semibold py-2 px-4 rounded-md cursor-pointer transition duration-300 ease-in-out transform hover:scale-105'
-                                        style={{
-                                            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-                                            border: 'none'
-                                        }}
-                                    />
+                                    <div>
+                                        <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Factory Barcode (if available)</label>
+                                        <input type="text" placeholder='Scan or enter barcode number' name="factoryBarcode" value={value.factoryBarcode || ''} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm'/>
+                                        <p className='text-gray-600 text-xs mt-1'>Leave empty to auto-generate a barcode</p>
+                                    </div>
+
+                                    <div>
+                                        <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Pack Size</label>
+                                        <input type="text" placeholder='e.g. 10 tablets per strip' name="packSize" value={value.packSize || ''} onChange={handleChange} className='bg-gray-800 border border-gray-700 text-white rounded-lg p-2.5 w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600 text-sm'/>
+                                    </div>
+
+                                    <div>
+                                        <label className='text-gray-400 text-xs font-medium mb-1.5 block'>Medicine Image</label>
+                                        <div className='flex items-center gap-3'>
+                                            <input onChange={(e) => setFiles(e.target.files)} className='bg-gray-800 border border-gray-700 text-gray-400 rounded-lg p-2 w-full text-sm file:mr-3 file:bg-gray-700 file:text-gray-300 file:border-0 file:rounded file:px-3 file:py-1 file:text-xs' type='file' accept='image/*' />
+                                            <button onClick={handleImageSubmit} type='button' disabled={uploading} className='bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50 transition whitespace-nowrap'>
+                                                {uploading ? 'Uploading...' : 'Upload'}
+                                            </button>           
+                                        </div>
+                                        {imageUploadError && <p className='text-red-400 text-xs mt-1'>{imageUploadError}</p>}
+                                    </div>
+
+                                    <div className='flex items-center gap-2 mt-1'>
+                                        <div className={`w-2.5 h-2.5 rounded-full ${value.status === 'Active' ? 'bg-emerald-500' : 'bg-gray-500'}`}></div>
+                                        <span className='text-gray-400 text-sm'>Status: Available</span>
+                                    </div>
+
+                                    <button type="submit" className='bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 px-6 rounded-lg transition mt-2 text-sm'>
+                                        Add Medicine to Inventory
+                                    </button>
                                 </div>
                             </form>             
                     </div>            

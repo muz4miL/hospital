@@ -221,55 +221,50 @@ export default function Inventorymanager() {
   
   
   return (
-    <div className='flex'>
+    <div className='flex min-h-screen bg-gray-950'>
       <SideBar />
-      <div className='flex-1'>
-        <div className='bg-paleblue justify-between flex px-10 py-10'>
-          <h1 className='text-3xl font-bold text-blue'>Inventory Management admin Dashboard</h1>
-          <div className='flex gap-4'>
-            <button onClick={generateReport} className="bg-white hover:bg-light-blue hover:text-white text-black border-2 border-light-blue font-semibold transition-all py-1 px-3 rounded-lg inline-flex items-center">
-              <MdDownload className='text-2xl mr-2' />
+      <div className='flex-1 overflow-auto'>
+        <div className='px-6 py-6 flex items-center justify-between'>
+          <div>
+            <h1 className='text-2xl font-bold text-white'>Inventory Management</h1>
+            <p className='text-gray-500 text-sm mt-1'>Manage your medicine stock</p>
+          </div>
+          <div className='flex gap-3'>
+            <button onClick={generateReport} className="bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 font-medium transition-all py-2 px-4 rounded-lg inline-flex items-center text-sm">
+              <MdDownload className='text-lg mr-2' />
               <span>Download Report</span>
             </button>
-            <div className='flex gap-2 cursor-pointer'>
-              <img className='w-12 h-12 border-2 border-white rounded-full' src="https://avatars.githubusercontent.com/u/127751216?…00&u=f53b685eb62a23a72baeda2f44a671c04b804c86&v=4" alt="profile" />
-              <div className="flex w-full flex-col gap-0.5">
-                <div className="flex items-center justify-between font-bold">
-                  <h1>Kavindu Dasanayaka</h1>
-                </div>
-                <p className='text-xs '>Inventory Manager</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='flex gap-2 justify-between px-10 text-sm pt-2'>
-          <span className='text-2xl font-semibold'>All Inventory Items ({inventorycount})</span>
-          <div className='flex gap-2 text-sm mt-2'> 
-            <Link to="/create-inventory" className='text-white'>
-              <button className='bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg inline-flex items-center py-3 px-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-300 ease-in-out'>
-                <MdPlus className='text-2xl mr-2' />
-                <span>Add New Inventory Item</span>
+            <Link to="/create-inventory">
+              <button className='bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg inline-flex items-center py-2 px-4 transition text-sm'>
+                <MdPlus className='text-lg mr-1' />
+                <span>Add Medicine</span>
               </button>
             </Link>
           </div>
         </div>
-        <div className='flex'>
-             <div className='ml-10 mt-3 w-40 h-50'>
-                <div className='bg-red-100 border-2 border-red-600 font-medium rounded-xl px-4 py-2' >
-                  <p className='text-center text-lg'>Expired Items</p>
-                  <p className='text-center text-2xl font-bold'>{expiredinventoryCount}</p>
-                </div>
-              </div>
-              <div className='ml-10 mt-3 w-70 h-50'>
-                <div className='border-y-light-blue border-2 border-t-blue font-medium rounded-xl px-4 py-2' >
-                  <p className='text-center text-lg'>Overall valuation(Rs.)</p>
-                  <p className='text-center text-2xl font-bold'>{fullPrice}</p>
-                </div>
-              </div>
 
+        <div className='grid grid-cols-4 gap-4 px-6 mb-4'>
+          <div className='bg-gray-900 border border-gray-800 rounded-xl p-4'>
+            <p className='text-gray-500 text-xs uppercase tracking-wide'>Total Items</p>
+            <p className='text-2xl font-bold text-white mt-1'>{inventorycount}</p>
+          </div>
+          <div className='bg-gray-900 border border-gray-800 rounded-xl p-4'>
+            <p className='text-gray-500 text-xs uppercase tracking-wide'>Total Value</p>
+            <p className='text-2xl font-bold text-emerald-400 mt-1'>Rs. {Number(fullPrice).toLocaleString()}</p>
+          </div>
+          <div className='bg-gray-900 border border-red-900/50 rounded-xl p-4'>
+            <p className='text-red-400 text-xs uppercase tracking-wide font-medium'>Expired</p>
+            <p className='text-2xl font-bold text-red-400 mt-1'>{expiredinventoryCount}</p>
+          </div>
+          <div className='bg-gray-900 border border-orange-900/50 rounded-xl p-4'>
+            <p className='text-orange-400 text-xs uppercase tracking-wide font-medium'>Pending Expiry</p>
+            <p className='text-2xl font-bold text-orange-400 mt-1'>{pendinginventoryCount}</p>
+          </div>
         </div>
 
-        <InventoryTable/>
+        <div className='px-6 pb-6'>
+          <InventoryTable/>
+        </div>
       </div>
     </div>
   );

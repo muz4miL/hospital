@@ -54,6 +54,9 @@ import EmployeeLeaveUpdateForm from "./pages/EmployeeManagement/EmployeeLeaveUpd
 import EmployeeSalaryManagement from "./pages/EmployeeManagement/EmployeeSalaryManagement";
 import EmployeeSalaryCreateForm from "./pages/EmployeeManagement/EmployeeSalaryCreateForm";
 import EmployeeSalaryUpdateForm from "./pages/EmployeeManagement/EmployeeSalaryUpdateForm";
+import POSPage from './pages/POS/POSPage';
+import ExpiryAlertsPage from './pages/ExpiryAlerts/ExpiryAlertsPage';
+import SalesHistoryPage from './pages/Sales/SalesHistoryPage';
 
 export default function App() {
   return (
@@ -64,6 +67,9 @@ export default function App() {
       <Route path="/feedback-submit" element={<FeedbackSubmitForm />} />
       <Route path="/feedback-management" element={<FeedbackManagement />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      <Route path="/pos" element={<POSPage />} />
+      <Route path="/expiry-alerts" element={<ExpiryAlertsPage />} />
+      <Route path="/sales-history" element={<SalesHistoryPage />} />
       <Route path='/promotion-management' element={<PromotionManagement />} />
       <Route path='/create-promotion' element={<PromotionCreateForm />} />
       <Route path='/update-promotion/:id' element={<PromotionUpdateForm />} />

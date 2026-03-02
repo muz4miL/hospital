@@ -32,7 +32,6 @@ export default function SignIn() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
       if (data.success === false) {
         dispatch(signInFailure(data.message));
         return;
@@ -44,42 +43,42 @@ export default function SignIn() {
     }
   };
   return (
-    <div className='bg-paleblue'>
+    <div className='bg-gray-950 min-h-screen'>
       <NavigationBar />
-    <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl text-center font-semibold my-7'>Employee Login</h1>
-      <div className='p-10 bg-paleblue m-10 rounded-3xl max-w-4xl border-2 border-light-blue'>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input
-          type='email'
-          placeholder='email'
-          className='border p-3 rounded-lg'
-          id='email'
-          onChange={handleChange}
-        />
-        <input
-          type='password'
-          placeholder='password'
-          className='border p-3 rounded-lg'
-          id='NIC'
-          onChange={handleChange}
-        />
-
-        <button
-          disabled={loading}
-          className='bg-blue text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
-        >
-          {loading ? 'Loading...' : 'Sign In'}
-        </button>   
-      </form>
+      <div className='p-3 max-w-md mx-auto mt-16'>
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <span className="text-emerald-400 text-2xl font-bold">P</span>
+          </div>
+          <h1 className='text-2xl text-white font-bold'>Admin Login</h1>
+          <p className='text-gray-500 text-sm mt-1'>Sign in to access the dashboard</p>
+        </div>
+        <div className='bg-gray-900 border border-gray-800 p-8 rounded-2xl'>
+          <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+            <div>
+              <label className="text-gray-400 text-xs font-medium mb-1.5 block">Email</label>
+              <input type='email' placeholder='admin@pharmacy.pk'
+                className='bg-gray-800 border border-gray-700 text-white p-3 rounded-lg w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600'
+                id='email' onChange={handleChange} />
+            </div>
+            <div>
+              <label className="text-gray-400 text-xs font-medium mb-1.5 block">Password (NIC)</label>
+              <input type='password' placeholder='Enter your NIC number'
+                className='bg-gray-800 border border-gray-700 text-white p-3 rounded-lg w-full focus:outline-none focus:border-emerald-500 placeholder-gray-600'
+                id='NIC' onChange={handleChange} />
+            </div>
+            {error && <p className='text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg p-3'>{error}</p>}
+            <button disabled={loading}
+              className='bg-emerald-600 text-white p-3 rounded-lg font-medium hover:bg-emerald-500 disabled:opacity-50 transition-all mt-2'>
+              {loading ? 'Signing in...' : 'Sign In'}
+            </button>   
+          </form>
+        </div>
+        <div className='text-center mt-4 mb-8'>
+          <p className='text-gray-600 text-sm'>Forgot password? <span className='text-emerald-400'>Contact your manager</span></p>
+        </div>
       </div>
-      <div className='flex gap-2 mt-5 mb-8 ml-9'>
-        <p>Forget password?</p>
-          <span className='text-light-blue'>Please! Contact Employee manager!</span>
-      </div>
-
-    </div>
-    <Footer />
+      <Footer />
     </div>
   );
 }
