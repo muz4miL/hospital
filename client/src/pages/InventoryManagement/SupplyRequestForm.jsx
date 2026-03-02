@@ -46,25 +46,25 @@ export default function SupplyRequestForm() {
     };
 
     return (
-        <div className='flex'>
+        <div className='flex bg-gray-950 min-h-screen'>
             <SideBar />
             <div className='flex-1'>
-                <div className='bg-paleblue justify-between flex px-10 py-8'>
-                    <h1 className='text-4xl font-bold text-blue'>Create New Supply Request</h1>
+                <div className='bg-gray-900 justify-between flex px-10 py-8'>
+                    <h1 className='text-4xl font-bold text-emerald-400'>Create New Supply Request</h1>
                     <div className='flex gap-2'>
-                        <img className='w-12 h-12 border-2 border-white rounded-full' src="https://avatars.githubusercontent.com/u/127751216?…00&u=f53b685eb62a23a72baeda2f44a671c04b804c86&v=4" alt="profile" />
+                        <div className='w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl'>A</div>
                         <div className="flex w-full flex-col gap-0.5">
-                            <div className="flex items-center justify-between font-bold">
-                                <h1>Inventory Manager</h1>
+                            <div className="flex items-center justify-between font-bold text-white">
+                                <h1>Admin</h1>
                             </div>
-                            <p className='text-xs'>Inventory Manager</p>
+                            <p className='text-xs text-gray-400'>Inventory Manager</p>
                         </div>
                     </div>
                 </div>
-                <div className='p-10 bg-paleblue m-10 rounded-3xl max-w-4xl border-2 border-light-blue'>
+                <div className='p-10 bg-gray-800 m-10 rounded-3xl max-w-4xl border border-gray-700'>
                     <form onSubmit={handleSubmit} className='flex flex-col gap-10'>
                         <div className='flex flex-col gap-1'>
-                            <label className='font-semibold text-black'>Medicine Name</label>
+                            <label className='font-semibold text-gray-300'>Medicine Name</label>
                             <input 
                                 type="text" 
                                 placeholder='Enter Medicine Name' 
@@ -72,10 +72,10 @@ export default function SupplyRequestForm() {
                                 name="medicineName" 
                                 value={value.medicineName} 
                                 onChange={handleChange} 
-                                className='border-2 border-gray outline-none rounded-md p-2 mb-4' 
+                                className='border border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4' 
                             />
 
-                            <label className='font-semibold text-black'>Quantity</label>
+                            <label className='font-semibold text-gray-300'>Quantity</label>
                             <input 
                                 type="number" 
                                 placeholder='Enter Quantity' 
@@ -83,10 +83,10 @@ export default function SupplyRequestForm() {
                                 name="quantity" 
                                 value={value.quantity} 
                                 onChange={handleChange} 
-                                className='border-2 border-gray outline-none rounded-md p-2 mb-4' 
+                                className='border border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4' 
                             />
 
-                            <label className='font-semibold text-black'>Supplier</label>
+                            <label className='font-semibold text-gray-300'>Supplier</label>
                             <input 
                                 type="text" 
                                 placeholder='Enter Supplier Name' 
@@ -94,14 +94,14 @@ export default function SupplyRequestForm() {
                                 name="supplier" 
                                 value={value.supplier} 
                                 onChange={handleChange} 
-                                className='border-2 border-gray outline-none rounded-md p-2 mb-4' 
+                                className='border border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4' 
                             />
                         </div>
 
                         <input 
                             type="submit" 
                             value={loading ? 'Submitting...' : 'Submit'} 
-                            className='bg-light-blue hover:bg-blue font-semibold text-white p-3 rounded-lg w-full cursor-pointer' 
+                            className='bg-emerald-600 hover:bg-emerald-500 font-semibold text-white p-3 rounded-lg w-full cursor-pointer' 
                             disabled={loading} 
                         />
                     </form>

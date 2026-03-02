@@ -126,13 +126,13 @@ export default function Profile() {
 
   
   return (
-    <div className='bg-paleblue'>
+    <div className='bg-gray-950 min-h-screen'>
       <NavigationBar />
     <div className='p-3 max-w-lg mx-auto' >
     <span onClick={handleSignOut} className='text-white cursor-pointer absolute top-15 right-0 mt-2 mr-4 px-4 py-2 bg-red-700 border border-red-950 rounded-lg flex items-center'>
     <FaSignOutAlt className='mr-2' /> Log Out
     </span>
-      <h1 className='text-3xl font-semibold text-center my-7 text-blue'>Profile</h1>
+      <h1 className='text-3xl font-semibold text-center my-7 text-emerald-400'>Profile</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input
           onChange={(e) => setFile(e.target.files[0])}
@@ -153,9 +153,9 @@ export default function Profile() {
               Error Image upload (image must be less than 2 mb)
             </span>
           ) : filePerc > 0 && filePerc < 100 ? (
-            <span className='text-slate-700'>{`Uploading ${filePerc}%`}</span>
+            <span className='text-slate-400'>{`Uploading ${filePerc}%`}</span>
           ) : filePerc === 100 ? (
-            <span className='text-green-700'>Image successfully uploaded!</span>
+            <span className='text-green-500'>Image successfully uploaded!</span>
           ) : (
             ''
           )}
@@ -165,7 +165,7 @@ export default function Profile() {
           placeholder='username'
           defaultValue={currentUser.username}
           id='username'
-          className='border p-3 rounded-lg'
+          className='border border-gray-700 bg-gray-800 text-white placeholder-gray-500 p-3 rounded-lg'
           onChange={handleChange}
         />
         <input
@@ -173,7 +173,7 @@ export default function Profile() {
           placeholder='email'
           id='email'
           defaultValue={currentUser.email}
-          className='border p-3 rounded-lg'
+          className='border border-gray-700 bg-gray-800 text-white placeholder-gray-500 p-3 rounded-lg'
           onChange={handleChange}
         />
         <input
@@ -182,7 +182,7 @@ export default function Profile() {
           pattern='[0-9]{10}'
           defaultValue={currentUser.phonenumber}
           id='phonenumber'
-          className='border p-3 rounded-lg'
+          className='border border-gray-700 bg-gray-800 text-white placeholder-gray-500 p-3 rounded-lg'
           onChange={handleChange}
         />
         <input
@@ -190,7 +190,7 @@ export default function Profile() {
           placeholder='address'
           defaultValue={currentUser.address}
           id='address'
-          className='border p-3 rounded-lg'
+          className='border border-gray-700 bg-gray-800 text-white placeholder-gray-500 p-3 rounded-lg'
           onChange={handleChange}
         />
         <input
@@ -198,11 +198,11 @@ export default function Profile() {
           placeholder='password'
           onChange={handleChange}
           id='password'
-          className='border p-3 rounded-lg'
+          className='border border-gray-700 bg-gray-800 text-white placeholder-gray-500 p-3 rounded-lg'
         />
         <button
           disabled={loading}
-          className='bg-blue text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'
+          className='bg-emerald-600 text-white rounded-lg p-3 uppercase hover:bg-emerald-500 disabled:opacity-80'
         >
           {loading ? 'Loading...' : 'Update'}
         </button>

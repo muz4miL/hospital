@@ -52,35 +52,31 @@ export default function EmployeeCreateForm() {
   return (
     <div className="flex">
       <SideBar />
-      <div className="flex-1">
-        <div className="bg-paleblue justify-between flex px-10 py-8">
-          <h1 className="text-4xl font-bold text-blue">
+      <div className="flex-1 bg-gray-950 min-h-screen">
+        <div className="bg-gray-900 justify-between flex px-10 py-8">
+          <h1 className="text-4xl font-bold text-emerald-400">
             Employee Registration Form
           </h1>
           <div className="flex gap-2">
-            <img
-              className="w-12 h-12 border-2 border-white rounded-full"
-              src="https://avatars.githubusercontent.com/u/96605596?v=4"
-              alt="tania andrew"
-            />
+            <div className='w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl'>A</div>
             <div className="flex w-full flex-col gap-0.5">
-              <div className="flex items-center justify-between font-bold">
-                <h1>Ashen Thiwanka</h1>
+              <div className="flex items-center justify-between font-bold text-white">
+                <h1>Admin</h1>
               </div>
-              <p className="text-xs ">Employee Manager</p>
+              <p className="text-xs text-gray-300">Employee Manager</p>
             </div>
           </div>
         </div>
-        <div className="px-10 text-2xl font-semibold pt-5">
+        <div className="px-10 text-2xl font-semibold pt-5 text-white">
           <span className="">Add Employee</span>
         </div>
-        <div className="p-10 bg-paleblue m-10 rounded-3xl max-w-4xl border-2 border-light-blue">
+        <div className="p-10 bg-gray-800 m-10 rounded-3xl max-w-4xl border-2 border-gray-700">
           <form
             onSubmit={handleSubmit}
             className="flex flex-col sm:flex-row gap-10"
           >
             <div className="flex flex-col gap-1 flex-1">
-              <label className="font-semibold text-black">Employee Name</label>
+              <label className="font-semibold text-gray-300">Employee Name</label>
               <input
                 type="text"
                 placeholder="Enter Name"
@@ -88,11 +84,11 @@ export default function EmployeeCreateForm() {
                 name="name"
                 value={value.name}
                 onChange={handleChange}
-                className="border-2 border-gray outline-none rounded-md p-2 mb-4"
+                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
                 required
               />
 
-              <label className="font-semibold text-black">Contatc No</label>
+              <label className="font-semibold text-gray-300">Contatc No</label>
               <input
                 type="text"
                 placeholder="Enter mobile number"
@@ -100,22 +96,22 @@ export default function EmployeeCreateForm() {
                 name="contactNo"
                 value={value.contactNo}
                 onChange={handleChange}
-                className="border-2 border-gray outline-none rounded-md p-2 mb-4"
+                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
                 required
               />
 
-              <label className="font-semibold text-black">Date of Bitrh</label>
+              <label className="font-semibold text-gray-300">Date of Bitrh</label>
               <input
                 type="date"
                 id="DOB"
                 name="DOB"
                 value={value.DOB}
                 onChange={handleChange}
-                className="border-2 border-gray outline-none rounded-md p-2 mb-4"
+                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
                 required
               />
 
-              <label className="font-semibold text-black">Description</label>
+              <label className="font-semibold text-gray-300">Description</label>
               <textarea
                 type="textarea"
                 placeholder="Enter description"
@@ -123,19 +119,19 @@ export default function EmployeeCreateForm() {
                 name="address"
                 value={value.address}
                 onChange={handleChange}
-                className="border-2 border-gray outline-none rounded-md p-2 mb-4 max-h-40 min-h-40"
+                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4 max-h-40 min-h-40"
                 required
               />
 
               <input
                 type="submit"
                 value="Submit"
-                className="bg-light-blue hover:bg-blue font-semibold text-white p-3 rounded-lg w-full cursor-pointer"
+                className="bg-emerald-600 hover:bg-emerald-500 font-semibold text-white p-3 rounded-lg w-full cursor-pointer"
               />
             </div>
 
             <div className="flex flex-col gap-1 flex-1">
-              <label className="font-semibold text-black">Email</label>
+              <label className="font-semibold text-gray-300">Email</label>
               <input
                 type="text"
                 placeholder="Enter email"
@@ -143,11 +139,11 @@ export default function EmployeeCreateForm() {
                 name="email"
                 value={value.email}
                 onChange={handleChange}
-                className="border-2 border-gray outline-none rounded-md p-2 mb-4"
+                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
                 required
               />
 
-              <label className="font-semibold text-black">NIC</label>
+              <label className="font-semibold text-gray-300">NIC</label>
               <input
                 type="text"
                 placeholder="Enter NIC"
@@ -155,17 +151,17 @@ export default function EmployeeCreateForm() {
                 name="NIC"
                 value={value.NIC}
                 onChange={handleChange}
-                className="border-2 border-gray outline-none rounded-md p-2 mb-4"
+                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
                 required
               />
 
-              <label className="font-semibold text-black">Job Role</label>
+              <label className="font-semibold text-gray-300">Job Role</label>
               <select
                 id="empRole"
                 name="empRole"
                 value={value.empRole}
                 onChange={handleChange}
-                className="border-2 border-gray outline-none rounded-md p-2 mb-4"
+                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
                 required
               >
                 <option value="Delivery Manager">Delivery Manager</option>
@@ -178,7 +174,7 @@ export default function EmployeeCreateForm() {
                 <option value="User Manager">User Manager</option>
               </select>
 
-              <label className="font-semibold text-black">Marital Status</label>
+              <label className="font-semibold text-gray-300">Marital Status</label>
               <div className="flex gap-6 flex-wrap">
                 <div className="flex gap-2">
                   <input
@@ -189,7 +185,7 @@ export default function EmployeeCreateForm() {
                     id="Maried"
                     className="w-5"
                   />
-                  <span>Married</span>
+                  <span className="text-gray-300">Married</span>
                 </div>
                 <div className="flex gap-2">
                   <input
@@ -200,11 +196,11 @@ export default function EmployeeCreateForm() {
                     id="Unmaried"
                     className="w-5"
                   />
-                  <span>Unmarried</span>
+                  <span className="text-gray-300">Unmarried</span>
                 </div>
               </div>
 
-              <label className="font-semibold text-black">Gender</label>
+              <label className="font-semibold text-gray-300">Gender</label>
               <div className="flex gap-6 flex-wrap">
                 <div className="flex gap-2">
                   <input
@@ -215,7 +211,7 @@ export default function EmployeeCreateForm() {
                     id="Male"
                     className="w-5"
                   />
-                  <span>Male</span>
+                  <span className="text-gray-300">Male</span>
                 </div>
                 <div className="flex gap-2">
                   <input
@@ -226,7 +222,7 @@ export default function EmployeeCreateForm() {
                     id="Female"
                     className="w-5"
                   />
-                  <span>Female</span>
+                  <span className="text-gray-300">Female</span>
                 </div>
               </div>
             </div>

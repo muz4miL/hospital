@@ -44,30 +44,30 @@ export default function DriverSignIn() {
     }
   };
   return (
-    <div className='bg-paleblue'>
+    <div className='bg-gray-950 min-h-screen'>
       <DriveNavigationBar />
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
-      <div className='p-10 bg-paleblue m-10 rounded-3xl max-w-4xl border-2 border-light-blue'>
+      <h1 className='text-3xl text-center font-semibold my-7 text-white'>Sign In</h1>
+      <div className='p-10 bg-gray-800 m-10 rounded-3xl max-w-4xl border-2 border-gray-700'>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input
           type='text'
           placeholder='Driver ID'
-          className='border p-3 rounded-lg'
+          className='border border-gray-700 bg-gray-800 text-white placeholder-gray-500 p-3 rounded-lg'
           id='driverId'
           onChange={handleChange}
         />
         <input
           type='password'
           placeholder='Password'
-          className='border p-3 rounded-lg'
+          className='border border-gray-700 bg-gray-800 text-white placeholder-gray-500 p-3 rounded-lg'
           id='password'
           onChange={handleChange}
         />
 
         <button
           disabled={loading}
-          className='bg-blue text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
+          className='bg-emerald-600 text-white p-3 rounded-lg uppercase hover:bg-emerald-500 disabled:opacity-80'
         >
           {loading ? 'Loading...' : 'Sign In'}
         </button>

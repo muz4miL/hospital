@@ -131,48 +131,48 @@ export default function DeliveryTaskcreateForm() {
     return (
         <div className='flex'>
             <SideBar />
-            <div className='flex-1'>
-                <div className='bg-paleblue justify-between flex px-10 py-8'>
-                    <h1 className='text-4xl font-bold text-blue'>Add New Task</h1>
+            <div className='flex-1 bg-gray-950 min-h-screen'>
+                <div className='bg-gray-900 justify-between flex px-10 py-8'>
+                    <h1 className='text-4xl font-bold text-emerald-400'>Add New Task</h1>
                     <div className='flex gap-2'>
-                        <img className='w-12 h-12 border-2 border-white rounded-full' src="https://avatars.githubusercontent.com/u/120442263?s=400&u=7520de9a5dfa3a68aa9b35c51ff4a845145e3d6d&v=4" alt="tania andrew" />
+                        <div className='w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl'>A</div>
                         <div className="flex w-full flex-col gap-0.5">
-                            <div className="flex items-center justify-between font-bold">
-                                <h1>Dilmani Kiriella</h1>
+                            <div className="flex items-center justify-between font-bold text-white">
+                                <h1>Admin</h1>
                             </div>
-                            <p className='text-xs '>Delivery Manager</p>
+                            <p className='text-xs text-gray-400'>Delivery Manager</p>
                         </div>
                     </div>
                 </div>
-                <div className='p-10 bg-paleblue m-10 rounded-3xl max-w-4xl border-2 border-light-blue'>
+                <div className='p-10 bg-gray-800 m-10 rounded-3xl max-w-4xl border-2 border-gray-700'>
                     <form autoComplete='off' onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-10'>
                         <div className='flex flex-col gap-1 flex-1'>
-                            <label className='font-semibold text-black'>Order ID</label>
+                            <label className='font-semibold text-gray-300'>Order ID</label>
                             {errors.orderId && <span className="text-red-500 text-sm">{errors.orderId}</span>}
-                            <input type="text" placeholder='Enter order ID' id="orderId" name="orderId" value={value.orderId} onChange={handleChange} className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.orderId ? 'border-red-500' : ''}`} />
+                            <input type="text" placeholder='Enter order ID' id="orderId" name="orderId" value={value.orderId} onChange={handleChange} className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.orderId ? 'border-red-500' : ''}`} />
                             
-                            <label className='font-semibold text-black'>Customer Name</label>
+                            <label className='font-semibold text-gray-300'>Customer Name</label>
                             {errors.cusName && <span className="text-red-500 text-sm">{errors.cusName}</span>}
-                            <input type="text" placeholder='Enter customer name' id="cusName" name="cusName" value={value.cusName} onChange={handleChange} className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.cusName ? 'border-red-500' : ''}`} />
+                            <input type="text" placeholder='Enter customer name' id="cusName" name="cusName" value={value.cusName} onChange={handleChange} className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.cusName ? 'border-red-500' : ''}`} />
                             
-                            <label className='font-semibold text-black'>Customer Address</label>
+                            <label className='font-semibold text-gray-300'>Customer Address</label>
                             {errors.cusAddress && <span className="text-red-500 text-sm">{errors.cusAddress}</span>}
-                            <input type="textarea" placeholder='Enter customer address' id="cusAddress" name="cusAddress" value={value.cusAddress} onChange={handleChange} className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.cusAddress ? 'border-red-500' : ''}`} />
+                            <input type="textarea" placeholder='Enter customer address' id="cusAddress" name="cusAddress" value={value.cusAddress} onChange={handleChange} className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.cusAddress ? 'border-red-500' : ''}`} />
                             
-                            <input type="submit" value="Submit" className='bg-light-blue hover:bg-blue font-semibold text-white p-3 rounded-lg w-full cursor-pointer'/>
+                            <input type="submit" value="Submit" className='bg-emerald-600 hover:bg-emerald-500 font-semibold text-white p-3 rounded-lg w-full cursor-pointer'/>
                         </div>
                             <div className='flex flex-col gap-1 flex-1'>  
-                            <label className='font-semibold text-black'>Delivery Date</label>
+                            <label className='font-semibold text-gray-300'>Delivery Date</label>
                             {errors.deliDate && <span className="text-red-500 text-sm">{errors.deliDate}</span>}
-                            <input type="date" id="deliDate" name="deliDate" value={value.deliDate} onChange={handleChange} className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.deliDate ? 'border-red-500' : ''}`} />
+                            <input type="date" id="deliDate" name="deliDate" value={value.deliDate} onChange={handleChange} className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.deliDate ? 'border-red-500' : ''}`} />
                             
-                            <label className='font-semibold text-black'>Driver</label>
+                            <label className='font-semibold text-gray-300'>Driver</label>
                             <select
                             id="assignDriv"
                             name="assignDriv"
                             value={value.assignDriv}
                             onChange={handleChange}
-                            className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.assignDriv ? 'border-red-500' : ''}`}
+                            className={`border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4 ${errors.assignDriv ? 'border-red-500' : ''}`}
                           >
                             <option value="">Select a driver</option>
                             {Array.isArray(filteredDrivers) && filteredDrivers.map(driver => (
@@ -181,8 +181,8 @@ export default function DeliveryTaskcreateForm() {
                           </select>
                             
                             <div className='flex flex-col gap-1 flex-1'>
-                            <label className='font-semibold text-black'>Delivery Status</label>
-                            <select id="deliStatus" name="deliStatus" value={value.deliStatus} onChange={handleChange} className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.deliStatus? 'border-red-500' : ''}`} >
+                            <label className='font-semibold text-gray-300'>Delivery Status</label>
+                            <select id="deliStatus" name="deliStatus" value={value.deliStatus} onChange={handleChange} className={`border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4 ${errors.deliStatus? 'border-red-500' : ''}`} >
                                 <option value="Order Confirmed">Order Confirmed</option>
                                 <option value="On the way">On the way</option>
                                 <option value="Delivered">Delivered</option>

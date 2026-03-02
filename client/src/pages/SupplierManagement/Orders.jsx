@@ -140,10 +140,10 @@ const generateReport = () => {
     return (
         <div className='flex'>
             <SideBar />
-            <div className='flex-1'>
-                <div className='bg-paleblue justify-between flex px-10 py-8'>
-                    <h1 className='text-4xl font-bold text-blue'>Supply Orders</h1>
-<button onClick={generateReport} className="bg-white hover:bg-light-blue hover:text-white text-black border-2 border-light-blue font-semibold transition-all py-2 px-4 rounded-lg inline-flex items-center">
+            <div className='flex-1 bg-gray-950 min-h-screen'>
+                <div className='bg-gray-900 justify-between flex px-10 py-8'>
+                    <h1 className='text-4xl font-bold text-emerald-400'>Supply Orders</h1>
+<button onClick={generateReport} className="bg-gray-800 hover:bg-gray-700 text-white border-2 border-gray-600 font-semibold transition-all py-2 px-4 rounded-lg inline-flex items-center">
               <MdDownload className='text-2xl mr-2' />
               <span>Download Report</span>
             </button>
@@ -155,15 +155,15 @@ const generateReport = () => {
                             <input
                                 type='text'
                                 placeholder='Search Supply Orders'
-                                className='bg-white border-2 border-light-blue rounded-md placeholder-gray focus:outline-none w-56 p-2 pl-10'
+                                className='bg-gray-800 border-2 border-gray-700 rounded-md placeholder-gray-500 text-white focus:outline-none w-56 p-2 pl-10'
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
-                            <FaSearch className='text-gray absolute top-1/2 transform -translate-y-1/2 left-3' />
+                            <FaSearch className='text-gray-400 absolute top-1/2 transform -translate-y-1/2 left-3' />
                         </div>
                         <button
                             type='submit'
-                            className='bg-light-blue border-2 border-light-blue text-white rounded-md w-32 ml-2 hover:bg-blue hover:border-blue transition-all'
+                            className='bg-emerald-600 border-2 border-emerald-600 text-white rounded-md w-32 ml-2 hover:bg-emerald-500 hover:border-emerald-500 transition-all'
                         >
                             Search
                         </button>
@@ -171,24 +171,24 @@ const generateReport = () => {
                 </div>
 
                 <div className='px-10'>
-                    <table className="w-full border-2 border-blue">
+                    <table className="w-full border-2 border-gray-700">
                         <thead>
-                            <tr className="bg-blue text-white text-left">
-                                <th className="border border-blue px-4 py-2">Medicine Name</th>
-                                <th className="border border-blue px-4 py-2">Quantity</th>
-                                <th className="border border-blue px-4 py-2">Supplier</th>
-                                <th className="border border-blue px-4 py-2">Created At</th>
-                                <th className="border border-blue px-4 py-2">Actions</th>
+                            <tr className="bg-gray-800 text-white text-left">
+                                <th className="border border-gray-700 px-4 py-2">Medicine Name</th>
+                                <th className="border border-gray-700 px-4 py-2">Quantity</th>
+                                <th className="border border-gray-700 px-4 py-2">Supplier</th>
+                                <th className="border border-gray-700 px-4 py-2">Created At</th>
+                                <th className="border border-gray-700 px-4 py-2">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {searchResults.map((request) => (
-                                <tr key={request._id} className="bg-paleblue">
-                                    <td className="border-b-2 border-b-blue px-4 py-2">{request.medicineName}</td>
-                                    <td className="border-b-2 border-b-blue px-4 py-2">{request.quantity}</td>
-                                    <td className="border-b-2 border-b-blue px-4 py-2">{request.supplier}</td>
-                                    <td className="border-b-2 border-b-blue px-4 py-2">{request.createdAt}</td>
-                                    <td className="border-b-2 border-b-blue px-4 py-2">
+                                <tr key={request._id} className="bg-gray-900 text-gray-300">
+                                    <td className="border-b border-gray-700 px-4 py-2">{request.medicineName}</td>
+                                    <td className="border-b border-gray-700 px-4 py-2">{request.quantity}</td>
+                                    <td className="border-b border-gray-700 px-4 py-2">{request.supplier}</td>
+                                    <td className="border-b border-gray-700 px-4 py-2">{request.createdAt}</td>
+                                    <td className="border-b border-gray-700 px-4 py-2">
                                         <button
                                             onClick={() => handleDeleteConfirmation(request._id)}
                                             className='bg-red-600 text-white hover:bg-red-700 transition-all rounded px-4 py-1 ml-2'
@@ -203,8 +203,8 @@ const generateReport = () => {
                 </div>
 
                 {deleteId && (
-                    <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-dark-blue bg-opacity-90">
-                        <div className="bg-white p-8 rounded-lg shadow-lg">
+                    <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-80">
+                        <div className="bg-gray-800 text-white p-8 rounded-lg shadow-lg">
                             <p className="text-lg font-semibold mb-4">Are you sure you want to delete this supply request?</p>
                             <div className="flex justify-center">
                                 <button
@@ -215,7 +215,7 @@ const generateReport = () => {
                                 </button>
                                 <button
                                     onClick={handleCancelDelete}
-                                    className="bg-slate-200 text-slate-900 px-4 py-2 rounded-md hover:bg-slate-300 ml-2"
+                                    className="bg-gray-700 text-gray-300 px-4 py-2 rounded-md hover:bg-gray-600 ml-2"
                                 >
                                     Cancel
                                 </button>

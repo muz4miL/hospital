@@ -45,36 +45,36 @@ export default function DriverManagement() {
   return (
     <div className='flex'>
       <SideBar />
-      <div className='flex-1'>
-        <div className='bg-paleblue justify-between flex px-10 py-10'>
-          <h1 className='text-4xl font-bold text-blue'>Driver Management Dashboard</h1>
+      <div className='flex-1 bg-gray-950 min-h-screen'>
+        <div className='bg-gray-900 justify-between flex px-10 py-10'>
+          <h1 className='text-4xl font-bold text-emerald-400'>Driver Management Dashboard</h1>
           <div className='flex gap-6'>
 
             <div className='flex gap-2 cursor-pointer'>
-            <img className='w-12 h-12 border-2 border-white rounded-full' src="https://avatars.githubusercontent.com/u/120442263?s=400&u=7520de9a5dfa3a68aa9b35c51ff4a845145e3d6d&v=4" />
+            <div className='w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl'>A</div>
             <div className="flex w-full flex-col gap-0.5">
-              <div className="flex items-center justify-between font-bold">
-                <h1>Dilmani Kiriella</h1>
+              <div className="flex items-center justify-between font-bold text-white">
+                <h1>Admin</h1>
               </div>
-              <p className='text-xs '>Delivery Manager</p>
+              <p className='text-xs text-gray-400'>Delivery Manager</p>
             </div>
             </div>
           </div>
         </div>
-        <div className='px-10 text-2xl font-semibold pt-5'>
+        <div className='px-10 text-2xl font-semibold pt-5 text-white'>
           <span className=''>Driver Count({driverCount})</span>
         </div>
         <div className='flex items-center ml-10 justify-between mt-7'>
           <div className='flex gap-4'>
-            <div className='bg-lighter-blue border-2 border-light-blue font-medium rounded-2xl w-fit px-14 p-8'>
+            <div className='bg-gray-800 border border-gray-700 text-white font-medium rounded-2xl w-fit px-14 p-8'>
               <p className='text-center text-lg'>Driver Count</p>
               <p className='text-center text-3xl font-bold'>{driverCount}</p>
             </div>
-            <div className='bg-green-100 border-2 border-green-600 font-medium rounded-2xl w-fit px-14 p-8'>
+            <div className='bg-gray-800 border border-gray-700 text-white font-medium rounded-2xl w-fit px-14 p-8'>
               <p className='text-center text-lg'>Available Driver Count</p>
               <p className='text-center text-3xl font-bold'>{availableDriverCount}</p>
             </div>
-            <div className='bg-red-100 border-2 border-red-600 font-medium rounded-2xl w-fit px-14 p-8'>
+            <div className='bg-gray-800 border border-gray-700 text-white font-medium rounded-2xl w-fit px-14 p-8'>
               <p className='text-center text-lg'>Unavailable Driver Count</p>
               <p className='text-center text-3xl font-bold'>{unavailableDriverCount}</p>
             </div>

@@ -157,23 +157,23 @@ export default function SupplierCreateForm() {
     return (
         <div className='flex'>
             <SideBar />
-            <div className='flex-1'>
-                <div className='bg-paleblue justify-between flex px-10 py-8'>
-                    <h1 className='text-4xl font-bold text-blue'>Add New Supplier</h1>
+            <div className='flex-1 bg-gray-950 min-h-screen'>
+                <div className='bg-gray-900 justify-between flex px-10 py-8'>
+                    <h1 className='text-4xl font-bold text-emerald-400'>Add New Supplier</h1>
                     <div className='flex gap-2'>
-                        <img className='w-12 h-12 border-2 border-white rounded-full' src="https://avatars.githubusercontent.com/u/165793855?v=4" alt="tania andrew" />
+                        <div className='w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white text-xl font-bold'>A</div>
                         <div className="flex w-full flex-col gap-0.5">
                             <div className="flex items-center justify-between font-bold">
-                                <h1>Shahaam Marzook</h1>
+                                <h1 className='text-white'>Admin</h1>
                             </div>
-                            <p className='text-xs '>Supplier Manager</p>
+                            <p className='text-xs text-gray-400'>Supplier Manager</p>
                         </div>
                     </div>
                 </div>
-                <div className='p-10 bg-paleblue m-10 rounded-3xl max-w-4xl border-2 border-light-blue'>
+                <div className='p-10 bg-gray-800 m-10 rounded-3xl max-w-4xl border-2 border-gray-700'>
                     <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-10'>
                         <div className='flex flex-col gap-1 flex-1'>
-                            <label className='font-semibold text-black'>Supplier ID</label>
+                            <label className='font-semibold text-gray-300'>Supplier ID</label>
                             <input 
                                 type="text" 
                                 placeholder='Enter Supplier ID' 
@@ -181,12 +181,12 @@ export default function SupplierCreateForm() {
                                 name="supplierID" 
                                 value={value.supplierID} 
                                 onChange={handleChange} 
-                                className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.supplierID ? 'border-red' : ''}`} 
+                                className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.supplierID ? 'border-red' : ''}`} 
                                 
                             />
                             {errors.supplierID && <span className="text-red text-xs">{errors.supplierID}</span>}
 
-                            <label className='font-semibold text-black'>Supplier</label>
+                            <label className='font-semibold text-gray-300'>Supplier</label>
                             <input 
                                 type="text" 
                                 placeholder='Enter Supplier Name' 
@@ -194,12 +194,12 @@ export default function SupplierCreateForm() {
                                 name="firstName" 
                                 value={value.firstName} 
                                 onChange={handleChange} 
-                                className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.firstName ? 'border-red' : ''}`} 
+                                className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.firstName ? 'border-red' : ''}`} 
                                 
                             />
                             {errors.firstName && <span className="text-red text-xs">{errors.firstName}</span>}
 
-                            <label className='font-semibold text-black'>Contact Person Name</label>
+                            <label className='font-semibold text-gray-300'>Contact Person Name</label>
                             <input 
                                 type="text" 
                                 placeholder='Enter Contact Person Name' 
@@ -207,12 +207,12 @@ export default function SupplierCreateForm() {
                                 name="lastName" 
                                 value={value.lastName} 
                                 onChange={handleChange} 
-                                className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.lastName ? 'border-red' : ''}`} 
+                                className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.lastName ? 'border-red' : ''}`} 
                                 
                             />
                             {errors.lastName && <span className="text-red text-xs">{errors.lastName}</span>}
 
-                            <label className='font-semibold text-black'>Contact Number</label>
+                            <label className='font-semibold text-gray-300'>Contact Number</label>
                             <input 
                                 type="text" 
                                 placeholder='Enter Contact Number' 
@@ -220,12 +220,12 @@ export default function SupplierCreateForm() {
                                 name="contactNo" 
                                 value={value.contactNo} 
                                 onChange={handleChange} 
-                                className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.contactNo ? 'border-red' : ''}`} 
+                                className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.contactNo ? 'border-red' : ''}`} 
                                 
                             />
                             {errors.contactNo && <span className="text-red text-xs">{errors.contactNo}</span>}
 
-                            <label className='font-semibold text-black'>Address</label>
+                            <label className='font-semibold text-gray-300'>Address</label>
                             <textarea 
                                 type="textarea" 
                                 placeholder='Enter Address' 
@@ -233,7 +233,7 @@ export default function SupplierCreateForm() {
                                 name="address" 
                                 value={value.address} 
                                 onChange={handleChange} 
-                                className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.address ? 'border-red' : ''}`} 
+                                className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.address ? 'border-red' : ''}`} 
                                 
                             />
                             {errors.address && <span className="text-red text-xs">{errors.address}</span>}
@@ -241,13 +241,13 @@ export default function SupplierCreateForm() {
                             <input 
                                 type="submit" 
                                 value={loading ? 'Submitting...' : 'Submit'} 
-                                className='bg-light-blue hover:bg-blue font-semibold text-white p-3 rounded-lg w-full cursor-pointer' 
+                                className='bg-emerald-600 hover:bg-emerald-500 font-semibold text-white p-3 rounded-lg w-full cursor-pointer' 
                                 disabled={loading || !isSupplierIDUnique} // Disable if not unique or loading
                             />
                         </div>
 
                         <div className='flex flex-col gap-1 flex-1'>
-                            <label className='font-semibold text-black'>Email</label>
+                            <label className='font-semibold text-gray-300'>Email</label>
                             <input 
                                 type="text" 
                                 placeholder='Enter Email' 
@@ -255,24 +255,24 @@ export default function SupplierCreateForm() {
                                 name="email" 
                                 value={value.email} 
                                 onChange={handleChange} 
-                                className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.email ? 'border-red' : ''}`} 
+                                className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.email ? 'border-red' : ''}`} 
                                 
                             />
                             {errors.email && <span className="text-red text-xs">{errors.email}</span>}
 
-                            <label className='font-semibold text-black'>Date of Birth</label>
+                            <label className='font-semibold text-gray-300'>Date of Birth</label>
                             <input 
                                 type="date" 
                                 id="DOB" 
                                 name="DOB" 
                                 value={value.DOB} 
                                 onChange={handleChange} 
-                                className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.DOB ? 'border-red' : ''}`} 
+                                className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.DOB ? 'border-red' : ''}`} 
                                 
                             />
                             {errors.DOB && <span className="text-red text-xs">{errors.DOB}</span>}
 
-                            <label className='font-semibold text-black'>NIC</label>
+                            <label className='font-semibold text-gray-300'>NIC</label>
                             <input 
                                 type="text" 
                                 placeholder='Enter NIC' 
@@ -280,7 +280,7 @@ export default function SupplierCreateForm() {
                                 name="NIC" 
                                 value={value.NIC} 
                                 onChange={handleChange} 
-                                className={`border-2 border-gray outline-none rounded-md p-2 mb-4 ${errors.NIC ? 'border-red' : ''}`} 
+                                className={`border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-500 outline-none rounded-md p-2 mb-4 ${errors.NIC ? 'border-red' : ''}`} 
                                 
                             />
                             {errors.NIC && <span className="text-red text-xs">{errors.NIC}</span>}

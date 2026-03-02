@@ -51,10 +51,10 @@ export default function PromotionPage() {
   };
 
   return (
-    <div className='bg-paleblue'>
+    <div className='bg-gray-950 min-h-screen'>
       <NavigationBar />
       <div className='max-w-7xl mx-auto p-3 mt-10'>
-        <h1 className='text-center text-4xl text-blue font-bold'>Discounts and Offers</h1>
+        <h1 className='text-center text-4xl text-emerald-400 font-bold'>Discounts and Offers</h1>
         <Swiper
         spaceBetween={50}
         slidesPerView={1}
@@ -70,7 +70,7 @@ export default function PromotionPage() {
           </SwiperSlide>
         </Swiper>
         <div className='mt-8'>
-          <h2 className='text-lg font-semibold'>Seasonal Offers:</h2>
+          <h2 className='text-lg font-semibold text-white'>Seasonal Offers:</h2>
           <Swiper
             slidesPerView={2}
             navigation
@@ -80,19 +80,19 @@ export default function PromotionPage() {
             {promotions.map((promotion, index) => (
               promotion.type === 'Seasonal' && (
                 <SwiperSlide key={index} className='flex justify-center items-center'>
-                  <div className='bg-white rounded-lg border-2 border-light-blue flex w-max'>
-                    <div className='bg-light-blue w-max p-2'>
+                  <div className='bg-gray-800 rounded-lg border border-emerald-600 flex w-max'>
+                    <div className='bg-emerald-600 w-max p-2'>
                       <div className='border border-white w-max h-full p-3 flex flex-col items-center justify-center'>
                         <h1 className='text-white text-3xl font-bold'>RS {promotion.couponPrice}</h1>
                         <h1 className='text-white text-2xl'>Off</h1>
-                        <button className='bg-white text-light-blue font-semibold p-1 px-3 rounded-md mt-3' onClick={() => togglePopup(promotion)}>View Details</button>
+                        <button className='bg-white text-emerald-600 font-semibold p-1 px-3 rounded-md mt-3' onClick={() => togglePopup(promotion)}>View Details</button>
                       </div>
                     </div>
-                    <div className='p-6 px-8'>
+                    <div className='p-6 px-8 text-white'>
                       <h1 className='font-bold'>WITH MIN SPEND RS {promotion.totalAmount}</h1>
-                      <h1 className='text-light-blue text-2xl font-bold mt-2 mb-2'>USE CODE: {promotion.couponCode}</h1>
-                      <h2 className='text-sm'>VALID TILL: {formatDate(promotion.expiredAt)}</h2>
-                      <h2 className='text-sm'>*T&C Applied</h2>
+                      <h1 className='text-emerald-400 text-2xl font-bold mt-2 mb-2'>USE CODE: {promotion.couponCode}</h1>
+                      <h2 className='text-sm text-gray-300'>VALID TILL: {formatDate(promotion.expiredAt)}</h2>
+                      <h2 className='text-sm text-gray-300'>*T&C Applied</h2>
                     </div>
                   </div>
                 </SwiperSlide>
@@ -101,15 +101,15 @@ export default function PromotionPage() {
           </Swiper>
           {popupVisible && selectedPromotion && (
           <>
-          <div className="fixed top-0 left-0 w-full h-full bg-dark-blue bg-opacity-60 z-40"></div>
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg z-50 flex flex-col items-center justify-center">
+          <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-40"></div>
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 text-white p-6 rounded-lg z-50 flex flex-col items-center justify-center">
             <h1 className="font-semibold mb-4">{selectedPromotion.description}</h1>
-            <button onClick={() => togglePopup(null)} className="bg-light-blue text-white font-semibold px-4 py-2 rounded-md">Close</button>
+            <button onClick={() => togglePopup(null)} className="bg-emerald-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-emerald-500">Close</button>
           </div>
           </>)}
         </div>
         <div className='mt-8 mb-20'>
-          <h2 className='text-lg font-semibold'>Special Offers:</h2>
+          <h2 className='text-lg font-semibold text-white'>Special Offers:</h2>
           <Swiper
             slidesPerView={2}
             navigation
@@ -119,19 +119,19 @@ export default function PromotionPage() {
             {promotions.map((promotion, index) => (
               promotion.type === 'Special' && (
                 <SwiperSlide key={index} className='flex justify-center items-center'>
-                  <div className='bg-white rounded-lg border-2 border-blue flex w-max'>
-                    <div className='bg-blue w-max p-2'>
+                  <div className='bg-gray-800 rounded-lg border border-emerald-500 flex w-max'>
+                    <div className='bg-emerald-700 w-max p-2'>
                       <div className='border border-white w-max h-full p-3 flex flex-col items-center justify-center'>
                         <h1 className='text-white text-3xl font-bold'>RS {promotion.couponPrice}</h1>
                         <h1 className='text-white text-2xl'>Off</h1>
-                        <button className='bg-white text-blue font-semibold p-1 px-3 rounded-md mt-3' onClick={() => togglePopup(promotion)}>View Details</button>
+                        <button className='bg-white text-emerald-700 font-semibold p-1 px-3 rounded-md mt-3' onClick={() => togglePopup(promotion)}>View Details</button>
                       </div>
                     </div>
-                    <div className='p-6 px-8'>
+                    <div className='p-6 px-8 text-white'>
                       <h1 className='font-bold'>WITH MIN SPEND RS {promotion.totalAmount}</h1>
-                      <h1 className='text-blue text-2xl font-bold mt-2 mb-2'>USE CODE: {promotion.couponCode}</h1>
-                      <h2 className='text-sm'>VALID TILL: {formatDate(promotion.expiredAt)}</h2>
-                      <h2 className='text-sm'>*T&C Applied</h2>
+                      <h1 className='text-emerald-400 text-2xl font-bold mt-2 mb-2'>USE CODE: {promotion.couponCode}</h1>
+                      <h2 className='text-sm text-gray-300'>VALID TILL: {formatDate(promotion.expiredAt)}</h2>
+                      <h2 className='text-sm text-gray-300'>*T&C Applied</h2>
                     </div>
                   </div>
                 </SwiperSlide>

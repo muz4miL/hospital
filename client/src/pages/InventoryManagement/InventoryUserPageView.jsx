@@ -58,17 +58,17 @@ export default function InventoryUserPageView() {
   };
 
   return (
-    <div className="bg-paleblue">
+    <div className="bg-gray-950 min-h-screen">
       <NavigationBar />
 
-      <h1 className='pt-4 text-center text-4xl text-blue font-bold'><MdCalendarMonth className='pt-4'/>View Available Items</h1>
+      <h1 className='pt-4 text-center text-4xl text-emerald-400 font-bold'><MdCalendarMonth className='pt-4'/>View Available Items</h1>
       <div> 
         <form className='px-10 py-2 pb-7 flex justify-end' onSubmit={handleSearch}>
           <div className='relative'>
-            <input type='text' placeholder='Search for medications' className=' text-sm bg-white border-2 border-light-blue rounded-md placeholder-gray focus:outline-none w-56 p-2 pl-10' onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery} />
-            <FaSearch className='text-gray absolute top-1/2 transform -translate-y-1/2 left-3' />
+            <input type='text' placeholder='Search for medications' className=' text-sm bg-gray-800 border border-gray-700 text-white rounded-md placeholder-gray-500 focus:outline-none w-56 p-2 pl-10' onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery} />
+            <FaSearch className='text-gray-500 absolute top-1/2 transform -translate-y-1/2 left-3' />
           </div>
-          <button type='submit' className='bg-light-blue border-2 border-light-blue text-white rounded-md w-32 ml-2 hover:bg-blue hover:border-blue transition-all'>Search</button>
+          <button type='submit' className='bg-emerald-600 border-2 border-emerald-600 text-white rounded-md w-32 ml-2 hover:bg-emerald-500 hover:border-emerald-500 transition-all'>Search</button>
         </form>
       </div>
 

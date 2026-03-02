@@ -61,51 +61,51 @@ export default function DriverProfile() {
   };
   
   return (
-    <div className='bg-paleblue'>
+    <div className='bg-gray-950 min-h-screen'>
     <DriveNavigationBar />
     <div className='p-2 max-w-lg mx-auto'>
     <span onClick={handleSignOut} className='text-white cursor-pointer absolute top-15 right-0 mt-2 mr-4 px-4 py-2 bg-red-700 border border-red-950 rounded-lg flex items-center'>
     <FaSignOutAlt className='mr-2' /> Log Out
     </span>
-    <h1 className='text-4xl font-bold text-blue text-center mt-4'>Driver Profile</h1>
-    <div class="p-3 bg-paleblue m-10 rounded-3xl max-w-4xl border-2 border-light-blue">
+    <h1 className='text-4xl font-bold text-emerald-400 text-center mt-4'>Driver Profile</h1>
+    <div class="p-3 bg-gray-800 m-10 rounded-3xl max-w-4xl border-2 border-gray-700">
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
 
         <div className="flex flex-row gap-16">
-          <label className='font-semibold text-black'>Driver ID : </label>
-          <input type='text'placeholder='Driver Id'defaultValue={currentDriver.driverId}id='driverId'className='border p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
+          <label className='font-semibold text-gray-300'>Driver ID : </label>
+          <input type='text'placeholder='Driver Id'defaultValue={currentDriver.driverId}id='driverId'className='border border-gray-700 bg-gray-700 text-gray-400 p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
         </div>
 
         <div className="flex flex-row gap-9">
-          <label className='font-semibold text-black'>Driver Name : </label>
-          <input type='text'placeholder='Driver Name'id='driverName'defaultValue={currentDriver.driverName}className='border p-1 rounded-lg ml-2'onChange={handleChange}readOnl/>
+          <label className='font-semibold text-gray-300'>Driver Name : </label>
+          <input type='text'placeholder='Driver Name'id='driverName'defaultValue={currentDriver.driverName}className='border border-gray-700 bg-gray-700 text-gray-400 p-1 rounded-lg ml-2'onChange={handleChange}readOnl/>
         </div>
 
         <div className="flex flex-row gap-5">
-          <label className='font-semibold text-black'>Driver License : </label>
-          <input type='text'placeholder='Driver License'id='driverLicense'defaultValue={currentDriver.driverLicense} className='border p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
+          <label className='font-semibold text-gray-300'>Driver License : </label>
+          <input type='text'placeholder='Driver License'id='driverLicense'defaultValue={currentDriver.driverLicense} className='border border-gray-700 bg-gray-700 text-gray-400 p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
         </div>
 
         <div className="flex flex-row gap-1">
-          <label className='font-semibold text-black'>Contact Number :  </label>
-          <input type='text'placeholder='Phone number'defaultValue={currentDriver.contactNo}id='contactNo'className='border p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
+          <label className='font-semibold text-gray-300'>Contact Number :  </label>
+          <input type='text'placeholder='Phone number'defaultValue={currentDriver.contactNo}id='contactNo'className='border border-gray-700 bg-gray-700 text-gray-400 p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
         </div>
 
         <div className="flex flex-row gap-2">
-          <label className='font-semibold text-black'>Vehicle License : </label>
-          <input type='text'placeholder='Vehicle License'defaultValue={currentDriver.vehicleLicense}id='vehicleLicense'className='border p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
+          <label className='font-semibold text-gray-300'>Vehicle License : </label>
+          <input type='text'placeholder='Vehicle License'defaultValue={currentDriver.vehicleLicense}id='vehicleLicense'className='border border-gray-700 bg-gray-700 text-gray-400 p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
         </div>
       
         <div className="flex flex-row gap-11">
-          <label className='font-semibold text-black'>Availability : </label>
-          <select id="availabilty" defaultValue={currentDriver.availabilty} onChange={handleChange} className='border p-1 rounded-lg ml-2 w-56'required>
+          <label className='font-semibold text-gray-300'>Availability : </label>
+          <select id="availabilty" defaultValue={currentDriver.availabilty} onChange={handleChange} className='border border-gray-700 bg-gray-800 text-white p-1 rounded-lg ml-2 w-56'required>
             <option value="Available">Available</option>
             <option value="Unavailable">Unavailable</option>
           </select>
         </div>
         <button
           disabled={loading}
-          className='bg-green-700  border-green-950 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'
+          className='bg-emerald-600 border-emerald-600 text-white rounded-lg p-3 uppercase hover:bg-emerald-500 disabled:opacity-80'
         >
           {loading ? 'Loading...' : 'Update'}
         </button>
