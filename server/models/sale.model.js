@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const saleItemSchema = new mongoose.Schema({
   medicineId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Inventory',
+    ref: "Inventory",
     required: true,
   },
   medicineName: {
@@ -47,8 +47,8 @@ const saleSchema = new mongoose.Schema(
     },
     discountType: {
       type: String,
-      enum: ['percentage', 'fixed'],
-      default: 'fixed',
+      enum: ["percentage", "fixed"],
+      default: "fixed",
     },
     tax: {
       type: Number,
@@ -68,12 +68,12 @@ const saleSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ['Cash', 'Card', 'Mobile', 'Credit'],
-      default: 'Cash',
+      enum: ["Cash", "Card", "JazzCash", "Udhar", "Mobile", "Credit"],
+      default: "Cash",
     },
     customerName: {
       type: String,
-      default: 'Walk-in Customer',
+      default: "Walk-in Customer",
     },
     customerPhone: {
       type: String,
@@ -81,7 +81,7 @@ const saleSchema = new mongoose.Schema(
     },
     soldBy: {
       type: String,
-      default: 'Admin',
+      default: "Admin",
     },
     notes: {
       type: String,
@@ -89,29 +89,29 @@ const saleSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Completed', 'Refunded', 'Partial Refund'],
-      default: 'Completed',
+      enum: ["Completed", "Refunded", "Partial Refund"],
+      default: "Completed",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Auto-generate invoice number
-saleSchema.pre('save', async function(next) {
+saleSchema.pre("save", async function (next) {
   if (!this.invoiceNumber) {
     const today = new Date();
-    const dateStr = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
-    const count = await mongoose.model('Sale').countDocuments({
+    const dateStr = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+    const count = await mongoose.model("Sale").countDocuments({
       createdAt: {
         $gte: new Date(today.setHours(0, 0, 0, 0)),
         $lt: new Date(today.setHours(23, 59, 59, 999)),
       },
     });
-    this.invoiceNumber = `INV-${dateStr}-${String(count + 1).padStart(4, '0')}`;
+    this.invoiceNumber = `INV-${dateStr}-${String(count + 1).padStart(4, "0")}`;
   }
   next();
 });
 
-const Sale = mongoose.model('Sale', saleSchema);
+const Sale = mongoose.model("Sale", saleSchema);
 
 export default Sale;

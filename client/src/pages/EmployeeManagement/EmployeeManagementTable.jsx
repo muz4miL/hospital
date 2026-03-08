@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -86,45 +86,50 @@ function EmployeeTable() {
   return (
     <div>
         <div>
-            <form  className='px-10 py-2 pb-7 flex justify-end' onSubmit={handleSearch}>
+            <form className='flex justify-end gap-2 px-6 py-2 pb-5' onSubmit={handleSearch}>
                 <div className='relative'>
-                    <input type='text' placeholder='Search Employee' className='bg-gray-800 border-gray-700 text-white rounded-md placeholder-gray-500 focus:outline-none w-56 p-2 pl-10' onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery}/>
-                    <FaSearch className='text-gray-500 absolute top-1/2 transform -translate-y-1/2 left-3' />
+                    <input type='text' placeholder='Search employees...' className='w-56 py-2 text-sm input-field pl-9' onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery}/>
+                    <FaSearch className='absolute text-sm transform -translate-y-1/2 text-zinc-500 top-1/2 left-3' />
                 </div>
-                <button type='submit' className='bg-emerald-600 border-emerald-600 text-white rounded-md w-32 ml-2 hover:bg-emerald-500 hover:border-emerald-500 transition-all'>Search</button>
+                <button type='submit' className='text-sm btn-primary'>Search</button>
             </form>
         </div>
-        <div className='px-10'>
-        <table className="w-full border border-gray-700">
+        <div className='px-6 pb-6'>
+        <div className='overflow-hidden border shadow-lg rounded-xl border-zinc-800 shadow-black/20'>
+        <table className="w-full">
             <thead>
-                <tr className="bg-gray-800 text-white text-left">
-                    <th className="border border-gray-700 px-4 py-2">ID</th>
-                    <th className="border border-gray-700 px-4 py-2">Name</th>
-                    <th className="border border-gray-700 px-4 py-2">Email</th>
-                    <th className="border border-gray-700 px-4 py-2">NIC</th>
-                    <th className="border border-gray-700 px-4 py-2">Gender</th>
-                    <th className="border border-gray-700 px-4 py-2">Contact No</th>
-                    <th className="border border-gray-700 px-4 py-2">Job Role</th>
-                    <th className="border border-gray-700 px-4 py-2">Date</th>
-                    <th className="border border-gray-700 px-4 py-2">Actions</th>
+                <tr className="border-b bg-zinc-900/80 border-zinc-800">
+                    <th className="table-th">ID</th>
+                    <th className="table-th">Name</th>
+                    <th className="table-th">Email</th>
+                    <th className="table-th">NIC</th>
+                    <th className="table-th">Gender</th>
+                    <th className="table-th">Contact No</th>
+                    <th className="table-th">Job Role</th>
+                    <th className="table-th">Date of Birth</th>
+                    <th className="table-th">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody className='bg-zinc-950'>
                 {searchResults?.map((elem, index) => {
                     return (
-                    <tr key={index} className="bg-gray-900 text-gray-300">
-                        <td className="border-b border-gray-700 px-4 py-2">{elem._id}</td>
-                        <td className="border-b border-gray-700 px-4 py-2">{elem.name}</td>
-                        <td className="border-b border-gray-700 px-4 py-2">{elem.email}</td>
-                        <td className="border-b border-gray-700 px-4 py-2">{elem.NIC}</td>
-                        <td className="border-b border-gray-700 px-4 py-2">{elem.gender}</td>
-                        <td className="border-b border-gray-700 px-4 py-2">{elem.contactNo}</td>
-                        <td className="border-b border-gray-700 px-4 py-2">{elem.empRole}</td>
-                        <td className="border-b border-gray-700 px-4 py-2">{formatDate(elem.DOB)}</td>
-                        <td className="border-b border-gray-700 px-4 py-2">
-                            <div className='flex text-sm px-full'>
-                                <Link to={`/update-employee/${elem._id}`}><button className='bg-green-600 text-white hover:bg-green-700 transition-all rounded  px-4 py-1'>Update</button></Link>
-                                <button onClick={() => handleDeleteConfirmation(elem._id)} className='bg-red-600 text-white hover:bg-red-700 transition-all rounded  px-4 py-1 ml-2'>Delete</button>
+                    <tr key={index} className="table-row border-b border-zinc-800/60">
+                        <td className="table-td font-mono text-zinc-500 text-xs max-w-[80px] truncate">{elem._id}</td>
+                        <td className="font-medium table-td text-zinc-200">{elem.name}</td>
+                        <td className="table-td text-zinc-400">{elem.email}</td>
+                        <td className="table-td text-zinc-400">{elem.NIC}</td>
+                        <td className="table-td">
+                            <span className='px-2 py-0.5 rounded-full text-xs bg-zinc-800 text-zinc-300'>{elem.gender}</span>
+                        </td>
+                        <td className="table-td text-zinc-400">{elem.contactNo}</td>
+                        <td className="table-td">
+                            <span className='px-2 py-0.5 rounded-full text-xs bg-emerald-500/10 text-emerald-400'>{elem.empRole}</span>
+                        </td>
+                        <td className="table-td text-zinc-400">{formatDate(elem.DOB)}</td>
+                        <td className="table-td">
+                            <div className='flex gap-2'>
+                                <Link to={`/update-employee/${elem._id}`}><button className='px-3 py-1 text-xs transition-colors border rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-700'>Edit</button></Link>
+                                <button onClick={() => handleDeleteConfirmation(elem._id)} className='px-3 py-1 text-xs text-red-400 transition-colors border rounded-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/20'>Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -132,13 +137,15 @@ function EmployeeTable() {
             </tbody>
         </table>
         </div>
+        </div>
         {deleteId && (
-                <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-80">
-                    <div className="bg-gray-800 text-white p-8 rounded-lg shadow-lg">
-                        <p className="text-lg font-semibold mb-4">Are you sure you want to delete this employee?</p>
-                        <div className="flex justify-center">
-                            <button onClick={handleDeleteConfirmed} className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 mr-2">Delete</button>
-                            <button onClick={handleCancelDelete} className="bg-gray-700 text-gray-300 px-4 py-2 rounded-md hover:bg-gray-600 ml-2">Cancel</button>
+                <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black/70 backdrop-blur-sm">
+                    <div className="p-8 border shadow-2xl bg-zinc-900 border-zinc-800 text-zinc-100 rounded-xl">
+                        <p className="mb-2 text-lg font-semibold">Delete Employee?</p>
+                        <p className="mb-6 text-sm text-zinc-400">This action cannot be undone.</p>
+                        <div className="flex justify-end gap-3">
+                            <button onClick={handleCancelDelete} className="text-sm btn-secondary">Cancel</button>
+                            <button onClick={handleDeleteConfirmed} className="px-4 py-2 text-sm font-medium text-white transition-colors bg-red-600 rounded-lg hover:bg-red-500">Delete</button>
                         </div>
                     </div>
                 </div>

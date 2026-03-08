@@ -1,20 +1,27 @@
-import { useSelector } from 'react-redux';
-import { FaSignOutAlt } from 'react-icons/fa';
-import { useState } from 'react';
-import { updateDriverStart, updateDriverSuccess, updateDriverFailure, deleteDriverFailure, deleteDriverSuccess, signOutDriverStart } from '../../redux/driver/driverSlice';
-import { useDispatch } from 'react-redux';
-import Footer from '../../components/Footer';
-import { useNavigate } from 'react-router-dom';
-import DriveNavigationBar from '../../components/DriveNavigationBar';
-
+import { useSelector } from "react-redux";
+import { FaSignOutAlt } from "react-icons/fa";
+import { useState } from "react";
+import {
+  updateDriverStart,
+  updateDriverSuccess,
+  updateDriverFailure,
+  deleteDriverFailure,
+  deleteDriverSuccess,
+  signOutDriverStart,
+} from "../../redux/driver/driverSlice";
+import { useDispatch } from "react-redux";
+import Footer from "../../components/Footer";
+import { useNavigate } from "react-router-dom";
+import DriveNavigationBar from "../../components/DriveNavigationBar";
 
 export default function DriverProfile() {
-  
-  const { currentDriver, loading, error } = useSelector((state) => state.driver);
+  const { currentDriver, loading, error } = useSelector(
+    (state) => state.driver,
+  );
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -25,9 +32,9 @@ export default function DriverProfile() {
     try {
       dispatch(updateDriverStart());
       const res = await fetch(`/api/driver/updatedri/${currentDriver._id}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -47,76 +54,140 @@ export default function DriverProfile() {
   const handleSignOut = async () => {
     try {
       dispatch(signOutDriverStart());
-      const res = await fetch('/api/driver/signout');
+      const res = await fetch("/api/driver/signout");
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteDriverFailure(data.message));
         return;
       }
       dispatch(deleteDriverSuccess(data));
-      navigate('/'); 
+      navigate("/");
     } catch (error) {
       dispatch(deleteDriverFailure(data.message));
     }
   };
-  
+
   return (
-    <div className='bg-gray-950 min-h-screen'>
-    <DriveNavigationBar />
-    <div className='p-2 max-w-lg mx-auto'>
-    <span onClick={handleSignOut} className='text-white cursor-pointer absolute top-15 right-0 mt-2 mr-4 px-4 py-2 bg-red-700 border border-red-950 rounded-lg flex items-center'>
-    <FaSignOutAlt className='mr-2' /> Log Out
-    </span>
-    <h1 className='text-4xl font-bold text-emerald-400 text-center mt-4'>Driver Profile</h1>
-    <div class="p-3 bg-gray-800 m-10 rounded-3xl max-w-4xl border-2 border-gray-700">
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-
-        <div className="flex flex-row gap-16">
-          <label className='font-semibold text-gray-300'>Driver ID : </label>
-          <input type='text'placeholder='Driver Id'defaultValue={currentDriver.driverId}id='driverId'className='border border-gray-700 bg-gray-700 text-gray-400 p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
-        </div>
-
-        <div className="flex flex-row gap-9">
-          <label className='font-semibold text-gray-300'>Driver Name : </label>
-          <input type='text'placeholder='Driver Name'id='driverName'defaultValue={currentDriver.driverName}className='border border-gray-700 bg-gray-700 text-gray-400 p-1 rounded-lg ml-2'onChange={handleChange}readOnl/>
-        </div>
-
-        <div className="flex flex-row gap-5">
-          <label className='font-semibold text-gray-300'>Driver License : </label>
-          <input type='text'placeholder='Driver License'id='driverLicense'defaultValue={currentDriver.driverLicense} className='border border-gray-700 bg-gray-700 text-gray-400 p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
-        </div>
-
-        <div className="flex flex-row gap-1">
-          <label className='font-semibold text-gray-300'>Contact Number :  </label>
-          <input type='text'placeholder='Phone number'defaultValue={currentDriver.contactNo}id='contactNo'className='border border-gray-700 bg-gray-700 text-gray-400 p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
-        </div>
-
-        <div className="flex flex-row gap-2">
-          <label className='font-semibold text-gray-300'>Vehicle License : </label>
-          <input type='text'placeholder='Vehicle License'defaultValue={currentDriver.vehicleLicense}id='vehicleLicense'className='border border-gray-700 bg-gray-700 text-gray-400 p-1 rounded-lg ml-2'onChange={handleChange}readOnly/>
-        </div>
-      
-        <div className="flex flex-row gap-11">
-          <label className='font-semibold text-gray-300'>Availability : </label>
-          <select id="availabilty" defaultValue={currentDriver.availabilty} onChange={handleChange} className='border border-gray-700 bg-gray-800 text-white p-1 rounded-lg ml-2 w-56'required>
-            <option value="Available">Available</option>
-            <option value="Unavailable">Unavailable</option>
-          </select>
-        </div>
-        <button
-          disabled={loading}
-          className='bg-emerald-600 border-emerald-600 text-white rounded-lg p-3 uppercase hover:bg-emerald-500 disabled:opacity-80'
+    <div className="bg-zinc-950 min-h-screen">
+      <DriveNavigationBar />
+      <div className="p-2 max-w-lg mx-auto">
+        <span
+          onClick={handleSignOut}
+          className="text-zinc-200 cursor-pointer absolute top-15 right-0 mt-2 mr-4 px-4 py-2 bg-red-700/80 hover:bg-red-700 border border-red-900 rounded-lg flex items-center text-sm"
         >
-          {loading ? 'Loading...' : 'Update'}
-        </button>
-      
-      </form>
+          <FaSignOutAlt className="mr-2" /> Log Out
+        </span>
+        <h1 className="text-2xl font-semibold text-zinc-100 text-center mt-4">
+          Driver Profile
+        </h1>
+        <div className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 shadow-lg shadow-black/20 mt-6">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-row gap-16 items-center">
+              <label className="text-zinc-400 text-sm font-medium w-32">
+                Driver ID
+              </label>
+              <input
+                type="text"
+                placeholder="Driver Id"
+                defaultValue={currentDriver.driverId}
+                id="driverId"
+                className="input-field text-sm flex-1 opacity-60 cursor-not-allowed"
+                onChange={handleChange}
+                readOnly
+              />
+            </div>
+
+            <div className="flex flex-row gap-9 items-center">
+              <label className="text-zinc-400 text-sm font-medium w-32">
+                Driver Name
+              </label>
+              <input
+                type="text"
+                placeholder="Driver Name"
+                id="driverName"
+                defaultValue={currentDriver.driverName}
+                className="input-field text-sm flex-1 opacity-60 cursor-not-allowed"
+                onChange={handleChange}
+                readOnly
+              />
+            </div>
+
+            <div className="flex flex-row gap-5 items-center">
+              <label className="text-zinc-400 text-sm font-medium w-32">
+                Driver License
+              </label>
+              <input
+                type="text"
+                placeholder="Driver License"
+                id="driverLicense"
+                defaultValue={currentDriver.driverLicense}
+                className="input-field text-sm flex-1 opacity-60 cursor-not-allowed"
+                onChange={handleChange}
+                readOnly
+              />
+            </div>
+
+            <div className="flex flex-row gap-1 items-center">
+              <label className="text-zinc-400 text-sm font-medium w-32">
+                Contact Number
+              </label>
+              <input
+                type="text"
+                placeholder="Phone number"
+                defaultValue={currentDriver.contactNo}
+                id="contactNo"
+                className="input-field text-sm flex-1 opacity-60 cursor-not-allowed"
+                onChange={handleChange}
+                readOnly
+              />
+            </div>
+
+            <div className="flex flex-row gap-2 items-center">
+              <label className="text-zinc-400 text-sm font-medium w-32">
+                Vehicle License
+              </label>
+              <input
+                type="text"
+                placeholder="Vehicle License"
+                defaultValue={currentDriver.vehicleLicense}
+                id="vehicleLicense"
+                className="input-field text-sm flex-1 opacity-60 cursor-not-allowed"
+                onChange={handleChange}
+                readOnly
+              />
+            </div>
+
+            <div className="flex flex-row gap-11 items-center">
+              <label className="text-zinc-400 text-sm font-medium w-32">
+                Availability
+              </label>
+              <select
+                id="availabilty"
+                defaultValue={currentDriver.availabilty}
+                onChange={handleChange}
+                className="input-field text-sm flex-1"
+                required
+              >
+                <option value="Available">Available</option>
+                <option value="Unavailable">Unavailable</option>
+              </select>
+            </div>
+            <button
+              disabled={loading}
+              className="btn-primary py-3 disabled:opacity-80"
+            >
+              {loading ? "Loading..." : "Update Profile"}
+            </button>
+          </form>
+        </div>
+        <p className="text-red-400 mt-5 text-center text-sm">
+          {error ? error : ""}
+        </p>
+        <p className="text-emerald-400 mt-5 text-center text-sm">
+          {updateSuccess ? "Driver updated successfully!" : ""}
+        </p>
+      </div>
+      <Footer />
     </div>
-    <p className='text-red-700 mt-5 text-center'>{error ? error : ''}</p>
-    <p className='text-green-700 mt-5 text-center'>
-      {updateSuccess ? 'Driver updated successfully!' : ''}
-    </p>
-  </div>
-  <Footer />
-</div>
-)}
+  );
+}

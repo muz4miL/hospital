@@ -1,112 +1,116 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-hot-toast';
-import SideBar from '../../components/SideBar';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import SideBar from "../../components/SideBar";
 
 export default function SupplyRequestForm() {
-    const navigate = useNavigate();
-    const [value, setValue] = useState({
-        medicineName: '',
-        quantity: '',
-        supplier: '',
-    });
+  const navigate = useNavigate();
+  const [value, setValue] = useState({
+    medicineName: "",
+    quantity: "",
+    supplier: "",
+  });
 
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setValue((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValue((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const addSupplyRequest = await axios.post(
-                "http://localhost:3000/api/supplyRequest/create", 
-                value);
-            const response = addSupplyRequest.data;
-            if (response.success) {
-                toast.success(response.message, { duration: 4000 });
-                // Clear form fields after successful submission
-                setValue({
-                    medicineName: '',
-                    quantity: '',
-                    supplier: '',
-                });
-                navigate('/inventory-management');
-            }
-            console.log(response);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const addSupplyRequest = await axios.post(
+        "http://localhost:3000/api/supplyRequest/create",
+        value,
+      );
+      const response = addSupplyRequest.data;
+      if (response.success) {
+        toast.success(response.message, { duration: 4000 });
+        // Clear form fields after successful submission
+        setValue({
+          medicineName: "",
+          quantity: "",
+          supplier: "",
+        });
+        navigate("/inventory-management");
+      }
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    return (
-        <div className='flex bg-gray-950 min-h-screen'>
-            <SideBar />
-            <div className='flex-1'>
-                <div className='bg-gray-900 justify-between flex px-10 py-8'>
-                    <h1 className='text-4xl font-bold text-emerald-400'>Create New Supply Request</h1>
-                    <div className='flex gap-2'>
-                        <div className='w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl'>A</div>
-                        <div className="flex w-full flex-col gap-0.5">
-                            <div className="flex items-center justify-between font-bold text-white">
-                                <h1>Admin</h1>
-                            </div>
-                            <p className='text-xs text-gray-400'>Inventory Manager</p>
-                        </div>
-                    </div>
-                </div>
-                <div className='p-10 bg-gray-800 m-10 rounded-3xl max-w-4xl border border-gray-700'>
-                    <form onSubmit={handleSubmit} className='flex flex-col gap-10'>
-                        <div className='flex flex-col gap-1'>
-                            <label className='font-semibold text-gray-300'>Medicine Name</label>
-                            <input 
-                                type="text" 
-                                placeholder='Enter Medicine Name' 
-                                id="medicineName" 
-                                name="medicineName" 
-                                value={value.medicineName} 
-                                onChange={handleChange} 
-                                className='border border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4' 
-                            />
-
-                            <label className='font-semibold text-gray-300'>Quantity</label>
-                            <input 
-                                type="number" 
-                                placeholder='Enter Quantity' 
-                                id="quantity" 
-                                name="quantity" 
-                                value={value.quantity} 
-                                onChange={handleChange} 
-                                className='border border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4' 
-                            />
-
-                            <label className='font-semibold text-gray-300'>Supplier</label>
-                            <input 
-                                type="text" 
-                                placeholder='Enter Supplier Name' 
-                                id="supplier" 
-                                name="supplier" 
-                                value={value.supplier} 
-                                onChange={handleChange} 
-                                className='border border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4' 
-                            />
-                        </div>
-
-                        <input 
-                            type="submit" 
-                            value={loading ? 'Submitting...' : 'Submit'} 
-                            className='bg-emerald-600 hover:bg-emerald-500 font-semibold text-white p-3 rounded-lg w-full cursor-pointer' 
-                            disabled={loading} 
-                        />
-                    </form>
-                </div>
-            </div>
+  return (
+    <div className="flex min-h-screen bg-zinc-950">
+      <SideBar />
+      <div className="flex-1 overflow-auto">
+        <div className="px-6 py-6 flex items-center justify-between border-b border-zinc-800">
+          <div>
+            <h1 className="text-2xl font-semibold text-zinc-100">
+              New Supply Request
+            </h1>
+            <p className="text-zinc-500 text-sm mt-1">
+              Create a supply request for inventory
+            </p>
+          </div>
         </div>
-    );
+        <div className="mx-6 my-6 bg-zinc-900 rounded-xl border border-zinc-800 shadow-lg shadow-black/20 p-8 max-w-2xl">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-1">
+            <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+              Medicine Name
+            </label>
+            <input
+              type="text"
+              placeholder="Enter medicine name"
+              id="medicineName"
+              name="medicineName"
+              value={value.medicineName}
+              onChange={handleChange}
+              className="input-field text-sm mb-4"
+            />
+
+            <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+              Quantity
+            </label>
+            <input
+              type="number"
+              placeholder="Enter quantity"
+              id="quantity"
+              name="quantity"
+              value={value.quantity}
+              onChange={handleChange}
+              className="input-field text-sm mb-4"
+            />
+
+            <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+              Supplier
+            </label>
+            <input
+              type="text"
+              placeholder="Enter supplier name"
+              id="supplier"
+              name="supplier"
+              value={value.supplier}
+              onChange={handleChange}
+              className="input-field text-sm mb-4"
+            />
+
+            <button
+              type="submit"
+              className="btn-primary font-semibold w-full py-2.5 mt-2"
+              disabled={loading}
+            >
+              {loading ? "Submitting..." : "Submit Request"}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }

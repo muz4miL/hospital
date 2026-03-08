@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import PrescriptionTable from './PrescriptionTable';
-import { Link } from 'react-router-dom';
-import { MdDownload } from 'react-icons/md';
-import SideBar from '../../components/SideBar';
+import { useState, useEffect } from "react";
+import PrescriptionTable from "./PrescriptionTable";
+import { Link } from "react-router-dom";
+import { MdDownload } from "react-icons/md";
+import SideBar from "../../components/SideBar";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
@@ -16,119 +16,144 @@ export default function PrescriptionManagement() {
   }, []);
 
   const fetchPrescription = () => {
-    fetch('http://localhost:3000/api/prescription/read')
-      .then(response => {
+    fetch("http://localhost:3000/api/prescription/read")
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
-          console.error('Failed to fetch Prescription:', response.statusText);
-          throw new Error('Failed to fetch prescription');
+          console.error("Failed to fetch Prescription:", response.statusText);
+          throw new Error("Failed to fetch prescription");
         }
       })
-      .then(data => {
+      .then((data) => {
         const Prescription = data.prescription;
         setPrescriptionCount(Prescription.length);
-  
-        const activePrescription = Prescription.filter(prescription => prescription.status === 'Active');
-        const inactivePrescription = Prescription.filter(prescription => prescription.status === 'Inactive');
-  
+
+        const activePrescription = Prescription.filter(
+          (prescription) => prescription.status === "Active",
+        );
+        const inactivePrescription = Prescription.filter(
+          (prescription) => prescription.status === "Inactive",
+        );
+
         setActivePrescriptionCount(activePrescription.length);
         setInactivePrescriptionCount(inactivePrescription.length);
       })
-      .catch(error => {
-        console.error('Error fetching Prescription:', error);
+      .catch((error) => {
+        console.error("Error fetching Prescription:", error);
       });
   };
 
   const formatDate = (datetimeString) => {
     const date = new Date(datetimeString);
-    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
     return formattedDate;
-};
+  };
 
-const generateReport = () => {
-  fetch('http://localhost:3000/api/prescription/read')
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        console.error('Failed to generate report:', response.statusText);
-        throw new Error('Failed to generate report');
-      }
-    })
-    .then(data => {
-      const prescriptions = data.prescription;
+  const generateReport = () => {
+    fetch("http://localhost:3000/api/prescription/read")
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.error("Failed to generate report:", response.statusText);
+          throw new Error("Failed to generate report");
+        }
+      })
+      .then((data) => {
+        const prescriptions = data.prescription;
 
-      const doc = new jsPDF();
+        const doc = new jsPDF();
 
-      const totalPrescriptions = prescriptions.length;
+        const totalPrescriptions = prescriptions.length;
 
-      // Adding counts to the report
-      doc.text(`Total Prescriptions: ${totalPrescriptions}`, 20, 20);
+        // Adding counts to the report
+        doc.text(`Total Prescriptions: ${totalPrescriptions}`, 20, 20);
 
-      // Adding prescription details as a table
-      const tableHeader = [['Prescription ID', 'First Name', 'Last Name', 'Age', 'Contact No', 'Medication Names', 'Units', 'Notes']];
-      const tableData = prescriptions.map(prescription => [
-        prescription.PrescriptionID,
-        prescription.firstName,
-        prescription.lastName,
-        prescription.age,
-        prescription.contactNo,
-        prescription.MedicationNames,
-        prescription.units,
-        prescription.notes
-      ]);
+        // Adding prescription details as a table
+        const tableHeader = [
+          [
+            "Prescription ID",
+            "First Name",
+            "Last Name",
+            "Age",
+            "Contact No",
+            "Medication Names",
+            "Units",
+            "Notes",
+          ],
+        ];
+        const tableData = prescriptions.map((prescription) => [
+          prescription.PrescriptionID,
+          prescription.firstName,
+          prescription.lastName,
+          prescription.age,
+          prescription.contactNo,
+          prescription.MedicationNames,
+          prescription.units,
+          prescription.notes,
+        ]);
 
-      doc.autoTable({
-        head: tableHeader,
-        body: tableData,
-        startY: 25 
+        doc.autoTable({
+          head: tableHeader,
+          body: tableData,
+          startY: 25,
+        });
+
+        doc.save("PrescriptionManagementReport.pdf");
+      })
+      .catch((error) => {
+        console.error("Error generating report:", error);
       });
-
-      doc.save('PrescriptionManagementReport.pdf');
-    })
-    .catch(error => {
-      console.error('Error generating report:', error);
-    });
-};
-
+  };
 
   return (
-    <div className='flex'>
+    <div className="flex min-h-screen bg-zinc-950">
       <SideBar />
-      <div className='flex-1 bg-gray-950 min-h-screen'>
-        <div className='bg-gray-900 justify-between flex px-10 py-10'>
-          <h1 className='text-4xl font-bold text-emerald-400'>Prescription Management Dashboard</h1>
-          <div className='flex gap-6'>
-            <button onClick={generateReport} className="bg-gray-800 hover:bg-gray-700 text-white border-2 border-gray-600 font-semibold transition-all py-2 px-4 rounded-lg inline-flex items-center">
-              <MdDownload className='text-2xl mr-2' />
+      <div className="flex-1 overflow-auto">
+        <div className="px-6 py-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-zinc-100">
+              Prescription Management
+            </h1>
+            <p className="text-zinc-500 text-sm mt-1">
+              Manage patient prescriptions
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={generateReport}
+              className="btn-secondary text-sm inline-flex items-center"
+            >
+              <MdDownload className="text-lg mr-2" />
               <span>Download Report</span>
             </button>
-            <div className='flex gap-2 cursor-pointer'>
-            <div className='w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl'>A</div>
-            <div className="flex w-full flex-col gap-0.5">
-              <div className="flex items-center justify-between font-bold text-white">
-                <h1>Admin</h1>
-              </div>
-              <p className='text-xs text-gray-400'>Prescription Manager</p>
-            </div>
-            </div>
+            <Link
+              to="/create-prescription"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg inline-flex items-center py-2 px-4 transition text-sm"
+            >
+              + New Prescription
+            </Link>
           </div>
         </div>
-        <div className='flex items ml-10 justify-between mt-7'>
-        <div className='text-2xl font-semibold pt-1 p-3 w-fit text-white'>Prescriptions({prescriptionCount})</div>
-
-            <div className='flex gap-3'>
-            <div className='flex  gap-2 mr-10 text-sm text-center'>
-            <div><Link to="/create-prescription" className='bg-emerald-600 text-white hover:bg-emerald-500 font-semibold rounded-lg inline-block w-full p-3'>Create New Prescription</Link></div>
-            <div><Link to="/prescription-assign" className='bg-emerald-600 text-white hover:bg-emerald-500 transition-all font-semibold rounded-lg inline-block w-full p-3'>Assign page </Link></div>
-            <div><Link to="/inventory-management" className='bg-emerald-600 text-white hover:bg-emerald-500 transition-all font-semibold rounded-lg inline-block w-full p-3'>Check Inventory </Link></div>
-            <div><Link to="/user-payment" className='bg-emerald-600 text-white hover:bg-emerald-500 transition-all font-semibold rounded-lg inline-block w-full p-3'>Check Payment </Link></div>
-          </div>
+        <div className="flex gap-3 px-6 mb-4">
+          <Link to="/prescription-assign" className="btn-secondary text-sm">
+            Assign Prescription →
+          </Link>
+          <Link to="/inventory-management" className="btn-secondary text-sm">
+            Check Inventory →
+          </Link>
+          <Link to="/user-payment" className="btn-secondary text-sm">
+            Check Payment →
+          </Link>
         </div>
+        <div className="px-6 pb-6">
+          <h2 className="text-sm font-medium text-zinc-400 uppercase tracking-wider mb-3">
+            All Prescriptions ({prescriptionCount})
+          </h2>
+          <PrescriptionTable />
         </div>
-        <PrescriptionTable />
       </div>
     </div>
-  )
+  );
 }

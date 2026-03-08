@@ -1,63 +1,144 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
-    font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
 }
 
-html, body, #root {
-    background-color: #030712;
-    color: #e5e7eb;
-    min-height: 100vh;
+html,
+body,
+#root {
+  background-color: #09090b; /* zinc-950 */
+  color: #e4e4e7; /* zinc-200 */
+  min-height: 100vh;
 }
 
-input, select, textarea {
-    color: inherit;
+/* ─── Global Form Element Visibility Fix ─────────────────────────── */
+input,
+select,
+textarea {
+  color: #f4f4f5; /* zinc-100 */
+  background-color: #27272a; /* zinc-800 */
 }
 
-input::placeholder, textarea::placeholder {
-    color: #6b7280;
+input::placeholder,
+textarea::placeholder {
+  color: #71717a; /* zinc-500 */
 }
 
+/* Fix select option dropdown backgrounds */
+select option {
+  background-color: #18181b; /* zinc-900 */
+  color: #f4f4f5;
+}
+
+/* Autofill override — prevents white flash */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #f4f4f5;
+  transition: background-color 999999s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0px 1000px #27272a inset;
+  caret-color: #f4f4f5;
+}
+
+/* Portal-specific autofill (darker bg for Portal page) */
+.portal-input {
+  color: #f8fafc !important;
+}
+
+.portal-input:-webkit-autofill,
+.portal-input:-webkit-autofill:hover,
+.portal-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #f8fafc;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(2, 6, 23, 0.9) inset;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ─── Typography ──────────────────────────────────────────────────── */
 table {
-    color: #d1d5db;
+  color: #d4d4d8; /* zinc-300 */
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: #f3f4f6;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #f4f4f5; /* zinc-100 */
 }
 
 a {
-    color: inherit;
+  color: inherit;
 }
 
 label {
-    color: #d1d5db;
+  color: #a1a1aa; /* zinc-400 */
 }
 
+/* ─── Reusable component classes ──────────────────────────────────── */
+@layer components {
+  .input-field {
+    @apply bg-zinc-800 border border-zinc-700 text-zinc-100 placeholder-zinc-500 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent px-4 py-2 w-full outline-none transition-all;
+  }
+
+  .btn-primary {
+    @apply bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg px-4 py-2 transition-colors;
+  }
+
+  .btn-secondary {
+    @apply bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 rounded-lg px-4 py-2 transition-colors;
+  }
+
+  .card {
+    @apply bg-zinc-900 border border-zinc-800 rounded-xl shadow-lg shadow-black/20;
+  }
+
+  .page-header {
+    @apply text-2xl font-semibold text-zinc-100;
+  }
+
+  .table-th {
+    @apply text-xs text-zinc-400 uppercase tracking-wider px-4 py-3 font-medium text-left;
+  }
+
+  .table-td {
+    @apply px-4 py-3 text-zinc-300 text-sm border-b border-zinc-800;
+  }
+
+  .table-row {
+    @apply hover:bg-zinc-800/50 transition-colors;
+  }
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────────── */
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+  width: 6px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #0a0a0a;
+  background: #09090b; /* zinc-950 */
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #374151;
-    border-radius: 5px;
+  background: #3f3f46; /* zinc-700 */
+  border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #4b5563;
+  background: #52525b; /* zinc-600 */
 }
 
 .hide {
-    display: none;
+  display: none;
 }

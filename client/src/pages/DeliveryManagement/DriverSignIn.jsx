@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   signInDriverStart,
   signInDriverSuccess,
   signInDriverFailure,
-} from '../../redux/driver/driverSlice';
-import DriveNavigationBar from '../../components/DriveNavigationBar';
-import Footer from '../../components/Footer';
+} from "../../redux/driver/driverSlice";
+import DriveNavigationBar from "../../components/DriveNavigationBar";
+import Footer from "../../components/Footer";
 
 export default function DriverSignIn() {
   const [formData, setFormData] = useState({});
@@ -24,10 +24,10 @@ export default function DriverSignIn() {
     e.preventDefault();
     try {
       dispatch(signInDriverStart());
-      const res = await fetch('/api/driver/signin', {
-        method: 'POST',
+      const res = await fetch("/api/driver/signin", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -38,45 +38,49 @@ export default function DriverSignIn() {
         return;
       }
       dispatch(signInDriverSuccess(data));
-      navigate('/driver-profile');
+      navigate("/driver-profile");
     } catch (error) {
       dispatch(signInDriverFailure(error.message));
     }
   };
   return (
-    <div className='bg-gray-950 min-h-screen'>
+    <div className="bg-zinc-950 min-h-screen">
       <DriveNavigationBar />
-    <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl text-center font-semibold my-7 text-white'>Sign In</h1>
-      <div className='p-10 bg-gray-800 m-10 rounded-3xl max-w-4xl border-2 border-gray-700'>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input
-          type='text'
-          placeholder='Driver ID'
-          className='border border-gray-700 bg-gray-800 text-white placeholder-gray-500 p-3 rounded-lg'
-          id='driverId'
-          onChange={handleChange}
-        />
-        <input
-          type='password'
-          placeholder='Password'
-          className='border border-gray-700 bg-gray-800 text-white placeholder-gray-500 p-3 rounded-lg'
-          id='password'
-          onChange={handleChange}
-        />
+      <div className="p-3 max-w-lg mx-auto">
+        <h1 className="text-2xl text-center font-semibold my-7 text-zinc-100">
+          Driver Sign In
+        </h1>
+        <div className="p-8 bg-zinc-900 rounded-xl border border-zinc-800 shadow-lg shadow-black/20">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <input
+              type="text"
+              placeholder="Driver ID"
+              className="input-field"
+              id="driverId"
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              className="input-field"
+              id="password"
+              onChange={handleChange}
+            />
 
-        <button
-          disabled={loading}
-          className='bg-emerald-600 text-white p-3 rounded-lg uppercase hover:bg-emerald-500 disabled:opacity-80'
-        >
-          {loading ? 'Loading...' : 'Sign In'}
-        </button>
-      </form>
+            <button
+              disabled={loading}
+              className="btn-primary py-3 disabled:opacity-80"
+            >
+              {loading ? "Loading..." : "Sign In"}
+            </button>
+          </form>
+        </div>
+
+        {error && (
+          <p className="text-red-400 mt-5 text-sm text-center">{error}</p>
+        )}
       </div>
-     
-      {error && <p className='text-red-500 mt-5'>{error}</p>}
-    </div>
-    <Footer />
+      <Footer />
     </div>
   );
 }

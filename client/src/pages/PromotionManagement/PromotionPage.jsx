@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import SwiperCore from 'swiper';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.css';
-import NavigationBar from '../../components/NavigationBar';
-import Footer from '../../components/Footer';
-import promotion_1 from '../../assets/promotion-1.png'
-import promotion_2 from '../../assets/promotion-2.png'
+import React, { useState, useEffect } from "react";
+import SwiperCore from "swiper";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+import NavigationBar from "../../components/NavigationBar";
+import Footer from "../../components/Footer";
+import promotion_1 from "../../assets/promotion-1.png";
+import promotion_2 from "../../assets/promotion-2.png";
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -20,123 +20,180 @@ export default function PromotionPage() {
   }, []);
 
   const fetchPromotions = () => {
-    fetch('http://localhost:3000/api/promotion/read')
-      .then(response => {
+    fetch("http://localhost:3000/api/promotion/read")
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
-          console.error('Failed to fetch promotions:', response.statusText);
-          throw new Error('Failed to fetch promotions');
+          console.error("Failed to fetch promotions:", response.statusText);
+          throw new Error("Failed to fetch promotions");
         }
       })
-      .then(data => {
-        const activePromotions = data.promotion.filter(promotion => new Date(promotion.expiredAt) > new Date());
+      .then((data) => {
+        const activePromotions = data.promotion.filter(
+          (promotion) => new Date(promotion.expiredAt) > new Date(),
+        );
         setPromotions(activePromotions);
       })
-      .catch(error => {
-        console.error('Error fetching promotions:', error);
+      .catch((error) => {
+        console.error("Error fetching promotions:", error);
       });
   };
 
   const formatDate = (datetimeString) => {
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
     const date = new Date(datetimeString);
-    const formattedDate = `${date.getDate().toString().padStart(2, '0')} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    const formattedDate = `${date.getDate().toString().padStart(2, "0")} ${months[date.getMonth()]} ${date.getFullYear()}`;
     return formattedDate;
   };
-  
+
   const togglePopup = (promotion) => {
     setSelectedPromotion(promotion);
     setPopupVisible(!popupVisible);
   };
 
   return (
-    <div className='bg-gray-950 min-h-screen'>
+    <div className="bg-zinc-950 min-h-screen">
       <NavigationBar />
-      <div className='max-w-7xl mx-auto p-3 mt-10'>
-        <h1 className='text-center text-4xl text-emerald-400 font-bold'>Discounts and Offers</h1>
+      <div className="max-w-7xl mx-auto p-3 mt-10">
+        <h1 className="text-center text-4xl text-emerald-400 font-bold">
+          Discounts and Offers
+        </h1>
         <Swiper
-        spaceBetween={50}
-        slidesPerView={1}
-        pagination={{ clickable: true }}
-        loop={true}
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
+          spaceBetween={50}
+          slidesPerView={1}
+          pagination={{ clickable: true }}
+          loop={true}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
         >
           <SwiperSlide>
-            <img src={promotion_1} alt='Promotion_1' className='w-full object-cover mt-16 mb-10' />
+            <img
+              src={promotion_1}
+              alt="Promotion_1"
+              className="w-full object-cover mt-16 mb-10"
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src={promotion_2} alt='Promotion_2' className='w-full object-cover mt-16 mb-10' />
+            <img
+              src={promotion_2}
+              alt="Promotion_2"
+              className="w-full object-cover mt-16 mb-10"
+            />
           </SwiperSlide>
         </Swiper>
-        <div className='mt-8'>
-          <h2 className='text-lg font-semibold text-white'>Seasonal Offers:</h2>
-          <Swiper
-            slidesPerView={2}
-            navigation
-            pagination
-            className='mt-5'
-          >
-            {promotions.map((promotion, index) => (
-              promotion.type === 'Seasonal' && (
-                <SwiperSlide key={index} className='flex justify-center items-center'>
-                  <div className='bg-gray-800 rounded-lg border border-emerald-600 flex w-max'>
-                    <div className='bg-emerald-600 w-max p-2'>
-                      <div className='border border-white w-max h-full p-3 flex flex-col items-center justify-center'>
-                        <h1 className='text-white text-3xl font-bold'>RS {promotion.couponPrice}</h1>
-                        <h1 className='text-white text-2xl'>Off</h1>
-                        <button className='bg-white text-emerald-600 font-semibold p-1 px-3 rounded-md mt-3' onClick={() => togglePopup(promotion)}>View Details</button>
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold text-white">Seasonal Offers:</h2>
+          <Swiper slidesPerView={2} navigation pagination className="mt-5">
+            {promotions.map(
+              (promotion, index) =>
+                promotion.type === "Seasonal" && (
+                  <SwiperSlide
+                    key={index}
+                    className="flex justify-center items-center"
+                  >
+                    <div className="bg-zinc-800 rounded-lg border border-emerald-600 flex w-max">
+                      <div className="bg-emerald-600 w-max p-2">
+                        <div className="border border-white w-max h-full p-3 flex flex-col items-center justify-center">
+                          <h1 className="text-white text-3xl font-bold">
+                            RS {promotion.couponPrice}
+                          </h1>
+                          <h1 className="text-white text-2xl">Off</h1>
+                          <button
+                            className="bg-white text-emerald-600 font-semibold p-1 px-3 rounded-md mt-3"
+                            onClick={() => togglePopup(promotion)}
+                          >
+                            View Details
+                          </button>
+                        </div>
+                      </div>
+                      <div className="p-6 px-8 text-white">
+                        <h1 className="font-bold">
+                          WITH MIN SPEND RS {promotion.totalAmount}
+                        </h1>
+                        <h1 className="text-emerald-400 text-2xl font-bold mt-2 mb-2">
+                          USE CODE: {promotion.couponCode}
+                        </h1>
+                        <h2 className="text-sm text-gray-300">
+                          VALID TILL: {formatDate(promotion.expiredAt)}
+                        </h2>
+                        <h2 className="text-sm text-gray-300">*T&C Applied</h2>
                       </div>
                     </div>
-                    <div className='p-6 px-8 text-white'>
-                      <h1 className='font-bold'>WITH MIN SPEND RS {promotion.totalAmount}</h1>
-                      <h1 className='text-emerald-400 text-2xl font-bold mt-2 mb-2'>USE CODE: {promotion.couponCode}</h1>
-                      <h2 className='text-sm text-gray-300'>VALID TILL: {formatDate(promotion.expiredAt)}</h2>
-                      <h2 className='text-sm text-gray-300'>*T&C Applied</h2>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              )
-            ))}
+                  </SwiperSlide>
+                ),
+            )}
           </Swiper>
           {popupVisible && selectedPromotion && (
-          <>
-          <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-40"></div>
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 text-white p-6 rounded-lg z-50 flex flex-col items-center justify-center">
-            <h1 className="font-semibold mb-4">{selectedPromotion.description}</h1>
-            <button onClick={() => togglePopup(null)} className="bg-emerald-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-emerald-500">Close</button>
-          </div>
-          </>)}
+            <>
+              <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-40"></div>
+              <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-zinc-900 border border-zinc-700 text-white p-6 rounded-xl z-50 flex flex-col items-center justify-center">
+                <h1 className="font-semibold mb-4">
+                  {selectedPromotion.description}
+                </h1>
+                <button
+                  onClick={() => togglePopup(null)}
+                  className="bg-emerald-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-emerald-500"
+                >
+                  Close
+                </button>
+              </div>
+            </>
+          )}
         </div>
-        <div className='mt-8 mb-20'>
-          <h2 className='text-lg font-semibold text-white'>Special Offers:</h2>
-          <Swiper
-            slidesPerView={2}
-            navigation
-            pagination
-            className='mt-5'
-          >
-            {promotions.map((promotion, index) => (
-              promotion.type === 'Special' && (
-                <SwiperSlide key={index} className='flex justify-center items-center'>
-                  <div className='bg-gray-800 rounded-lg border border-emerald-500 flex w-max'>
-                    <div className='bg-emerald-700 w-max p-2'>
-                      <div className='border border-white w-max h-full p-3 flex flex-col items-center justify-center'>
-                        <h1 className='text-white text-3xl font-bold'>RS {promotion.couponPrice}</h1>
-                        <h1 className='text-white text-2xl'>Off</h1>
-                        <button className='bg-white text-emerald-700 font-semibold p-1 px-3 rounded-md mt-3' onClick={() => togglePopup(promotion)}>View Details</button>
+        <div className="mt-8 mb-20">
+          <h2 className="text-lg font-semibold text-white">Special Offers:</h2>
+          <Swiper slidesPerView={2} navigation pagination className="mt-5">
+            {promotions.map(
+              (promotion, index) =>
+                promotion.type === "Special" && (
+                  <SwiperSlide
+                    key={index}
+                    className="flex justify-center items-center"
+                  >
+                    <div className="bg-zinc-800 rounded-lg border border-emerald-500 flex w-max">
+                      <div className="bg-emerald-700 w-max p-2">
+                        <div className="border border-white w-max h-full p-3 flex flex-col items-center justify-center">
+                          <h1 className="text-white text-3xl font-bold">
+                            RS {promotion.couponPrice}
+                          </h1>
+                          <h1 className="text-white text-2xl">Off</h1>
+                          <button
+                            className="bg-white text-emerald-700 font-semibold p-1 px-3 rounded-md mt-3"
+                            onClick={() => togglePopup(promotion)}
+                          >
+                            View Details
+                          </button>
+                        </div>
+                      </div>
+                      <div className="p-6 px-8 text-white">
+                        <h1 className="font-bold">
+                          WITH MIN SPEND RS {promotion.totalAmount}
+                        </h1>
+                        <h1 className="text-emerald-400 text-2xl font-bold mt-2 mb-2">
+                          USE CODE: {promotion.couponCode}
+                        </h1>
+                        <h2 className="text-sm text-gray-300">
+                          VALID TILL: {formatDate(promotion.expiredAt)}
+                        </h2>
+                        <h2 className="text-sm text-gray-300">*T&C Applied</h2>
                       </div>
                     </div>
-                    <div className='p-6 px-8 text-white'>
-                      <h1 className='font-bold'>WITH MIN SPEND RS {promotion.totalAmount}</h1>
-                      <h1 className='text-emerald-400 text-2xl font-bold mt-2 mb-2'>USE CODE: {promotion.couponCode}</h1>
-                      <h2 className='text-sm text-gray-300'>VALID TILL: {formatDate(promotion.expiredAt)}</h2>
-                      <h2 className='text-sm text-gray-300'>*T&C Applied</h2>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              )
-            ))}
+                  </SwiperSlide>
+                ),
+            )}
           </Swiper>
         </div>
       </div>

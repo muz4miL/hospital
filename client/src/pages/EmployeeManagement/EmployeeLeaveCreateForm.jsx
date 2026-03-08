@@ -22,18 +22,27 @@ export default function EmployeeCreateForm() {
     const { name, value, type, checked, id } = e.target;
     setValue((prevState) => ({
       ...prevState,
-      [name]: type === "checkbox" ? (id === "Male" && checked ? "Male" : "Female") : value,
-      maritalStatus: name === "maritalStatus" ? (checked ? id : "") : prevState.maritalStatus,
+      [name]:
+        type === "checkbox"
+          ? id === "Male" && checked
+            ? "Male"
+            : "Female"
+          : value,
+      maritalStatus:
+        name === "maritalStatus"
+          ? checked
+            ? id
+            : ""
+          : prevState.maritalStatus,
     }));
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const addEmployee = await axios.post(
         "http://localhost:3000/api/employeeLeave/create",
-        value
+        value,
       );
       const response = addEmployee.data;
       if (response.success) {
@@ -50,45 +59,42 @@ export default function EmployeeCreateForm() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-zinc-950">
       <SideBar />
-      <div className="flex-1 bg-gray-950 min-h-screen">
-        <div className="bg-gray-900 justify-between flex px-10 py-8">
-          <h1 className="text-4xl font-bold text-emerald-400">
-            Employee Leave Registration Form
-          </h1>
-          <div className="flex gap-2">
-            <div className='w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl'>A</div>
-            <div className="flex w-full flex-col gap-0.5">
-              <div className="flex items-center justify-between font-bold text-white">
-                <h1>Admin</h1>
-              </div>
-              <p className="text-xs text-gray-300">Employee Manager</p>
-            </div>
+      <div className="flex-1 overflow-auto">
+        <div className="px-6 py-6 flex items-center justify-between border-b border-zinc-800">
+          <div>
+            <h1 className="text-2xl font-semibold text-zinc-100">
+              Add Leave Record
+            </h1>
+            <p className="text-zinc-500 text-sm mt-1">
+              Register a new employee leave
+            </p>
           </div>
         </div>
-        <div className="px-10 text-2xl font-semibold pt-5 text-white">
-          <span className="">Add leaves</span>
-        </div>
-        <div className="p-10 bg-gray-800 m-10 rounded-3xl max-w-4xl border-2 border-gray-700">
+        <div className="mx-6 my-6 bg-zinc-900 rounded-xl border border-zinc-800 shadow-lg shadow-black/20 p-8 max-w-4xl">
           <form
             onSubmit={handleSubmit}
             className="flex flex-col sm:flex-row gap-10"
           >
             <div className="flex flex-col gap-1 flex-1">
-              <label className="font-semibold text-gray-300">Employee Name</label>
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Employee Name
+              </label>
               <input
                 type="text"
-                placeholder="Enter Name"
+                placeholder="Enter name"
                 id="name"
                 name="name"
                 value={value.name}
                 onChange={handleChange}
-                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
+                className="input-field text-sm mb-4"
                 required
               />
 
-              <label className="font-semibold text-gray-300">Contatc No</label>
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Contact No
+              </label>
               <input
                 type="text"
                 placeholder="Enter mobile number"
@@ -96,42 +102,48 @@ export default function EmployeeCreateForm() {
                 name="contactNo"
                 value={value.contactNo}
                 onChange={handleChange}
-                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
+                className="input-field text-sm mb-4"
                 required
               />
 
-              <label className="font-semibold text-gray-300">Date of leave</label>
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Date of Leave
+              </label>
               <input
                 type="date"
                 id="DOB"
                 name="DOB"
                 value={value.DOB}
                 onChange={handleChange}
-                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
+                className="input-field text-sm mb-4"
                 required
               />
 
-              <label className="font-semibold text-gray-300">Description</label>
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Reason
+              </label>
               <textarea
-                type="textarea"
                 placeholder="Reason for the leave"
                 id="address"
                 name="address"
                 value={value.address}
                 onChange={handleChange}
-                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4 max-h-40 min-h-40"
+                className="input-field text-sm mb-4 max-h-40 min-h-40"
                 required
               />
 
-              <input
+              <button
                 type="submit"
-                value="Submit"
-                className="bg-emerald-600 hover:bg-emerald-500 font-semibold text-white p-3 rounded-lg w-full cursor-pointer"
-              />
+                className="btn-primary font-semibold w-full py-2.5 mt-2"
+              >
+                Submit Leave
+              </button>
             </div>
 
             <div className="flex flex-col gap-1 flex-1">
-              <label className="font-semibold text-gray-300">Email</label>
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Email
+              </label>
               <input
                 type="text"
                 placeholder="Enter email"
@@ -139,11 +151,13 @@ export default function EmployeeCreateForm() {
                 name="email"
                 value={value.email}
                 onChange={handleChange}
-                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
+                className="input-field text-sm mb-4"
                 required
               />
 
-              <label className="font-semibold text-gray-300">NIC</label>
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                NIC
+              </label>
               <input
                 type="text"
                 placeholder="Enter NIC"
@@ -151,29 +165,32 @@ export default function EmployeeCreateForm() {
                 name="NIC"
                 value={value.NIC}
                 onChange={handleChange}
-                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
+                className="input-field text-sm mb-4"
                 required
               />
 
-              <label className="font-semibold text-gray-300">Job Role</label>
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Job Role
+              </label>
               <select
                 id="empRole"
                 name="empRole"
                 value={value.empRole}
                 onChange={handleChange}
-                className="border-2 border-gray-700 bg-gray-800 text-white outline-none rounded-md p-2 mb-4"
+                className="input-field text-sm mb-4"
                 required
               >
                 <option value="Delivery Manager">Delivery Manager</option>
                 <option value="Promotion Manager">Promotion Manager</option>
                 <option value="Supplier Manager">Supplier Manager</option>
-                <option value="Prescription Manager">Prescription Manager</option>
+                <option value="Prescription Manager">
+                  Prescription Manager
+                </option>
                 <option value="Employee Manager">Employee Manager</option>
                 <option value="Payment Manager">Payment Manager</option>
                 <option value="Inventory Manager">Inventory Manager</option>
                 <option value="User Manager">User Manager</option>
               </select>
-
             </div>
           </form>
         </div>

@@ -60,66 +60,79 @@ export default function EmployeeManagement() {
 
   const formatDate = (datetimeString) => {
     const date = new Date(datetimeString);
-    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
     return formattedDate;
-};
+  };
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-zinc-950">
       <SideBar />
-      <div className="flex-1 bg-gray-950 min-h-screen">
-        <div className="bg-gray-900 justify-between flex px-10 py-8">
-          <h1 className="text-4xl font-bold text-emerald-400">
-            Employee Management Dashboard
-          </h1>
-          <div className="flex gap-6">
+      <div className="flex-1 overflow-auto">
+        <div className="px-6 py-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-zinc-100">
+              Employee Management
+            </h1>
+            <p className="text-zinc-500 text-sm mt-1">
+              Manage your pharmacy staff
+            </p>
+          </div>
+          <div className="flex gap-3">
             <button
               onClick={generateReport}
-              className="bg-gray-800 hover:bg-gray-700 text-white border-gray-600 font-semibold transition-all py-2 px-4 rounded-lg inline-flex items-center"
+              className="btn-secondary text-sm inline-flex items-center"
             >
-              <MdDownload className="text-2xl mr-2" />
+              <MdDownload className="text-lg mr-2" />
               <span>Download Report</span>
             </button>
-            <div className="flex gap-2 cursor-pointer">
-              <div className='w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl'>A</div>
-              <div className="flex w-full flex-col gap-0.5">
-                <div className="flex items-center justify-between font-bold text-white">
-                  <h1>Admin</h1>
-                </div>
-                <p className="text-xs text-gray-300">Employee Manager</p>
-              </div>
-            </div>
+            <Link
+              to="/create-employee"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg inline-flex items-center py-2 px-4 transition text-sm"
+            >
+              + Add Employee
+            </Link>
           </div>
-        </div>
-        <div className="px-10 text-2xl font-semibold pt-5 text-white">
-          <span className="">Employees</span>
         </div>
 
-        <div className="flex items-center ml-10 justify-between mt-7">
-          <div className="flex flex-col mr-10 text-sm text-center">
-            <div className="">
-              <Link
-                to="/create-employee"
-                className="bg-green-600 text-white hover:bg-green-700 font-semibold rounded-lg  w-full p-3 m-3"
-              >
-                Add Employee
-              </Link>
-              <Link
-                to="/employee-salary-management"
-                className="bg-emerald-600 text-white hover:bg-emerald-500 transition-all font-semibold rounded-lg  w-full p-3 m-3"
-              >
-                Manage Salary Assignment
-              </Link>
-              <Link
-                to="/employee-leave-management"
-                className="bg-emerald-600 text-white hover:bg-emerald-500 transition-all font-semibold rounded-lg  w-full p-3 m-3"
-              >
-                Manage Leave Request
-              </Link>
-            </div>
+        <div className="grid grid-cols-3 gap-4 px-6 mb-4">
+          <Link
+            to="/employee-salary-management"
+            className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-lg shadow-black/20 hover:border-emerald-500/30 transition-colors"
+          >
+            <p className="text-zinc-500 text-xs uppercase tracking-wide">
+              Salary Records
+            </p>
+            <p className="text-sm font-medium text-emerald-400 mt-2">
+              Manage Salary →
+            </p>
+          </Link>
+          <Link
+            to="/employee-leave-management"
+            className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-lg shadow-black/20 hover:border-emerald-500/30 transition-colors"
+          >
+            <p className="text-zinc-500 text-xs uppercase tracking-wide">
+              Leave Requests
+            </p>
+            <p className="text-sm font-medium text-emerald-400 mt-2">
+              Manage Leave →
+            </p>
+          </Link>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-lg shadow-black/20">
+            <p className="text-zinc-500 text-xs uppercase tracking-wide">
+              Quick Actions
+            </p>
+            <p className="text-zinc-400 text-sm mt-2">
+              Use the table below to edit staff
+            </p>
           </div>
         </div>
-        <EmployeeTable />
+
+        <div className="px-6 pb-6">
+          <h2 className="text-sm font-medium text-zinc-400 uppercase tracking-wider mb-3">
+            All Employees
+          </h2>
+          <EmployeeTable />
+        </div>
       </div>
     </div>
   );

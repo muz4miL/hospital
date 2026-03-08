@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { FaRegUser, FaBoxesStacked } from 'react-icons/fa6';
-import { FiTruck, FiShoppingCart, FiBarChart2 } from 'react-icons/fi';
-import { MdOutlineInventory, MdExitToApp } from 'react-icons/md';
-import { TbDiscount2 } from 'react-icons/tb';
-import { LiaFilePrescriptionSolid } from 'react-icons/lia';
-import { GrUserWorker } from 'react-icons/gr';
-import { BiDollarCircle } from 'react-icons/bi';
-import { BsChevronDown } from 'react-icons/bs';
-import { RiDashboardFill } from 'react-icons/ri';
-import { FiAlertTriangle } from 'react-icons/fi';
-import { useDispatch } from 'react-redux';
+import React, { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { FaRegUser, FaBoxesStacked } from "react-icons/fa6";
+import { FiTruck, FiShoppingCart, FiBarChart2 } from "react-icons/fi";
+import { MdOutlineInventory, MdExitToApp } from "react-icons/md";
+import { TbDiscount2 } from "react-icons/tb";
+import { LiaFilePrescriptionSolid } from "react-icons/lia";
+import { GrUserWorker } from "react-icons/gr";
+import { BiDollarCircle } from "react-icons/bi";
+import { BsChevronDown } from "react-icons/bs";
+import { RiDashboardFill } from "react-icons/ri";
+import { FiAlertTriangle } from "react-icons/fi";
+import { useDispatch } from "react-redux";
 import {
   signOutUserStart,
   deleteUserSuccess,
-  deleteUserFailure
-} from '../redux/user/userSlice';
+  deleteUserFailure,
+} from "../redux/user/userSlice";
 
 export default function SideBar() {
   const [subMenuOpen, setSubMenuOpen] = useState({});
@@ -27,66 +27,99 @@ export default function SideBar() {
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart());
-      const res = await fetch('./api/auth/signoutEmp');
+      const res = await fetch("./api/auth/signoutEmp");
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
         return;
-      } 
-      dispatch(deleteUserSuccess(data)); 
-      navigate('/');
+      }
+      dispatch(deleteUserSuccess(data));
+      navigate("/");
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
     }
   };
 
   const Menus = [
-    { title: "Dashboard", icon: <RiDashboardFill />, path: '/admin-dashboard' },
-    { title: "Point of Sale", icon: <FiShoppingCart />, path: '/pos', highlight: true },
-    { title: "Inventory", icon: <MdOutlineInventory />, path: '/inventory-management', submenu: true,
+    { title: "Dashboard", icon: <RiDashboardFill />, path: "/admin-dashboard" },
+    {
+      title: "Point of Sale",
+      icon: <FiShoppingCart />,
+      path: "/pos",
+      highlight: true,
+    },
+    {
+      title: "Inventory",
+      icon: <MdOutlineInventory />,
+      path: "/inventory-management",
+      submenu: true,
       submenuItems: [
-        { title: "All Medicines", path: '/inventory-management' },
-        { title: "Add Medicine", path: '/create-inventory' },
-        { title: "Supply Orders", path: '/supply-request' },
+        { title: "All Medicines", path: "/inventory-management" },
+        { title: "Add Medicine", path: "/create-inventory" },
+        { title: "Supply Orders", path: "/supply-request" },
       ],
     },
-    { title: "Sales & Reports", icon: <FiBarChart2 />, path: '/sales-history', submenu: true,
+    {
+      title: "Sales & Reports",
+      icon: <FiBarChart2 />,
+      path: "/sales-history",
+      submenu: true,
       submenuItems: [
-        { title: "Sales History", path: '/sales-history' },
-        { title: "Expiry Alerts", path: '/expiry-alerts' },
+        { title: "Sales History", path: "/sales-history" },
+        { title: "Expiry Alerts", path: "/expiry-alerts" },
       ],
     },
-    { title: "Suppliers", icon: <FaBoxesStacked />, path: '/supplier-management', submenu: true,
+    {
+      title: "Suppliers",
+      icon: <FaBoxesStacked />,
+      path: "/supplier-management",
+      submenu: true,
       submenuItems: [
-        { title: "All Suppliers", path: '/supplier-management' },
-        { title: "Add Supplier", path: '/create-supplier' },
-        { title: "Orders", path: '/orders' },
+        { title: "All Suppliers", path: "/supplier-management" },
+        { title: "Add Supplier", path: "/create-supplier" },
+        { title: "Orders", path: "/orders" },
       ],
     },
-    { title: "Prescriptions", icon: <LiaFilePrescriptionSolid />, path: '/prescription-management', submenu: true,
+    // {
+    //   title: "Prescriptions",
+    //   icon: <LiaFilePrescriptionSolid />,
+    //   path: "/prescription-management",
+    //   submenu: true,
+    //   submenuItems: [
+    //     { title: "All Prescriptions", path: "/prescription-management" },
+    //     { title: "New Prescription", path: "/create-prescription" },
+    //   ],
+    // },
+    {
+      title: "Employees",
+      icon: <GrUserWorker />,
+      path: "/employee-management",
+      submenu: true,
       submenuItems: [
-        { title: "All Prescriptions", path: '/prescription-management' },
-        { title: "New Prescription", path: '/create-prescription' },
+        { title: "All Employees", path: "/employee-management" },
+        { title: "Leave Records", path: "/employee-leave-management" },
+        { title: "Salary Records", path: "/employee-salary-management" },
       ],
     },
-    { title: "Employees", icon: <GrUserWorker />, path: '/employee-management', submenu: true,
+    {
+      title: "Delivery",
+      icon: <FiTruck />,
+      path: "/delivery-management",
+      submenu: true,
       submenuItems: [
-        { title: "All Employees", path: '/employee-management' },
-        { title: "Leave Records", path: '/employee-leave-management' },
-        { title: "Salary Records", path: '/employee-salary-management' },
+        { title: "Tasks", path: "/taskpage" },
+        { title: "Drivers", path: "/driver-management" },
       ],
     },
-    { title: "Delivery", icon: <FiTruck />, path: '/delivery-management', submenu: true,
+    { title: "Users", icon: <FaRegUser />, path: "/user-management" },
+    {
+      title: "Promotions",
+      icon: <TbDiscount2 />,
+      path: "/promotion-management",
+      submenu: true,
       submenuItems: [
-        { title: "Tasks", path: '/taskpage' },
-        { title: "Drivers", path: '/driver-management' },
-      ],
-    },
-    { title: "Users", icon: <FaRegUser />, path: '/user-management' },
-    { title: "Promotions", icon: <TbDiscount2 />, path: '/promotion-management', submenu: true,
-      submenuItems: [
-        { title: "All Promotions", path: '/promotion-management' },
-        { title: "Feedbacks", path: '/feedback-management' },
+        { title: "All Promotions", path: "/promotion-management" },
+        { title: "Feedbacks", path: "/feedback-management" },
       ],
     },
   ];
@@ -101,9 +134,9 @@ export default function SideBar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className='flex'>
+    <div className="flex">
       <Toaster />
-      <div className='bg-gray-900 min-h-screen p-4 pt-6 w-56 border-r border-gray-800 flex flex-col'>
+      <div className="bg-zinc-950 min-h-screen p-4 pt-6 w-56 border-r border-zinc-800 flex flex-col">
         {/* Logo */}
         <div className="flex items-center gap-2 px-2 mb-6">
           <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
@@ -111,34 +144,49 @@ export default function SideBar() {
           </div>
           <div>
             <h1 className="text-white font-bold text-sm">Pharmacy</h1>
-            <p className="text-gray-500 text-xs">Management</p>
+            <p className="text-zinc-500 text-xs">Management</p>
           </div>
         </div>
 
         {/* Menu */}
-        <ul className='flex-1 space-y-0.5 overflow-y-auto'>
+        <ul className="flex-1 space-y-0.5 overflow-y-auto">
           {Menus.map((menu, index) => (
             <React.Fragment key={index}>
-              <li className={`text-sm flex items-center gap-x-3 cursor-pointer px-3 py-2 rounded-lg transition-all ${
-                menu.highlight
-                  ? 'bg-emerald-600 text-white hover:bg-emerald-500 font-medium'
-                  : isActive(menu.path)
-                    ? 'bg-gray-800 text-emerald-400'
-                    : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
-              }`}>
-                <span className='text-lg'>{menu.icon}</span>
-                <Link to={menu.path} className='text-sm flex-1'>{menu.title}</Link>
+              <li
+                className={`text-sm flex items-center gap-x-3 cursor-pointer px-3 py-2 rounded-lg transition-all ${
+                  menu.highlight
+                    ? "bg-emerald-600 text-white hover:bg-emerald-500 font-medium"
+                    : isActive(menu.path)
+                      ? "bg-zinc-800 text-emerald-400"
+                      : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                }`}
+              >
+                <span className="text-lg">{menu.icon}</span>
+                <Link to={menu.path} className="text-sm flex-1">
+                  {menu.title}
+                </Link>
                 {menu.submenu && (
-                  <BsChevronDown className={`text-xs transition-transform ${subMenuOpen[index] ? 'rotate-180' : ''}`} onClick={(e) => { e.preventDefault(); toggleSubMenu(index); }} />
+                  <BsChevronDown
+                    className={`text-xs transition-transform ${subMenuOpen[index] ? "rotate-180" : ""}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleSubMenu(index);
+                    }}
+                  />
                 )}
               </li>
               {menu.submenu && subMenuOpen[index] && (
                 <ul className="ml-8 space-y-0.5 mt-0.5">
                   {menu.submenuItems.map((submenuItem, subIndex) => (
                     <li key={subIndex}>
-                      <Link to={submenuItem.path} className={`block text-xs px-3 py-1.5 rounded transition-colors ${
-                        isActive(submenuItem.path) ? 'text-emerald-400' : 'text-gray-500 hover:text-gray-300'
-                      }`}>
+                      <Link
+                        to={submenuItem.path}
+                        className={`block text-xs px-3 py-1.5 rounded transition-colors ${
+                          isActive(submenuItem.path)
+                            ? "text-emerald-400"
+                            : "text-zinc-500 hover:text-zinc-300"
+                        }`}
+                      >
                         {submenuItem.title}
                       </Link>
                     </li>
@@ -150,9 +198,12 @@ export default function SideBar() {
         </ul>
 
         {/* Sign Out */}
-        <div className="pt-4 border-t border-gray-800">
-          <button onClick={handleSignOut} className='flex items-center text-gray-400 text-sm gap-x-2 px-3 py-2 hover:bg-red-500/10 hover:text-red-400 rounded-lg w-full transition-colors'>
-            <MdExitToApp className='text-lg' />
+        <div className="pt-4 border-t border-zinc-800">
+          <button
+            onClick={handleSignOut}
+            className="flex items-center text-zinc-400 text-sm gap-x-2 px-3 py-2 hover:bg-red-500/10 hover:text-red-400 rounded-lg w-full transition-colors"
+          >
+            <MdExitToApp className="text-lg" />
             Sign Out
           </button>
         </div>

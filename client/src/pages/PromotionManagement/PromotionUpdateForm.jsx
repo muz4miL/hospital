@@ -1,182 +1,305 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { toast } from 'react-hot-toast';
-import { useNavigate, useParams } from 'react-router-dom';
-import SideBar from '../../components/SideBar';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import SideBar from "../../components/SideBar";
 
 export default function PromotionUpdateForm() {
-    const { id } = useParams();
-    const navigate = useNavigate();
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-    const [promotionData, setPromotionData] = useState({
-        promotionID: '',
-        couponCode: '',
-        couponPrice: '',
-        totalAmount: '',
-        type: '',
-        createdAt: '',
-        expiredAt: '',
-        status: '',
-        description: ''
-    });
+  const [promotionData, setPromotionData] = useState({
+    promotionID: "",
+    couponCode: "",
+    couponPrice: "",
+    totalAmount: "",
+    type: "",
+    createdAt: "",
+    expiredAt: "",
+    status: "",
+    description: "",
+  });
 
-    const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
 
-    useEffect(() => {
-        axios.get(`http://localhost:3000/api/promotion/get/${id}`)
-            .then(result => {
-                const promotion = result.data.promotion;
-                promotion.createdAt = promotion.createdAt.split('T')[0];
-                promotion.expiredAt = promotion.expiredAt.split('T')[0];
-                setPromotionData(promotion);
-            })
-            .catch(err => console.error(err));
-    }, [id]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3000/api/promotion/get/${id}`)
+      .then((result) => {
+        const promotion = result.data.promotion;
+        promotion.createdAt = promotion.createdAt.split("T")[0];
+        promotion.expiredAt = promotion.expiredAt.split("T")[0];
+        setPromotionData(promotion);
+      })
+      .catch((err) => console.error(err));
+  }, [id]);
 
-    const validateInputs = () => {
-        const validationErrors = {};
+  const validateInputs = () => {
+    const validationErrors = {};
 
-        if (!promotionData.couponPrice.trim()) {
-            validationErrors.couponPrice = 'Coupon Price is required';
-        } else if (parseFloat(promotionData.couponPrice) <= 0) {
-            validationErrors.couponPrice = 'Coupon Price must be a positive value';
-        }
+    if (!promotionData.couponPrice.trim()) {
+      validationErrors.couponPrice = "Coupon Price is required";
+    } else if (parseFloat(promotionData.couponPrice) <= 0) {
+      validationErrors.couponPrice = "Coupon Price must be a positive value";
+    }
 
-        if (!promotionData.totalAmount.trim()) {
-            validationErrors.totalAmount = 'Total Amount is required';
-        } else if (parseFloat(promotionData.totalAmount) <= 0) {
-            validationErrors.totalAmount = 'Total Amount must be a positive value';
-        }
+    if (!promotionData.totalAmount.trim()) {
+      validationErrors.totalAmount = "Total Amount is required";
+    } else if (parseFloat(promotionData.totalAmount) <= 0) {
+      validationErrors.totalAmount = "Total Amount must be a positive value";
+    }
 
-        if (!promotionData.createdAt.trim()) {
-            validationErrors.createdAt = 'Created Date is required';
-        }
+    if (!promotionData.createdAt.trim()) {
+      validationErrors.createdAt = "Created Date is required";
+    }
 
-        if (!promotionData.expiredAt.trim()) {
-            validationErrors.expiredAt = 'Expiry Date is required';
-        } else if (new Date(promotionData.expiredAt) <= new Date(promotionData.createdAt)) {
-            validationErrors.expiredAt = 'Expiry Date must be after Created Date';
-        }
+    if (!promotionData.expiredAt.trim()) {
+      validationErrors.expiredAt = "Expiry Date is required";
+    } else if (
+      new Date(promotionData.expiredAt) <= new Date(promotionData.createdAt)
+    ) {
+      validationErrors.expiredAt = "Expiry Date must be after Created Date";
+    }
 
-        if (!promotionData.description.trim()) {
-            validationErrors.description = 'Description is required';
-        }
+    if (!promotionData.description.trim()) {
+      validationErrors.description = "Description is required";
+    }
 
-        return validationErrors;
-    };
+    return validationErrors;
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setPromotionData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-        setErrors(prevErrors => ({
-            ...prevErrors,
-            [name]: ''
-        }));
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPromotionData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  };
 
-    const handleStatusChange = (e) => {
-        const newStatus = e.target.id === 'Active' ? 'Active' : 'Inactive';
-        setPromotionData(prevState => ({
-            ...prevState,
-            status: newStatus
-        }));
-    };
+  const handleStatusChange = (e) => {
+    const newStatus = e.target.id === "Active" ? "Active" : "Inactive";
+    setPromotionData((prevState) => ({
+      ...prevState,
+      status: newStatus,
+    }));
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        const validationErrors = validateInputs();
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            Object.values(validationErrors).forEach(error => toast.error(error, { duration: 6000, position: 'bottom-right'}));
-            return;
-        }
+    const validationErrors = validateInputs();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      Object.values(validationErrors).forEach((error) =>
+        toast.error(error, { duration: 6000, position: "bottom-right" }),
+      );
+      return;
+    }
 
-        try {
-            await axios.put(`http://localhost:3000/api/promotion/update/${id}`, promotionData);
-            toast.success('Promotion updated successfully!');
-            setTimeout(() => {
-                navigate('/promotion-management');
-            }, 1000);
-        } catch (error) {
-            toast.error('Promotion update failed!');
-            console.error('Error updating promotion:', error);
-        }
-    };
+    try {
+      await axios.put(
+        `http://localhost:3000/api/promotion/update/${id}`,
+        promotionData,
+      );
+      toast.success("Promotion updated successfully!");
+      setTimeout(() => {
+        navigate("/promotion-management");
+      }, 1000);
+    } catch (error) {
+      toast.error("Promotion update failed!");
+      console.error("Error updating promotion:", error);
+    }
+  };
 
-    return (
-        <div className='flex'>
-            <SideBar />
-            <div className='flex-1 bg-gray-950 min-h-screen'>
-                <div className='bg-gray-900 justify-between flex px-10 py-8'>
-                    <h1 className='text-4xl font-bold text-emerald-400'>Update Coupon</h1>
-                    <div className='flex gap-2'>
-                        <div className='w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl'>A</div>
-                        <div className="flex w-full flex-col gap-0.5">
-                            <div className="flex items-center justify-between font-bold text-white">
-                                <h1>Admin</h1>
-                            </div>
-                            <p className='text-xs text-gray-400'>Promotion Manager</p>
-                        </div>
-                    </div>
-                </div>
-                <div className='p-10 bg-gray-800 m-10 rounded-3xl max-w-4xl border border-gray-700'>
-                    <form autoComplete='off' onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-10'>
-                        <div className='flex flex-col gap-1 flex-1'>
-                            <label className='text-gray-300'>Promotion ID</label>
-                            <input type="text" id="promotionID" name="promotionID" value={promotionData.promotionID} onChange={handleChange} className='bg-gray-700 text-gray-400 border border-gray-700 outline-none rounded-md p-2 mb-4' readOnly/>
-
-                            <label className='text-gray-300'>Coupon Code</label>
-                            <input type="text" id="couponCode" name="couponCode" value={promotionData.couponCode} onChange={handleChange} className='bg-gray-700 text-gray-400 border border-gray-700 outline-none rounded-md p-2 mb-4' readOnly/>
-
-                            <label className='text-gray-300'>Coupon Price</label>
-                            {errors.couponPrice && <span className="text-red-500 text-sm">{errors.couponPrice}</span>}
-                            <input type="number" id="couponPrice" name="couponPrice" value={promotionData.couponPrice} onChange={handleChange} className={`bg-gray-800 text-white border border-gray-700 outline-none rounded-md p-2 mb-4 ${errors.couponPrice ? 'border-red-500' : ''}`} />
-
-                            <label className='text-gray-300'>Total Amount</label>
-                            {errors.totalAmount && <span className="text-red-500 text-sm">{errors.totalAmount}</span>}
-                            <input type="number" id="totalAmount" name="totalAmount" value={promotionData.totalAmount} onChange={handleChange} className={`bg-gray-800 text-white border border-gray-700 outline-none rounded-md p-2 mb-4 ${errors.totalAmount ? 'border-red-500' : ''}`} />
-
-                            <label className='text-gray-300'>Description</label>
-                            {errors.description && <span className="text-red-500 text-sm">{errors.description}</span>}
-                            <textarea id="description" name="description" value={promotionData.description} onChange={handleChange} className={`bg-gray-800 text-white border border-gray-700 outline-none rounded-md p-2 mb-4 max-h-40 min-h-40 ${errors.description ? 'border-red-500' : ''}`} />
-
-                            <input type="submit" value="Update" className='bg-emerald-600 hover:bg-emerald-500 font-semibold text-white p-3 rounded-lg w-full cursor-pointer'/>
-                        </div>
-
-                        <div className='flex flex-col gap-1 flex-1'>
-                            <label className='text-gray-300'>Type</label>
-                            <select id="type" name="type" value={promotionData.type} onChange={handleChange} className={`bg-gray-800 text-white border border-gray-700 outline-none rounded-md p-2 mb-4 ${errors.type ? 'border-red-500' : ''}`} >
-                                <option value="Seasonal">Seasonal</option>
-                                <option value="Special">Special</option>
-                            </select>
-
-                            <label className='text-gray-300'>Created Date</label>
-                            {errors.createdAt && <span className="text-red-500 text-sm">{errors.createdAt}</span>}
-                            <input type="date" id="createdAt" name="createdAt" value={promotionData.createdAt} onChange={handleChange} className={`bg-gray-800 text-white border border-gray-700 outline-none rounded-md p-2 mb-4 ${errors.createdAt ? 'border-red-500' : ''}`} />
-
-                            <label className='text-gray-300'>Expiry Date</label>
-                            {errors.expiredAt && <span className="text-red-500 text-sm">{errors.expiredAt}</span>}
-                            <input type="date" id="expiredAt" name="expiredAt" value={promotionData.expiredAt} onChange={handleChange} className={`bg-gray-800 text-white border border-gray-700 outline-none rounded-md p-2 mb-4 ${errors.expiredAt ? 'border-red-500' : ''}`} />
-                        
-                            <label className='text-gray-300'>Status</label>
-                            <div className='flex gap-6 flex-wrap text-gray-300'>
-                                <div className='flex gap-2'>
-                                    <input type="checkbox" name="status" id="Active" checked={promotionData.status === 'Active'} onChange={handleStatusChange} className='w-5' />
-                                    <span>Active</span>
-                                </div>
-                                <div class='flex gap-2'>
-                                    <input type="checkbox" name="status" id="Inactive" checked={promotionData.status === 'Inactive'} onChange={handleStatusChange} className='w-5' />
-                                    <span>Inactive</span>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+  return (
+    <div className="flex min-h-screen bg-zinc-950">
+      <SideBar />
+      <div className="flex-1 overflow-auto">
+        <div className="px-6 py-6 flex items-center justify-between border-b border-zinc-800">
+          <div>
+            <h1 className="text-2xl font-semibold text-zinc-100">
+              Update Promotion
+            </h1>
+            <p className="text-zinc-500 text-sm mt-1">
+              Edit coupon or promotion details
+            </p>
+          </div>
         </div>
-    );
+        <div className="mx-6 my-6 bg-zinc-900 rounded-xl border border-zinc-800 shadow-lg shadow-black/20 p-8 max-w-4xl">
+          <form
+            autoComplete="off"
+            onSubmit={handleSubmit}
+            className="flex flex-col sm:flex-row gap-10"
+          >
+            <div className="flex flex-col gap-1 flex-1">
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Promotion ID
+              </label>
+              <input
+                type="text"
+                id="promotionID"
+                name="promotionID"
+                value={promotionData.promotionID}
+                onChange={handleChange}
+                className="input-field text-sm mb-4 opacity-60 cursor-not-allowed"
+                readOnly
+              />
+
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Coupon Code
+              </label>
+              <input
+                type="text"
+                id="couponCode"
+                name="couponCode"
+                value={promotionData.couponCode}
+                onChange={handleChange}
+                className="input-field text-sm mb-4 opacity-60 cursor-not-allowed"
+                readOnly
+              />
+
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Coupon Price
+              </label>
+              {errors.couponPrice && (
+                <span className="text-red-400 text-xs mb-1">
+                  {errors.couponPrice}
+                </span>
+              )}
+              <input
+                type="number"
+                id="couponPrice"
+                name="couponPrice"
+                value={promotionData.couponPrice}
+                onChange={handleChange}
+                className={`input-field text-sm mb-4 ${errors.couponPrice ? "border-red-500 focus:ring-red-500" : ""}`}
+              />
+
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Total Amount
+              </label>
+              {errors.totalAmount && (
+                <span className="text-red-400 text-xs mb-1">
+                  {errors.totalAmount}
+                </span>
+              )}
+              <input
+                type="number"
+                id="totalAmount"
+                name="totalAmount"
+                value={promotionData.totalAmount}
+                onChange={handleChange}
+                className={`input-field text-sm mb-4 ${errors.totalAmount ? "border-red-500 focus:ring-red-500" : ""}`}
+              />
+
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Description
+              </label>
+              {errors.description && (
+                <span className="text-red-400 text-xs mb-1">
+                  {errors.description}
+                </span>
+              )}
+              <textarea
+                id="description"
+                name="description"
+                value={promotionData.description}
+                onChange={handleChange}
+                className={`input-field text-sm mb-4 max-h-40 min-h-40 ${errors.description ? "border-red-500 focus:ring-red-500" : ""}`}
+              />
+
+              <button
+                type="submit"
+                className="btn-primary font-semibold w-full py-2.5 mt-2"
+              >
+                Update Promotion
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-1 flex-1">
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Type
+              </label>
+              <select
+                id="type"
+                name="type"
+                value={promotionData.type}
+                onChange={handleChange}
+                className={`input-field text-sm mb-4 ${errors.type ? "border-red-500" : ""}`}
+              >
+                <option value="Seasonal">Seasonal</option>
+                <option value="Special">Special</option>
+              </select>
+
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Created Date
+              </label>
+              {errors.createdAt && (
+                <span className="text-red-400 text-xs mb-1">
+                  {errors.createdAt}
+                </span>
+              )}
+              <input
+                type="date"
+                id="createdAt"
+                name="createdAt"
+                value={promotionData.createdAt}
+                onChange={handleChange}
+                className={`input-field text-sm mb-4 ${errors.createdAt ? "border-red-500 focus:ring-red-500" : ""}`}
+              />
+
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Expiry Date
+              </label>
+              {errors.expiredAt && (
+                <span className="text-red-400 text-xs mb-1">
+                  {errors.expiredAt}
+                </span>
+              )}
+              <input
+                type="date"
+                id="expiredAt"
+                name="expiredAt"
+                value={promotionData.expiredAt}
+                onChange={handleChange}
+                className={`input-field text-sm mb-4 ${errors.expiredAt ? "border-red-500 focus:ring-red-500" : ""}`}
+              />
+
+              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
+                Status
+              </label>
+              <div className="flex gap-6 flex-wrap mb-4">
+                <div className="flex gap-2 items-center">
+                  <input
+                    type="checkbox"
+                    name="status"
+                    id="Active"
+                    checked={promotionData.status === "Active"}
+                    onChange={handleStatusChange}
+                    className="w-4 h-4 accent-emerald-500"
+                  />
+                  <span className="text-zinc-300 text-sm">Active</span>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <input
+                    type="checkbox"
+                    name="status"
+                    id="Inactive"
+                    checked={promotionData.status === "Inactive"}
+                    onChange={handleStatusChange}
+                    className="w-4 h-4 accent-emerald-500"
+                  />
+                  <span className="text-zinc-300 text-sm">Inactive</span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }
