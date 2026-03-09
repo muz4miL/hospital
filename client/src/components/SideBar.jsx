@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { FaRegUser, FaBoxesStacked } from "react-icons/fa6";
 import { FiTruck, FiShoppingCart, FiBarChart2 } from "react-icons/fi";
-import { MdOutlineInventory, MdExitToApp } from "react-icons/md";
+import { MdOutlineInventory, MdExitToApp, MdSettings } from "react-icons/md";
+import { FiSun, FiMoon } from "react-icons/fi";
 import { TbDiscount2 } from "react-icons/tb";
 import { LiaFilePrescriptionSolid } from "react-icons/lia";
 import { GrUserWorker } from "react-icons/gr";
@@ -20,9 +21,32 @@ import {
 
 export default function SideBar() {
   const [subMenuOpen, setSubMenuOpen] = useState({});
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("pharmacy-theme") || "dark";
+  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Apply theme on mount and changes
+  useEffect(() => {
+    if (theme === "light") {
+      document.documentElement.classList.add("light");
+    } else {
+      document.documentElement.classList.remove("light");
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    localStorage.setItem("pharmacy-theme", newTheme);
+    if (newTheme === "light") {
+      document.documentElement.classList.add("light");
+    } else {
+      document.documentElement.classList.remove("light");
+    }
+  };
 
   const handleSignOut = async () => {
     try {
@@ -102,6 +126,7 @@ export default function SideBar() {
       ],
     },
     { title: "Users", icon: <FaRegUser />, path: "/user-management" },
+    { title: "Settings", icon: <MdSettings />, path: "/settings" },
   ];
 
   const toggleSubMenu = (index) => {
@@ -177,8 +202,18 @@ export default function SideBar() {
           ))}
         </ul>
 
-        {/* Sign Out */}
-        <div className="pt-4 border-t border-zinc-800">
+        {/* Theme Toggle & Sign Out */}
+        <div className="pt-4 border-t border-zinc-800 space-y-1">
+          <button
+            onClick={toggleTheme}
+            className="flex items-center text-zinc-400 text-sm gap-x-2 px-3 py-2 hover:bg-zinc-800 hover:text-zinc-200 rounded-lg w-full transition-colors"
+          >
+            {theme === "dark" ? (
+              <><FiSun className="text-lg text-amber-400" /> Light Mode</>
+            ) : (
+              <><FiMoon className="text-lg text-blue-400" /> Dark Mode</>
+            )}
+          </button>
           <button
             onClick={handleSignOut}
             className="flex items-center text-zinc-400 text-sm gap-x-2 px-3 py-2 hover:bg-red-500/10 hover:text-red-400 rounded-lg w-full transition-colors"

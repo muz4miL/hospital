@@ -8,6 +8,7 @@ import {
   FiPrinter,
   FiShoppingCart,
   FiX,
+  FiShare2,
 } from "react-icons/fi";
 import { BsCashCoin, BsCreditCard2Back } from "react-icons/bs";
 import { MdPhoneAndroid } from "react-icons/md";
@@ -29,6 +30,7 @@ export default function POSPage() {
   const [showReceipt, setShowReceipt] = useState(false);
   const [lastSale, setLastSale] = useState(null);
   const [showSearch, setShowSearch] = useState(true);
+  const [pharmacy, setPharmacy] = useState(null);
   const searchRef = useRef(null);
   const barcodeBufferRef = useRef("");
   const barcodeTimeoutRef = useRef(null);
@@ -36,6 +38,11 @@ export default function POSPage() {
   // Focus search on mount
   useEffect(() => {
     if (searchRef.current) searchRef.current.focus();
+    // Fetch pharmacy settings for receipt branding
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((d) => { if (d.success) setPharmacy(d.settings); })
+      .catch(() => {});
   }, []);
 
   // Barcode scanner listener (detects rapid keyboard input)
@@ -329,9 +336,11 @@ export default function POSPage() {
       </head>
       <body>
         <div class="center">
-          <h2 class="bold">PHARMACY</h2>
-          <p>Hayatabad, Peshawar</p>
-          <p>Phone: 0300-1234567</p>
+          <h2 class="bold">${pharmacy?.pharmacyName || "PHARMACY"}</h2>
+          ${pharmacy?.receiptHeader ? `<p style="font-size:10px">${pharmacy.receiptHeader}</p>` : ""}
+          <p>${pharmacy?.address || "Peshawar"}</p>
+          <p>Phone: ${pharmacy?.phone || ""}</p>
+          ${pharmacy?.ntnNumber ? `<p style="font-size:10px">NTN: ${pharmacy.ntnNumber}</p>` : ""}
         </div>
         <div class="line"></div>
         <div class="row"><span>Invoice:</span><span>${lastSale.invoiceNumber}</span></div>
@@ -361,8 +370,7 @@ export default function POSPage() {
         <div class="row"><span>Payment:</span><span>${lastSale.paymentMethod}</span></div>
         <div class="line"></div>
         <div class="center" style="margin-top:10px">
-          <p class="bold">Thank you!</p>
-          <p>Get well soon</p>
+          <p class="bold">${pharmacy?.receiptFooter || "Thank you!"}</p>
         </div>
       </body>
       </html>
@@ -804,6 +812,29 @@ export default function POSPage() {
                   className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors"
                 >
                   <FiPrinter /> Print Receipt
+                </button>
+                <button
+                  onClick={() => {
+                    if (!lastSale) return;
+                    const items = lastSale.items
+                      .map((i) => `${i.medicineName} x${i.quantity} = Rs.${i.total.toLocaleString()}`)
+                      .join("\n");
+                    const text = encodeURIComponent(
+                      `*${pharmacy?.pharmacyName || "Pharmacy"} - Receipt*\n` +
+                      `Invoice: ${lastSale.invoiceNumber}\n` +
+                      `Date: ${new Date(lastSale.createdAt).toLocaleDateString("en-PK")}\n` +
+                      `Customer: ${lastSale.customerName}\n\n` +
+                      `${items}\n\n` +
+                      `Subtotal: Rs.${lastSale.subtotal.toLocaleString()}\n` +
+                      (lastSale.discount > 0 ? `Discount: -Rs.${lastSale.discount.toLocaleString()}\n` : "") +
+                      `*Total: Rs.${lastSale.grandTotal.toLocaleString()}*\n\n` +
+                      (pharmacy?.receiptFooter || "Thank you!")
+                    );
+                    window.open(`https://wa.me/?text=${text}`, "_blank");
+                  }}
+                  className="w-full py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors"
+                >
+                  <FiShare2 /> Share on WhatsApp
                 </button>
                 <button
                   onClick={handleNewSale}

@@ -19,6 +19,7 @@ import notificationRouter from './routes/notififcation.route.js'
 import employeeLeaveRouter from './routes/employeeLeave.route.js'
 import employeeSalaryRouter from './routes/employeeSalary.route.js'
 import posRouter from './routes/pos.route.js'
+import pharmacySettingsRouter from './routes/pharmacySettings.route.js'
 
 const app = express()
 dbCon()
@@ -50,6 +51,7 @@ app.use('/api/supplyRequest', supplyRequestRouter);
 app.use('/api/employeeLeave', employeeLeaveRouter)
 app.use('/api/employeeSalary', employeeSalaryRouter)
 app.use('/api/pos', posRouter)
+app.use('/api/settings', pharmacySettingsRouter)
 
 
 app.use(express.static(path.join(__dirname, '/client/dist')));

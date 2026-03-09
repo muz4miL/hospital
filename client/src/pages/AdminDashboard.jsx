@@ -15,43 +15,75 @@ import {
   FiHash,
   FiPercent,
   FiBox,
+  FiUsers,
+  FiArrowUpRight,
 } from "react-icons/fi";
 import { BiTime } from "react-icons/bi";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Tooltip,
+  Filler,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Filler);
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
   const [expiryAlerts, setExpiryAlerts] = useState(null);
   const [lowStock, setLowStock] = useState(null);
   const [todaySummary, setTodaySummary] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
+  const [payroll, setPayroll] = useState({ thisMonth: 0, total: 0 });
   const [loading, setLoading] = useState(true);
   const [zReportOpen, setZReportOpen] = useState(false);
 
   useEffect(() => {
     fetchAllData();
-    // Refresh every 30 seconds
     const interval = setInterval(fetchAllData, 30000);
     return () => clearInterval(interval);
   }, []);
 
   const fetchAllData = async () => {
     try {
-      const [statsRes, expiryRes, lowStockRes, summaryRes] = await Promise.all([
+      const [statsRes, expiryRes, lowStockRes, summaryRes, analyticsRes, salaryRes] = await Promise.all([
         fetch("/api/pos/dashboard-stats"),
         fetch("/api/pos/expiry-alerts"),
         fetch("/api/pos/low-stock"),
         fetch("/api/pos/today-summary"),
+        fetch("/api/pos/analytics?period=7"),
+        fetch("/api/employeeSalary/read"),
       ]);
-      const [statsData, expiryData, lowStockData, summaryData] =
+      const [statsData, expiryData, lowStockData, summaryData, analyticsData, salaryData] =
         await Promise.all([
           statsRes.json(),
           expiryRes.json(),
           lowStockRes.json(),
           summaryRes.json(),
+          analyticsRes.json(),
+          salaryRes.json(),
         ]);
       if (statsData.success) setStats(statsData.stats);
       if (expiryData.success) setExpiryAlerts(expiryData.alerts);
       if (lowStockData.success) setLowStock(lowStockData.alerts);
       if (summaryData.success) setTodaySummary(summaryData.summary);
+      if (analyticsData.success) setAnalytics(analyticsData.analytics);
+      if (salaryData.success) {
+        const records = salaryData.records || [];
+        const now = new Date();
+        const thisMonth = records
+          .filter((r) => r.employeeName && r.status === "Paid" && (() => { const d = new Date(r.paymentDate); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); })())
+          .reduce((s, r) => s + (r.amount || 0), 0);
+        const total = records
+          .filter((r) => r.employeeName && r.status === "Paid")
+          .reduce((s, r) => s + (r.amount || 0), 0);
+        setPayroll({ thisMonth, total });
+      }
     } catch (err) {
       console.error("Dashboard fetch error:", err);
     }
@@ -182,7 +214,7 @@ export default function AdminDashboard() {
           )}
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
           <StatCard
             icon={<FiDollarSign size={22} />}
             title="Today's Revenue"
@@ -202,9 +234,9 @@ export default function AdminDashboard() {
           />
           <StatCard
             icon={<FiPackage size={22} />}
-            title="Total Medicines"
+            title="Medicines"
             value={stats?.totalMedicines || 0}
-            subtitle={`Value: Rs. ${(stats?.totalInventoryValue || 0).toLocaleString()}`}
+            subtitle={`Rs. ${(stats?.totalInventoryValue || 0).toLocaleString()} value`}
             color="purple"
             link="/inventory-management"
           />
@@ -212,73 +244,121 @@ export default function AdminDashboard() {
             icon={<FiAlertTriangle size={22} />}
             title="Alerts"
             value={(stats?.expiringCount || 0) + (stats?.lowStockCount || 0)}
-            subtitle={`${stats?.expiringCount || 0} expiring, ${stats?.lowStockCount || 0} low stock`}
+            subtitle={`${stats?.expiringCount || 0} expiring, ${stats?.lowStockCount || 0} low`}
             color="orange"
             link="/expiry-alerts"
+          />
+          <StatCard
+            icon={<FiUsers size={22} />}
+            title="Payroll This Month"
+            value={`Rs. ${payroll.thisMonth.toLocaleString()}`}
+            subtitle={`All-time: Rs. ${payroll.total.toLocaleString()}`}
+            color="teal"
+            link="/employee-salary-management"
           />
         </div>
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Top Selling Today */}
+          {/* Revenue Chart */}
           <div className="lg:col-span-2 bg-zinc-900 rounded-xl border border-zinc-800 shadow-lg shadow-black/20 p-5">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-zinc-100 flex items-center gap-2">
-                <FiBarChart2 className="text-emerald-400" /> Top Selling Today
-              </h2>
-              <Link
-                to="/sales-history"
-                className="text-sm text-emerald-400 hover:text-emerald-300"
-              >
-                View All →
+              <div>
+                <h2 className="text-lg font-semibold text-zinc-100 flex items-center gap-2">
+                  <FiBarChart2 className="text-emerald-400" /> Revenue — Last 7 Days
+                </h2>
+                <p className="text-zinc-500 text-xs mt-0.5">
+                  Total: Rs. {(analytics?.totalRevenue || 0).toLocaleString()} · {analytics?.totalTransactions || 0} transactions
+                </p>
+              </div>
+              <Link to="/sales-history" className="text-sm text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
+                View All <FiArrowUpRight className="text-xs" />
               </Link>
             </div>
-            {todaySummary?.topSelling?.length > 0 ? (
-              <div className="space-y-3">
-                {todaySummary.topSelling.slice(0, 8).map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <span
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                        i === 0
-                          ? "bg-yellow-500/20 text-yellow-400"
-                          : i === 1
-                            ? "bg-gray-400/20 text-gray-300"
-                            : i === 2
-                              ? "bg-orange-500/20 text-orange-400"
-                              : "bg-zinc-800 text-zinc-500"
-                      }`}
-                    >
-                      {i + 1}
-                    </span>
-                    <div className="flex-1">
-                      <p className="text-zinc-100 text-sm font-medium">
-                        {item.name}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-emerald-400 text-sm font-bold">
-                        Rs. {item.revenue.toLocaleString()}
-                      </p>
-                      <p className="text-zinc-500 text-xs">
-                        {item.quantity} sold
-                      </p>
-                    </div>
-                  </div>
-                ))}
+            {analytics?.dailyData?.length > 0 ? (
+              <div className="h-52">
+                <Bar
+                  data={{
+                    labels: (() => {
+                      const days = [];
+                      for (let i = 6; i >= 0; i--) {
+                        const d = new Date();
+                        d.setDate(d.getDate() - i);
+                        days.push(d.toLocaleDateString("en-PK", { weekday: "short", day: "numeric" }));
+                      }
+                      return days;
+                    })(),
+                    datasets: [{
+                      label: "Revenue (Rs.)",
+                      data: (() => {
+                        const result = [];
+                        for (let i = 6; i >= 0; i--) {
+                          const d = new Date();
+                          d.setDate(d.getDate() - i);
+                          const key = d.toISOString().split("T")[0];
+                          const found = analytics.dailyData.find((x) => x.date === key);
+                          result.push(found ? found.revenue : 0);
+                        }
+                        return result;
+                      })(),
+                      backgroundColor: "rgba(16, 185, 129, 0.25)",
+                      borderColor: "rgba(16, 185, 129, 0.9)",
+                      borderWidth: 2,
+                      borderRadius: 6,
+                      hoverBackgroundColor: "rgba(16, 185, 129, 0.5)",
+                    }],
+                  }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: {
+                      callbacks: { label: (ctx) => ` Rs. ${ctx.raw.toLocaleString()}` },
+                      backgroundColor: "#18181b",
+                      borderColor: "#3f3f46",
+                      borderWidth: 1,
+                      titleColor: "#a1a1aa",
+                      bodyColor: "#f4f4f5",
+                    }},
+                    scales: {
+                      x: { grid: { color: "rgba(63,63,70,0.4)" }, ticks: { color: "#71717a", font: { size: 11 } } },
+                      y: { grid: { color: "rgba(63,63,70,0.4)" }, ticks: { color: "#71717a", font: { size: 11 }, callback: (v) => `Rs.${(v/1000).toFixed(0)}k` }, beginAtZero: true },
+                    },
+                  }}
+                />
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500">
-                <FiShoppingCart
-                  className="mx-auto mb-2 text-zinc-600"
-                  size={32}
-                />
-                <p className="text-zinc-500">No sales today yet</p>
-                <Link
-                  to="/pos"
-                  className="text-emerald-400 text-sm hover:text-emerald-300 mt-2 inline-block"
-                >
-                  Start selling →
-                </Link>
+              <div className="h-52 flex flex-col items-center justify-center">
+                <FiBarChart2 className="text-zinc-700 text-4xl mb-3" />
+                <p className="text-zinc-500 text-sm">No sales data yet</p>
+              </div>
+            )}
+
+            {/* Top Selling Today mini-list */}
+            {todaySummary?.topSelling?.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-zinc-800">
+                <p className="text-xs text-zinc-500 uppercase tracking-wider font-medium mb-3">Top Selling Today</p>
+                <div className="space-y-2">
+                  {todaySummary.topSelling.slice(0, 5).map((item, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+                        i === 0 ? "bg-yellow-500/20 text-yellow-400" :
+                        i === 1 ? "bg-zinc-500/20 text-zinc-300" :
+                        i === 2 ? "bg-orange-500/20 text-orange-400" : "bg-zinc-800 text-zinc-500"
+                      }`}>{i + 1}</span>
+                      <p className="text-zinc-300 text-sm flex-1 truncate">{item.name}</p>
+                      <div className="text-right flex-shrink-0">
+                        <p className="text-emerald-400 text-sm font-semibold">Rs. {item.revenue.toLocaleString()}</p>
+                        <p className="text-zinc-600 text-xs">{item.quantity} sold</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!todaySummary?.topSelling?.length && !analytics?.dailyData?.length && (
+              <div className="text-center py-4">
+                <Link to="/pos" className="text-emerald-400 text-sm hover:text-emerald-300">Start selling →</Link>
               </div>
             )}
           </div>
@@ -382,47 +462,27 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Link
-            to="/pos"
-            className="flex items-center gap-3 p-4 bg-emerald-600/10 border border-emerald-600/30 rounded-xl hover:bg-emerald-600/20 transition-colors group"
-          >
-            <FiShoppingCart className="text-emerald-400 text-xl" />
-            <div>
-              <p className="text-zinc-100 font-medium text-sm">Point of Sale</p>
-              <p className="text-zinc-500 text-xs">Start billing</p>
-            </div>
-          </Link>
-          <Link
-            to="/create-inventory"
-            className="flex items-center gap-3 p-4 bg-blue-600/10 border border-blue-600/30 rounded-xl hover:bg-blue-600/20 transition-colors group"
-          >
-            <FiPackage className="text-blue-400 text-xl" />
-            <div>
-              <p className="text-zinc-100 font-medium text-sm">Add Medicine</p>
-              <p className="text-zinc-500 text-xs">New inventory</p>
-            </div>
-          </Link>
-          <Link
-            to="/sales-history"
-            className="flex items-center gap-3 p-4 bg-purple-600/10 border border-purple-600/30 rounded-xl hover:bg-purple-600/20 transition-colors group"
-          >
-            <FiBarChart2 className="text-purple-400 text-xl" />
-            <div>
-              <p className="text-zinc-100 font-medium text-sm">Sales Report</p>
-              <p className="text-zinc-500 text-xs">View analytics</p>
-            </div>
-          </Link>
-          <Link
-            to="/expiry-alerts"
-            className="flex items-center gap-3 p-4 bg-orange-600/10 border border-orange-600/30 rounded-xl hover:bg-orange-600/20 transition-colors group"
-          >
-            <FiAlertTriangle className="text-orange-400 text-xl" />
-            <div>
-              <p className="text-zinc-100 font-medium text-sm">Expiry Alerts</p>
-              <p className="text-zinc-500 text-xs">Check medicines</p>
-            </div>
-          </Link>
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {[
+            { to: "/pos", Icon: FiShoppingCart, color: "emerald", label: "Point of Sale", sub: "Start billing" },
+            { to: "/create-inventory", Icon: FiPackage, color: "blue", label: "Add Medicine", sub: "New inventory" },
+            { to: "/sales-history", Icon: FiBarChart2, color: "purple", label: "Sales Report", sub: "View analytics" },
+            { to: "/expiry-alerts", Icon: FiAlertTriangle, color: "orange", label: "Expiry Alerts", sub: "Check medicines" },
+            { to: "/employee-salary-management", Icon: FiDollarSign, color: "teal", label: "Payroll", sub: "Record salary" },
+            { to: "/employee-leave-management", Icon: FiCalendar, color: "pink", label: "Leave Records", sub: "Manage leave" },
+          ].map(({ to, Icon, color, label, sub }) => (
+            <Link
+              key={to}
+              to={to}
+              className={`flex items-center gap-3 p-4 bg-${color}-600/10 border border-${color}-600/30 rounded-xl hover:bg-${color}-600/20 transition-colors`}
+            >
+              <Icon className={`text-${color}-400 text-xl flex-shrink-0`} />
+              <div>
+                <p className="text-zinc-100 font-medium text-sm">{label}</p>
+                <p className="text-zinc-500 text-xs">{sub}</p>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
 

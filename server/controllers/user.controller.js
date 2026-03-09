@@ -27,6 +27,7 @@ export const updateUser = async (req, res, next) => {
           address: req.body.address,
           password: req.body.password,
           avatar: req.body.avatar,
+          role: req.body.role,
         },
       },
       { new: true }
@@ -80,6 +81,24 @@ export const getUsers = async(req, res) => {
       return res.status(500).json({success:false, message:'Internal Server Error'})
   }
 }
+
+export const adminUpdateUser = async (req, res) => {
+  try {
+    const updateData = {
+      username: req.body.username,
+      email: req.body.email,
+      phonenumber: req.body.phonenumber,
+      role: req.body.role,
+    };
+    const updated = await User.findByIdAndUpdate(req.params.id, { $set: updateData }, { new: true });
+    if (!updated) return res.status(404).json({ success: false, message: "User not found!" });
+    const { password, ...rest } = updated._doc;
+    res.status(200).json({ success: true, message: "User updated!", user: rest });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 
 
 

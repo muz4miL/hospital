@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
-
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -9,6 +9,8 @@ export default function Usertable() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [deleteId, setDeleteId] = useState(null);
+  const [editUser, setEditUser] = useState(null);
+  const [editForm, setEditForm] = useState({ username: "", email: "", phonenumber: "", role: "Admin" });
 
   useEffect(() => {
     fetchData();
@@ -66,6 +68,23 @@ export default function Usertable() {
     setDeleteId(null);
   };
 
+  const openEdit = (user) => {
+    setEditUser(user);
+    setEditForm({ username: user.username, email: user.email, phonenumber: user.phonenumber || "", role: user.role || "Admin" });
+  };
+
+  const handleEditSave = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`/api/user/admin-update/${editUser._id}`, editForm);
+      toast.success("User updated!");
+      setEditUser(null);
+      fetchData();
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Update failed");
+    }
+  };
+
   return (
     <div>
       <div>
@@ -96,7 +115,7 @@ export default function Usertable() {
                 <th className="table-th">Username</th>
                 <th className="table-th">Email</th>
                 <th className="table-th">Phone Number</th>
-                <th className="table-th">Address</th>
+                <th className="table-th">Role</th>
                 <th className="table-th">Actions</th>
               </tr>
             </thead>
@@ -114,14 +133,29 @@ export default function Usertable() {
                     <td className="table-td text-zinc-400">
                       {elem.phonenumber}
                     </td>
-                    <td className="table-td text-zinc-400">{elem.address}</td>
                     <td className="table-td">
-                      <button
-                        onClick={() => handleDeleteConfirmation(elem._id)}
-                        className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg px-3 py-1 text-xs transition-colors"
-                      >
-                        Delete
-                      </button>
+                      <span className={`px-2 py-0.5 rounded-full text-xs ${
+                        elem.role === "Admin" ? "bg-red-500/10 text-red-400" :
+                        elem.role === "Manager" ? "bg-blue-500/10 text-blue-400" :
+                        elem.role === "Cashier" ? "bg-emerald-500/10 text-emerald-400" :
+                        "bg-zinc-500/10 text-zinc-400"
+                      }`}>{elem.role || "Admin"}</span>
+                    </td>
+                    <td className="table-td">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => openEdit(elem)}
+                          className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 rounded-lg px-3 py-1 text-xs transition-colors inline-flex items-center gap-1"
+                        >
+                          <FiEdit2 /> Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteConfirmation(elem._id)}
+                          className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg px-3 py-1 text-xs transition-colors inline-flex items-center gap-1"
+                        >
+                          <FiTrash2 /> Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -152,6 +186,36 @@ export default function Usertable() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+      {editUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+          <form onSubmit={handleEditSave} className="bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl p-8 w-full max-w-md">
+            <h2 className="text-lg font-semibold text-zinc-100 mb-1">Edit User</h2>
+            <p className="text-zinc-500 text-sm mb-5">Update access credentials and role</p>
+
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Username</label>
+            <input type="text" value={editForm.username} onChange={(e) => setEditForm((f) => ({ ...f, username: e.target.value }))} className="input-field w-full mb-3" required />
+
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Email</label>
+            <input type="email" value={editForm.email} onChange={(e) => setEditForm((f) => ({ ...f, email: e.target.value }))} className="input-field w-full mb-3" required />
+
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Phone</label>
+            <input type="text" value={editForm.phonenumber} onChange={(e) => setEditForm((f) => ({ ...f, phonenumber: e.target.value }))} className="input-field w-full mb-3" />
+
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Role</label>
+            <select value={editForm.role} onChange={(e) => setEditForm((f) => ({ ...f, role: e.target.value }))} className="input-field w-full mb-5">
+              <option>Admin</option>
+              <option>Manager</option>
+              <option>Cashier</option>
+              <option>Viewer</option>
+            </select>
+
+            <div className="flex justify-end gap-3">
+              <button type="button" onClick={() => setEditUser(null)} className="btn-secondary text-sm">Cancel</button>
+              <button type="submit" className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg py-2 px-5 text-sm">Save Changes</button>
+            </div>
+          </form>
         </div>
       )}
     </div>

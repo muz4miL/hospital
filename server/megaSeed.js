@@ -14,6 +14,7 @@ import EmployeeSalary from "./models/employeeSalary.model.js";
 import EmployeeLeave from "./models/employeeLeave.model.js";
 import SupplyRequest from "./models/supplyRequest.model.js";
 import Notification from "./models/notification.model.js";
+import PharmacySettings from "./models/pharmacySettings.model.js";
 
 dotenv.config();
 
@@ -329,6 +330,26 @@ const megaSeed = async () => {
     // ── Seed Notifications ─────────────────────────────────────────────────
     await Notification.insertMany(notifications);
     console.log(`🔔 Notifications: ${notifications.length} added`);
+
+    // ── 8. PHARMACY SETTINGS ───────────────────────────────────────────────
+    await PharmacySettings.deleteMany({});
+    await PharmacySettings.create({
+      pharmacyName: "Khyber Pharmacy",
+      tagline: "Your Health, Our Priority",
+      address: "University Road, Peshawar",
+      phone: "091-5231234",
+      email: "info@khyberpharmacy.pk",
+      ntnNumber: "3456789-1",
+      receiptHeader: "Licensed Pharmacy — Drug Sale Lic #PSH-2024-0891",
+      receiptFooter: "Thank you for choosing Khyber Pharmacy! Get well soon.",
+      taxEnabled: false,
+      taxRate: 17,
+      taxLabel: "GST",
+      currency: "Rs.",
+      theme: "dark",
+      isActive: true,
+    });
+    console.log("⚙️  Pharmacy Settings: seeded");
 
     // ── Summary ────────────────────────────────────────────────────────────
     const totalValue = inventoryDocs.reduce((s, m) => s + m.Mprice * m.Mquantity, 0);

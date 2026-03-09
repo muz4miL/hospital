@@ -64,6 +64,7 @@ import EmployeeSalaryUpdateForm from "./pages/EmployeeManagement/EmployeeSalaryU
 import POSPage from "./pages/POS/POSPage";
 import ExpiryAlertsPage from "./pages/ExpiryAlerts/ExpiryAlertsPage";
 import SalesHistoryPage from "./pages/Sales/SalesHistoryPage";
+import PharmacySettingsPage from "./pages/Settings/PharmacySettingsPage";
 
 // Protected Route wrapper - redirects to portal login if not authenticated
 function ProtectedRoute({ children }) {
@@ -107,6 +108,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <POSPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <PharmacySettingsPage />
             </ProtectedRoute>
           }
         />

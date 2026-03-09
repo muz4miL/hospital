@@ -99,7 +99,6 @@ function EmployeeTable() {
         <table className="w-full">
             <thead>
                 <tr className="border-b bg-zinc-900/80 border-zinc-800">
-                    <th className="table-th">ID</th>
                     <th className="table-th">Name</th>
                     <th className="table-th">Email</th>
                     <th className="table-th">NIC</th>
@@ -114,7 +113,6 @@ function EmployeeTable() {
                 {searchResults?.map((elem, index) => {
                     return (
                     <tr key={index} className="table-row border-b border-zinc-800/60">
-                        <td className="table-td font-mono text-zinc-500 text-xs max-w-[80px] truncate">{elem._id}</td>
                         <td className="font-medium table-td text-zinc-200">{elem.name}</td>
                         <td className="table-td text-zinc-400">{elem.email}</td>
                         <td className="table-td text-zinc-400">{elem.NIC}</td>

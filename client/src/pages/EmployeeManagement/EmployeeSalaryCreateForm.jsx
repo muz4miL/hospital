@@ -1,199 +1,192 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { toast } from "react-hot-toast";
 import SideBar from "../../components/SideBar";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
-export default function EmployeeCreateForm() {
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+export default function EmployeeSalaryCreateForm() {
   const navigate = useNavigate();
-  const [value, setValue] = useState({
-    name: "",
-    contactNo: "",
-    DOB: "",
-    address: "",
-    email: "",
-    NIC: "",
-    empRole: "",
-    maritalStatus: "",
-    gender: "",
+  const [employees, setEmployees] = useState([]);
+  const [form, setForm] = useState({
+    employeeId: "",
+    employeeName: "",
+    employeeRole: "",
+    amount: "",
+    paymentDate: new Date().toISOString().split("T")[0],
+    paymentType: "Monthly Salary",
+    paymentMethod: "Cash",
+    month: `${MONTHS[new Date().getMonth()]} ${new Date().getFullYear()}`,
+    status: "Paid",
+    notes: "",
   });
 
+  useEffect(() => {
+    axios
+      .get("/api/employee/read")
+      .then((res) => setEmployees(res.data.employee || []))
+      .catch(() => toast.error("Failed to load employees"));
+  }, []);
+
+  const handleEmployeeSelect = (e) => {
+    const emp = employees.find((x) => x._id === e.target.value);
+    if (emp) {
+      setForm((f) => ({
+        ...f,
+        employeeId: emp._id,
+        employeeName: emp.name,
+        employeeRole: emp.empRole || "",
+      }));
+    }
+  };
+
   const handleChange = (e) => {
-    const { name, value, type, checked, id } = e.target;
-    setValue((prevState) => ({
-      ...prevState,
-      [name]:
-        type === "checkbox"
-          ? id === "Male" && checked
-            ? "Male"
-            : "Female"
-          : value,
-      maritalStatus:
-        name === "maritalStatus"
-          ? checked
-            ? id
-            : ""
-          : prevState.maritalStatus,
-    }));
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.employeeId) return toast.error("Select an employee");
+    if (!form.amount || Number(form.amount) <= 0) return toast.error("Enter a valid amount");
+
     try {
-      const addEmployee = await axios.post(
-        "/api/employeeSalary/create",
-        value,
-      );
-      const response = addEmployee.data;
-      if (response.success) {
-        toast.success(response.message, { duration: 4000 });
-        setTimeout(() => {
-          navigate("/employee-Salary-management");
-        });
-      }
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+      await axios.post("/api/employeeSalary/create", {
+        ...form,
+        amount: Number(form.amount),
+      });
+      toast.success("Payment recorded!");
+      setTimeout(() => navigate("/employee-salary-management"), 600);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to record payment");
     }
-    console.log(value);
   };
+
+  const currentYear = new Date().getFullYear();
+  const monthOptions = [];
+  for (let y = currentYear; y >= currentYear - 1; y--) {
+    MONTHS.forEach((m) => monthOptions.push(`${m} ${y}`));
+  }
 
   return (
     <div className="flex min-h-screen bg-zinc-950">
+      <Toaster position="top-right" />
       <SideBar />
-      <div className="flex-1 overflow-auto">
-        <div className="px-6 py-6 flex items-center justify-between border-b border-zinc-800">
-          <div>
-            <h1 className="text-2xl font-semibold text-zinc-100">
-              Assign Salary
-            </h1>
-            <p className="text-zinc-500 text-sm mt-1">
-              Register a new employee salary record
-            </p>
-          </div>
-        </div>
-        <div className="mx-6 my-6 bg-zinc-900 rounded-xl border border-zinc-800 shadow-lg shadow-black/20 p-8 max-w-4xl">
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-10"
+      <div className="flex-1 flex items-start justify-center py-10 overflow-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl shadow-black/30 p-8 w-full max-w-xl"
+        >
+          <h2 className="text-xl font-semibold text-zinc-100 mb-1">Record Salary Payment</h2>
+          <p className="text-zinc-500 text-sm mb-6">Fill in the payment details below</p>
+
+          {/* Employee */}
+          <label className="block text-sm font-medium text-zinc-300 mb-1">Employee *</label>
+          <select
+            value={form.employeeId}
+            onChange={handleEmployeeSelect}
+            className="input-field w-full mb-4"
+            required
           >
-            <div className="flex flex-col gap-1 flex-1">
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Employee Name
-              </label>
-              <input
-                type="text"
-                placeholder="Enter name"
-                id="name"
-                name="name"
-                value={value.name}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              />
+            <option value="">— Select Employee —</option>
+            {employees.map((emp) => (
+              <option key={emp._id} value={emp._id}>
+                {emp.name} — {emp.empRole}
+              </option>
+            ))}
+          </select>
 
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Contact No
-              </label>
-              <input
-                type="text"
-                placeholder="Enter mobile number"
-                id="contactNo"
-                name="contactNo"
-                value={value.contactNo}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              />
+          {/* Amount */}
+          <label className="block text-sm font-medium text-zinc-300 mb-1">Amount (Rs.) *</label>
+          <input
+            type="number"
+            name="amount"
+            value={form.amount}
+            onChange={handleChange}
+            placeholder="e.g. 25000"
+            className="input-field w-full mb-4"
+            min="1"
+            required
+          />
 
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Salary Assigning Date
-              </label>
-              <input
-                type="date"
-                id="DOB"
-                name="DOB"
-                value={value.DOB}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              />
-
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Salary Amount
-              </label>
-              <textarea
-                placeholder="Assign the salary"
-                id="address"
-                name="address"
-                value={value.address}
-                onChange={handleChange}
-                className="input-field text-sm mb-4 max-h-40 min-h-40"
-                required
-              />
-
-              <button
-                type="submit"
-                className="btn-primary font-semibold w-full py-2.5 mt-2"
-              >
-                Assign Salary
-              </button>
-            </div>
-
-            <div className="flex flex-col gap-1 flex-1">
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Email
-              </label>
-              <input
-                type="text"
-                placeholder="Enter email"
-                id="email"
-                name="email"
-                value={value.email}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              />
-
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                NIC
-              </label>
-              <input
-                type="text"
-                placeholder="Enter NIC"
-                id="NIC"
-                name="NIC"
-                value={value.NIC}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              />
-
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Job Role
-              </label>
-              <select
-                id="empRole"
-                name="empRole"
-                value={value.empRole}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              >
-                <option value="Delivery Manager">Delivery Manager</option>
-                <option value="Promotion Manager">Promotion Manager</option>
-                <option value="Supplier Manager">Supplier Manager</option>
-                <option value="Prescription Manager">
-                  Prescription Manager
-                </option>
-                <option value="Employee Manager">Employee Manager</option>
-                <option value="Payment Manager">Payment Manager</option>
-                <option value="Inventory Manager">Inventory Manager</option>
-                <option value="User Manager">User Manager</option>
+          {/* Row: Type + Method */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Payment Type</label>
+              <select name="paymentType" value={form.paymentType} onChange={handleChange} className="input-field w-full">
+                <option>Monthly Salary</option>
+                <option>Advance</option>
+                <option>Bonus</option>
+                <option>Overtime</option>
+                <option>Deduction</option>
               </select>
             </div>
-          </form>
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Payment Method</label>
+              <select name="paymentMethod" value={form.paymentMethod} onChange={handleChange} className="input-field w-full">
+                <option>Cash</option>
+                <option>Bank Transfer</option>
+                <option>JazzCash</option>
+                <option>EasyPaisa</option>
+                <option>Cheque</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Row: Date + Month */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Payment Date</label>
+              <input type="date" name="paymentDate" value={form.paymentDate} onChange={handleChange} className="input-field w-full" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">For Month</label>
+              <select name="month" value={form.month} onChange={handleChange} className="input-field w-full">
+                {monthOptions.map((m) => (
+                  <option key={m}>{m}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Status */}
+          <label className="block text-sm font-medium text-zinc-300 mb-1">Status</label>
+          <select name="status" value={form.status} onChange={handleChange} className="input-field w-full mb-4">
+            <option>Paid</option>
+            <option>Pending</option>
+            <option>Cancelled</option>
+          </select>
+
+          {/* Notes */}
+          <label className="block text-sm font-medium text-zinc-300 mb-1">Notes</label>
+          <textarea
+            name="notes"
+            rows={3}
+            value={form.notes}
+            onChange={handleChange}
+            placeholder="Optional notes..."
+            className="input-field w-full mb-6 resize-none"
+          />
+
+          <div className="flex gap-3 justify-end">
+            <button
+              type="button"
+              onClick={() => navigate("/employee-salary-management")}
+              className="btn-secondary text-sm"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg py-2 px-6 text-sm"
+            >
+              Save Payment
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

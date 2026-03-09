@@ -1,199 +1,163 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { toast } from "react-hot-toast";
 import SideBar from "../../components/SideBar";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
-export default function EmployeeCreateForm() {
+export default function EmployeeLeaveCreateForm() {
   const navigate = useNavigate();
-  const [value, setValue] = useState({
-    name: "",
-    contactNo: "",
-    DOB: "",
-    address: "",
-    email: "",
-    NIC: "",
-    empRole: "",
-    maritalStatus: "",
-    gender: "",
+  const [employees, setEmployees] = useState([]);
+  const [form, setForm] = useState({
+    employeeId: "",
+    employeeName: "",
+    employeeRole: "",
+    leaveType: "Casual",
+    startDate: new Date().toISOString().split("T")[0],
+    endDate: new Date().toISOString().split("T")[0],
+    totalDays: 1,
+    reason: "",
+    status: "Pending",
+    approvedBy: "",
   });
 
+  useEffect(() => {
+    axios
+      .get("/api/employee/read")
+      .then((res) => setEmployees(res.data.employee || []))
+      .catch(() => toast.error("Failed to load employees"));
+  }, []);
+
+  const handleEmployeeSelect = (e) => {
+    const emp = employees.find((x) => x._id === e.target.value);
+    if (emp) {
+      setForm((f) => ({
+        ...f,
+        employeeId: emp._id,
+        employeeName: emp.name,
+        employeeRole: emp.empRole || "",
+      }));
+    }
+  };
+
   const handleChange = (e) => {
-    const { name, value, type, checked, id } = e.target;
-    setValue((prevState) => ({
-      ...prevState,
-      [name]:
-        type === "checkbox"
-          ? id === "Male" && checked
-            ? "Male"
-            : "Female"
-          : value,
-      maritalStatus:
-        name === "maritalStatus"
-          ? checked
-            ? id
-            : ""
-          : prevState.maritalStatus,
-    }));
+    const { name, value } = e.target;
+    setForm((prev) => {
+      const next = { ...prev, [name]: value };
+      if (name === "startDate" || name === "endDate") {
+        const s = new Date(name === "startDate" ? value : prev.startDate);
+        const en = new Date(name === "endDate" ? value : prev.endDate);
+        const diff = Math.max(1, Math.ceil((en - s) / 86400000) + 1);
+        next.totalDays = diff;
+      }
+      return next;
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.employeeId) return toast.error("Select an employee");
+    if (new Date(form.endDate) < new Date(form.startDate)) return toast.error("End date must be after start date");
+
     try {
-      const addEmployee = await axios.post(
-        "/api/employeeLeave/create",
-        value,
-      );
-      const response = addEmployee.data;
-      if (response.success) {
-        toast.success(response.message, { duration: 4000 });
-        setTimeout(() => {
-          navigate("/employee-leave-management");
-        });
-      }
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+      await axios.post("/api/employeeLeave/create", form);
+      toast.success("Leave recorded!");
+      setTimeout(() => navigate("/employee-leave-management"), 600);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to add leave");
     }
-    console.log(value);
   };
 
   return (
     <div className="flex min-h-screen bg-zinc-950">
+      <Toaster position="top-right" />
       <SideBar />
-      <div className="flex-1 overflow-auto">
-        <div className="px-6 py-6 flex items-center justify-between border-b border-zinc-800">
-          <div>
-            <h1 className="text-2xl font-semibold text-zinc-100">
-              Add Leave Record
-            </h1>
-            <p className="text-zinc-500 text-sm mt-1">
-              Register a new employee leave
-            </p>
-          </div>
-        </div>
-        <div className="mx-6 my-6 bg-zinc-900 rounded-xl border border-zinc-800 shadow-lg shadow-black/20 p-8 max-w-4xl">
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-10"
+      <div className="flex-1 flex items-start justify-center py-10 overflow-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl shadow-black/30 p-8 w-full max-w-xl"
+        >
+          <h2 className="text-xl font-semibold text-zinc-100 mb-1">Add Leave Record</h2>
+          <p className="text-zinc-500 text-sm mb-6">Record a new employee leave</p>
+
+          {/* Employee */}
+          <label className="block text-sm font-medium text-zinc-300 mb-1">Employee *</label>
+          <select
+            value={form.employeeId}
+            onChange={handleEmployeeSelect}
+            className="input-field w-full mb-4"
+            required
           >
-            <div className="flex flex-col gap-1 flex-1">
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Employee Name
-              </label>
-              <input
-                type="text"
-                placeholder="Enter name"
-                id="name"
-                name="name"
-                value={value.name}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              />
+            <option value="">— Select Employee —</option>
+            {employees.map((emp) => (
+              <option key={emp._id} value={emp._id}>
+                {emp.name} — {emp.empRole}
+              </option>
+            ))}
+          </select>
 
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Contact No
-              </label>
-              <input
-                type="text"
-                placeholder="Enter mobile number"
-                id="contactNo"
-                name="contactNo"
-                value={value.contactNo}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              />
+          {/* Leave Type */}
+          <label className="block text-sm font-medium text-zinc-300 mb-1">Leave Type</label>
+          <select name="leaveType" value={form.leaveType} onChange={handleChange} className="input-field w-full mb-4">
+            <option>Casual</option>
+            <option>Sick</option>
+            <option>Annual</option>
+            <option>Emergency</option>
+            <option>Unpaid</option>
+            <option>Other</option>
+          </select>
 
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Date of Leave
-              </label>
-              <input
-                type="date"
-                id="DOB"
-                name="DOB"
-                value={value.DOB}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              />
-
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Reason
-              </label>
-              <textarea
-                placeholder="Reason for the leave"
-                id="address"
-                name="address"
-                value={value.address}
-                onChange={handleChange}
-                className="input-field text-sm mb-4 max-h-40 min-h-40"
-                required
-              />
-
-              <button
-                type="submit"
-                className="btn-primary font-semibold w-full py-2.5 mt-2"
-              >
-                Submit Leave
-              </button>
+          {/* Dates */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Start Date *</label>
+              <input type="date" name="startDate" value={form.startDate} onChange={handleChange} className="input-field w-full" required />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">End Date *</label>
+              <input type="date" name="endDate" value={form.endDate} onChange={handleChange} className="input-field w-full" required />
+            </div>
+          </div>
 
-            <div className="flex flex-col gap-1 flex-1">
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Email
-              </label>
-              <input
-                type="text"
-                placeholder="Enter email"
-                id="email"
-                name="email"
-                value={value.email}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              />
+          {/* Total Days (auto-calculated, read only) */}
+          <label className="block text-sm font-medium text-zinc-300 mb-1">Total Days</label>
+          <input type="number" value={form.totalDays} readOnly className="input-field w-full mb-4 opacity-60" />
 
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                NIC
-              </label>
-              <input
-                type="text"
-                placeholder="Enter NIC"
-                id="NIC"
-                name="NIC"
-                value={value.NIC}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              />
+          {/* Reason */}
+          <label className="block text-sm font-medium text-zinc-300 mb-1">Reason</label>
+          <textarea
+            name="reason"
+            rows={3}
+            value={form.reason}
+            onChange={handleChange}
+            placeholder="Reason for leave..."
+            className="input-field w-full mb-4 resize-none"
+          />
 
-              <label className="text-zinc-400 text-xs font-medium mb-1.5 block">
-                Job Role
-              </label>
-              <select
-                id="empRole"
-                name="empRole"
-                value={value.empRole}
-                onChange={handleChange}
-                className="input-field text-sm mb-4"
-                required
-              >
-                <option value="Delivery Manager">Delivery Manager</option>
-                <option value="Promotion Manager">Promotion Manager</option>
-                <option value="Supplier Manager">Supplier Manager</option>
-                <option value="Prescription Manager">
-                  Prescription Manager
-                </option>
-                <option value="Employee Manager">Employee Manager</option>
-                <option value="Payment Manager">Payment Manager</option>
-                <option value="Inventory Manager">Inventory Manager</option>
-                <option value="User Manager">User Manager</option>
+          {/* Status */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Status</label>
+              <select name="status" value={form.status} onChange={handleChange} className="input-field w-full">
+                <option>Pending</option>
+                <option>Approved</option>
+                <option>Rejected</option>
               </select>
             </div>
-          </form>
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Approved By</label>
+              <input type="text" name="approvedBy" value={form.approvedBy} onChange={handleChange} placeholder="Manager name" className="input-field w-full" />
+            </div>
+          </div>
+
+          <div className="flex gap-3 justify-end">
+            <button type="button" onClick={() => navigate("/employee-leave-management")} className="btn-secondary text-sm">
+              Cancel
+            </button>
+            <button type="submit" className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg py-2 px-6 text-sm">
+              Save Leave
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

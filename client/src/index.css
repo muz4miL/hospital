@@ -82,6 +82,12 @@ label {
   color: #a1a1aa; /* zinc-400 */
 }
 
+/* ─── Animations ─────────────────────────────────────────────────── */
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
 /* ─── Reusable component classes ──────────────────────────────────── */
 @layer components {
   .input-field {
@@ -142,3 +148,130 @@ label {
 .hide {
   display: none;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   LIGHT MODE — activated by adding class="light" to <html>
+   Maps dark zinc values → light equivalents without touching JSX
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Root overrides */
+html.light,
+html.light body,
+html.light #root {
+  background-color: #f4f4f5; /* zinc-100 */
+  color: #27272a; /* zinc-800 */
+}
+
+/* ── Background classes ─────────────────────────────────────────── */
+html.light .bg-zinc-950 { background-color: #ffffff !important; }
+html.light .bg-zinc-900 { background-color: #f9fafb !important; }
+html.light .bg-zinc-800 { background-color: #f4f4f5 !important; }
+html.light .bg-zinc-800\/60 { background-color: rgba(244,244,245,0.7) !important; }
+html.light .bg-zinc-800\/50 { background-color: rgba(244,244,245,0.5) !important; }
+html.light .bg-zinc-800\/40 { background-color: rgba(244,244,245,0.4) !important; }
+html.light .bg-zinc-700 { background-color: #e4e4e7 !important; }
+
+/* ── Text classes ───────────────────────────────────────────────── */
+html.light .text-zinc-100 { color: #18181b !important; }
+html.light .text-zinc-200 { color: #27272a !important; }
+html.light .text-zinc-300 { color: #3f3f46 !important; }
+html.light .text-zinc-400 { color: #52525b !important; }
+html.light .text-zinc-500 { color: #71717a !important; }
+html.light .text-white { color: #18181b !important; }
+
+/* Keep white text on colored backgrounds (buttons, badges) */
+html.light .bg-emerald-600 .text-white,
+html.light .bg-emerald-500 .text-white,
+html.light .bg-emerald-600.text-white,
+html.light .bg-red-600 .text-white,
+html.light .bg-red-500 .text-white,
+html.light .bg-red-600.text-white,
+html.light .bg-blue-600 .text-white,
+html.light .bg-blue-500 .text-white,
+html.light .bg-amber-600 .text-white { color: #ffffff !important; }
+
+/* ── Border classes ─────────────────────────────────────────────── */
+html.light .border-zinc-800 { border-color: #e4e4e7 !important; }
+html.light .border-zinc-700 { border-color: #d4d4d8 !important; }
+html.light .border-zinc-700\/50 { border-color: rgba(212,212,216,0.5) !important; }
+html.light .border-zinc-600 { border-color: #a1a1aa !important; }
+
+/* ── Form elements ──────────────────────────────────────────────── */
+html.light input,
+html.light select,
+html.light textarea {
+  color: #18181b !important;
+  background-color: #ffffff !important;
+  border-color: #d4d4d8 !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #a1a1aa !important;
+}
+
+html.light select option {
+  background-color: #ffffff !important;
+  color: #18181b !important;
+}
+
+html.light input:-webkit-autofill,
+html.light input:-webkit-autofill:hover,
+html.light input:-webkit-autofill:focus,
+html.light textarea:-webkit-autofill,
+html.light select:-webkit-autofill {
+  -webkit-text-fill-color: #18181b !important;
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  caret-color: #18181b !important;
+}
+
+/* ── Typography ─────────────────────────────────────────────────── */
+html.light table { color: #3f3f46 !important; }
+html.light h1, html.light h2, html.light h3,
+html.light h4, html.light h5, html.light h6 {
+  color: #18181b !important;
+}
+html.light label { color: #52525b !important; }
+
+/* ── Component class overrides ──────────────────────────────────── */
+html.light .input-field {
+  background-color: #ffffff !important;
+  border-color: #d4d4d8 !important;
+  color: #18181b !important;
+}
+
+html.light .card {
+  background-color: #ffffff !important;
+  border-color: #e4e4e7 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+}
+
+html.light .table-td {
+  color: #3f3f46 !important;
+  border-bottom-color: #e4e4e7 !important;
+}
+
+html.light .table-th {
+  color: #71717a !important;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────── */
+html.light ::-webkit-scrollbar-track { background: #f4f4f5; }
+html.light ::-webkit-scrollbar-thumb { background: #d4d4d8; }
+html.light ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+
+/* ── Shadow overrides ───────────────────────────────────────────── */
+html.light .shadow-lg { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.03) !important; }
+html.light .shadow-black\/20 { --tw-shadow-color: rgba(0,0,0,0.05) !important; }
+
+/* ── Hover overrides ────────────────────────────────────────────── */
+html.light .hover\:bg-zinc-800:hover { background-color: #e4e4e7 !important; }
+html.light .hover\:bg-zinc-700:hover { background-color: #d4d4d8 !important; }
+html.light .hover\:text-zinc-200:hover { color: #18181b !important; }
+html.light .hover\:text-zinc-300:hover { color: #27272a !important; }
+
+/* ── Ring classes used on focus ──────────────────────────────────── */
+html.light .ring-zinc-800 { --tw-ring-color: #e4e4e7 !important; }
+
+/* ── Divide ─────────────────────────────────────────────────────── */
+html.light .divide-zinc-800 > :not(:last-child) { border-color: #e4e4e7 !important; }
