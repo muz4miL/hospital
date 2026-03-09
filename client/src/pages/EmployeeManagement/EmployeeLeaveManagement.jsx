@@ -8,7 +8,7 @@ import "jspdf-autotable";
 
 export default function EmployeeManagement() {
   const generateReport = () => {
-    fetch("http://localhost:3000/api/employeeLeave/read")
+    fetch("/api/employeeLeave/read")
       .then((response) => {
         if (response.ok) {
           return response.json();

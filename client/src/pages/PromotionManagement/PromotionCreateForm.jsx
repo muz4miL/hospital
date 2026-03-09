@@ -36,7 +36,7 @@ export default function PromotionCreateForm() {
   const checkUniquePromotionID = async (promotionID) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/promotion/check-unique-id`,
+        `/api/promotion/check-unique-id`,
         {
           params: { promotionID },
         },
@@ -51,7 +51,7 @@ export default function PromotionCreateForm() {
   const checkUniqueCouponCode = async (couponCode) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/promotion/check-unique-code`,
+        `/api/promotion/check-unique-code`,
         {
           params: { couponCode },
         },
@@ -134,7 +134,7 @@ export default function PromotionCreateForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/promotion/create",
+        "/api/promotion/create",
         value,
       );
       if (response.data.success) {

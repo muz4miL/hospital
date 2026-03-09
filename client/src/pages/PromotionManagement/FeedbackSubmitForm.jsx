@@ -28,7 +28,7 @@ export default function FeedbackForm() {
     e.preventDefault();
     try {
       const submitFeedback = await axios.post(
-        "http://localhost:3000/api/feedback/create",
+        "/api/feedback/create",
         formData,
       );
       const response = submitFeedback.data;

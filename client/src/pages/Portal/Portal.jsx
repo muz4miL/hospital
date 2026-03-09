@@ -184,7 +184,7 @@ export default function Portal() {
           {/* Title */}
           <div className="mb-7">
             <h2 className="text-[40px] font-bold tracking-[-0.02em] text-white leading-tight">
-              Login your Account
+              Log in to your Account
             </h2>
             <p className="mt-2 text-[14px] text-slate-500">
               Please enter your details to continue
@@ -283,11 +283,7 @@ export default function Portal() {
                 />
                 Remember me
               </label>
-              {activeTab === "admin" && (
-                <span className="text-slate-500">
-                  Demo: <span className="text-emerald-400/80">admin123</span>
-                </span>
-              )}
+
             </div>
 
             {/* Error */}

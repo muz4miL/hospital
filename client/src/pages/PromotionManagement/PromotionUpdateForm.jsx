@@ -24,7 +24,7 @@ export default function PromotionUpdateForm() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/promotion/get/${id}`)
+      .get(`/api/promotion/get/${id}`)
       .then((result) => {
         const promotion = result.data.promotion;
         promotion.createdAt = promotion.createdAt.split("T")[0];
@@ -102,7 +102,7 @@ export default function PromotionUpdateForm() {
 
     try {
       await axios.put(
-        `http://localhost:3000/api/promotion/update/${id}`,
+        `/api/promotion/update/${id}`,
         promotionData,
       );
       toast.success("Promotion updated successfully!");

@@ -29,7 +29,7 @@ export default function Feedback() {
 
   const fetchFeedback = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/feedback/read");
+      const response = await fetch("/api/feedback/read");
       if (!response.ok) {
         throw new Error("Failed to fetch feedback: " + response.statusText);
       }

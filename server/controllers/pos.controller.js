@@ -127,11 +127,13 @@ export const getSales = async (req, res) => {
 
     const filter = {};
 
-    // Date filtering
-    if (req.query.startDate && req.query.endDate) {
+    // Date filtering (accept both startDate/endDate and dateFrom/dateTo)
+    const startDate = req.query.startDate || req.query.dateFrom;
+    const endDate = req.query.endDate || req.query.dateTo;
+    if (startDate && endDate) {
       filter.createdAt = {
-        $gte: new Date(req.query.startDate),
-        $lte: new Date(req.query.endDate + "T23:59:59"),
+        $gte: new Date(startDate),
+        $lte: new Date(endDate + "T23:59:59"),
       };
     } else if (req.query.today === "true") {
       const today = new Date();

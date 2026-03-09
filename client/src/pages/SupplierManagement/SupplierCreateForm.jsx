@@ -51,7 +51,7 @@ export default function SupplierCreateForm() {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/supplier/check/${supplierID}`,
+        `/api/supplier/check/${supplierID}`,
       );
       const isUnique = response.data.unique;
 
@@ -95,7 +95,7 @@ export default function SupplierCreateForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/supplier/create",
+        "/api/supplier/create",
         value,
       );
       if (response.data.success) {

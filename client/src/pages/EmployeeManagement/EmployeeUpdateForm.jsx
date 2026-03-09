@@ -22,7 +22,7 @@ export default function EmployeeUpdateForm() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/employee/get/${id}`)
+      .get(`/api/employee/get/${id}`)
       .then((result) => {
         const employee = result.data.employee;
         employee.DOB = employee.DOB.split("T")[0];
@@ -62,7 +62,7 @@ export default function EmployeeUpdateForm() {
     e.preventDefault();
 
     axios
-      .put(`http://localhost:3000/api/employee/update/${id}`, employeeData)
+      .put(`/api/employee/update/${id}`, employeeData)
       .then(() => {
         toast.success("Updated employee successfully!");
         setTimeout(() => {

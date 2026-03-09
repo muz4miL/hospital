@@ -57,7 +57,7 @@ export default function PrescriptionCreateForm() {
     e.preventDefault();
     try {
       const addPrescription = await axios.post(
-        "http://localhost:3000/api/prescription/create",
+        "/api/prescription/create",
         value,
       );
       const response = addPrescription.data;

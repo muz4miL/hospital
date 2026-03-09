@@ -14,7 +14,7 @@ const FeedbackManagement = () => {
 
     const fetchFeedbacks = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/api/feedback/read');
+            const response = await axios.get('/api/feedback/read');
             setFeedbacks(response.data.feedback);
             setSearchResults(response.data.feedback);
         } catch (error) {
@@ -37,7 +37,7 @@ const FeedbackManagement = () => {
         try {
             const updatedFeedbacks = [...results];
             updatedFeedbacks[index].status = 'Approved';
-            await axios.put(`http://localhost:3000/api/feedback/update/${updatedFeedbacks[index]._id}`, { status: 'Approved' });
+            await axios.put(`/api/feedback/update/${updatedFeedbacks[index]._id}`, { status: 'Approved' });
             setSearchResults(updatedFeedbacks);
             toast.success('Feedback approved successfully!');
         } catch (error) {
@@ -49,7 +49,7 @@ const FeedbackManagement = () => {
         try {
             const updatedFeedbacks = [...results];
             updatedFeedbacks[index].status = 'Rejected';
-            await axios.put(`http://localhost:3000/api/feedback/update/${updatedFeedbacks[index]._id}`, { status: 'Rejected' });
+            await axios.put(`/api/feedback/update/${updatedFeedbacks[index]._id}`, { status: 'Rejected' });
             setSearchResults(updatedFeedbacks);
             toast.success('Feedback rejected successfully!');
         } catch (error) {

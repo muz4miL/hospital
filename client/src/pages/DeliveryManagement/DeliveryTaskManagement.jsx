@@ -16,7 +16,7 @@ export default function DeliveryTaskManagement() {
   }, []);
 
   const fetchTasks = () => {
-    fetch("http://localhost:3000/api/task/read")
+    fetch("/api/task/read")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -54,7 +54,7 @@ export default function DeliveryTaskManagement() {
   const generateReport = () => {
     let yPos = 150; // Define yPos here
     let xPos = 500; //Define the xpos
-    fetch("http://localhost:3000/api/task/read")
+    fetch("/api/task/read")
       .then((response) => {
         if (response.ok) {
           return response.json();

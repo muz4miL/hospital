@@ -16,7 +16,7 @@ export default function PromotionManagement() {
   }, []);
 
   const fetchPromotions = () => {
-    fetch("http://localhost:3000/api/promotion/read")
+    fetch("/api/promotion/read")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -51,7 +51,7 @@ export default function PromotionManagement() {
   };
 
   const generateReport = () => {
-    fetch("http://localhost:3000/api/promotion/read")
+    fetch("/api/promotion/read")
       .then((response) => {
         if (response.ok) {
           return response.json();

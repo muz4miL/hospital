@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,7 +22,7 @@ export default function EmployeeUpdateForm() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/employeeLeave/get/${id}`)
+      .get(`/api/employeeLeave/get/${id}`)
       .then((result) => {
         const employee = result.data.employee;
         employee.DOB = employee.DOB.split("T")[0];
@@ -61,7 +61,7 @@ export default function EmployeeUpdateForm() {
     e.preventDefault();
 
     axios
-      .put(`http://localhost:3000/api/employeeLeave/update/${id}`, employeeData)
+      .put(`/api/employeeLeave/update/${id}`, employeeData)
       .then(() => {
         toast.success("Updated leave successfully!");
         setTimeout(() => {

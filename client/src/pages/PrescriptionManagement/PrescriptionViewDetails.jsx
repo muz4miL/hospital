@@ -21,7 +21,7 @@ export default function PrescriptionViewDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/prescription/get/${id}`)
+      .get(`/api/prescription/get/${id}`)
       .then((result) => {
         const prescription = result.data.prescription;
 

@@ -17,7 +17,7 @@ function InventoryTable() {
   const fetchData = async () => {
     try {
       const fetchInventory = await axios.get(
-        "http://localhost:3000/api/inventory/read",
+        "/api/inventory/read",
       );
       const response = fetchInventory.data;
       console.log(response);
@@ -41,7 +41,7 @@ function InventoryTable() {
 
           try {
             await axios.put(
-              `http://localhost:3000/api/inventory/update/${item._id}`,
+              `/api/inventory/update/${item._id}`,
               { status: item.status },
             );
             console.log(`Inventory Item is ${item.status}!`);
@@ -107,7 +107,7 @@ function InventoryTable() {
   const handleDeleteConfirmed = async () => {
     try {
       await axios.delete(
-        `http://localhost:3000/api/inventory/delete/${deleteId}`,
+        `/api/inventory/delete/${deleteId}`,
       );
       setData((prevState) => ({
         ...prevState,

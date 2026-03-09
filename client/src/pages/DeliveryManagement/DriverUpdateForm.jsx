@@ -27,7 +27,7 @@ export default function DriverUpdateForm() {
   const getdriverByID = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/driver/get/${id}`,
+        `/api/driver/get/${id}`,
       );
       const driver = result.data.driver;
       setDriverData(driver);
@@ -97,7 +97,7 @@ export default function DriverUpdateForm() {
     }
 
     axios
-      .put(`http://localhost:3000/api/driver/update/${id}`, driverData)
+      .put(`/api/driver/update/${id}`, driverData)
       .then(() => {
         toast.success("Driver updated successfully!");
         setTimeout(() => {

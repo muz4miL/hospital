@@ -21,7 +21,7 @@ export default function SupplierUpdateForm() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/supplier/get/${id}`)
+      .get(`/api/supplier/get/${id}`)
       .then((result) => {
         const supplier = result.data.supplier;
 
@@ -55,7 +55,7 @@ export default function SupplierUpdateForm() {
     e.preventDefault();
 
     axios
-      .put(`http://localhost:3000/api/supplier/update/${id}`, supplierData)
+      .put(`/api/supplier/update/${id}`, supplierData)
       .then(() => {
         toast.success("Supplier updated successfully!");
         setTimeout(() => {

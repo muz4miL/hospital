@@ -22,7 +22,7 @@ export default function DeliveryTaskcreateForm() {
     const fetchAvailableDrivers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/driver/read",
+          "/api/driver/read",
         );
         console.log(response.data);
         const filteredDrivers = response.data.driver.filter(
@@ -55,7 +55,7 @@ export default function DeliveryTaskcreateForm() {
   const checkOrderID = async (orderId) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/task/checkorder`,
+        `/api/task/checkorder`,
         {
           params: { orderId },
         },
@@ -122,7 +122,7 @@ export default function DeliveryTaskcreateForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/task/create",
+        "/api/task/create",
         value,
       );
       if (response.data.success) {

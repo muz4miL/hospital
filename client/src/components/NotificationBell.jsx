@@ -12,7 +12,7 @@ const NotificationBell = () => {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/notification');
+                const response = await axios.get('/api/notification');
                 const notifications = response.data.notifications || [];
                 setNotificationCount(notifications.length);
 

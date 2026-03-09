@@ -26,7 +26,7 @@ export default function SupplyRequestForm() {
     e.preventDefault();
     try {
       const addSupplyRequest = await axios.post(
-        "http://localhost:3000/api/supplyRequest/create",
+        "/api/supplyRequest/create",
         value,
       );
       const response = addSupplyRequest.data;

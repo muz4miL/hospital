@@ -16,7 +16,7 @@ function DeliveryTaskTable() {
 
     const fetchData = async () => {
         try {
-            const fetchTask= await axios.get('http://localhost:3000/api/task/read');
+            const fetchTask= await axios.get('/api/task/read');
             const response = fetchTask.data;
             const updatedTasks = response.task.map(tas => {
                 
@@ -60,7 +60,7 @@ function DeliveryTaskTable() {
 
     const handleDeleteConfirmed = async () => {
         try {
-            await axios.delete(`http://localhost:3000/api/task/delete/${deleteId}`);
+            await axios.delete(`/api/task/delete/${deleteId}`);
             setData(prevState => ({
                 ...prevState,
                 task: prevState.task.filter(tas => tas._id !== deleteId)

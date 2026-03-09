@@ -23,7 +23,7 @@ export default function Inventorymanager() {
   }, []);
 
   const fetchInventory = () => {
-    fetch("http://localhost:3000/api/inventory/read")
+    fetch("/api/inventory/read")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -85,7 +85,7 @@ export default function Inventorymanager() {
     let yPos = 150; // Define yPos here
     let xPos = 500; // Define xPos here
 
-    fetch("http://localhost:3000/api/inventory/read")
+    fetch("/api/inventory/read")
       .then((response) => {
         if (response.ok) {
           return response.json();

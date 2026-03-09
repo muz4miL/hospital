@@ -27,7 +27,7 @@ export default function InventoryUpdateForm() {
   const getusingID = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/inventory/getsingleitem/${id}`,
+        `/api/inventory/getsingleitem/${id}`,
       );
       const inventory = result.data.inventory;
 
@@ -54,7 +54,7 @@ export default function InventoryUpdateForm() {
     e.preventDefault();
 
     axios
-      .put(`http://localhost:3000/api/inventory/update/${id}`, inventorydata)
+      .put(`/api/inventory/update/${id}`, inventorydata)
       .then(() => {
         toast.success("Inventory updated successfully!");
         setTimeout(() => {

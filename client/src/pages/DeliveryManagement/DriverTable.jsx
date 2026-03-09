@@ -16,7 +16,7 @@ function DriverTable() {
 
     const fetchData = async () => {
         try {
-            const fetchDriver = await axios.get('http://localhost:3000/api/driver/read');
+            const fetchDriver = await axios.get('/api/driver/read');
             const response = fetchDriver.data;
             const updatedDrivers = response.driver.map(driv => {
                 
@@ -54,7 +54,7 @@ function DriverTable() {
 
     const handleDeleteConfirmed = async () => {
         try {
-            await axios.delete(`http://localhost:3000/api/driver/delete/${deleteId}`);
+            await axios.delete(`/api/driver/delete/${deleteId}`);
             setData(prevState => ({
                 ...prevState,
                 driver: prevState.driver.filter(driv => driv._id !== deleteId)

@@ -16,7 +16,7 @@ export default function SupplyManagement() {
   }, []);
 
   const fetchSuppliers = () => {
-    fetch("http://localhost:3000/api/supplier/read")
+    fetch("/api/supplier/read")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -51,7 +51,7 @@ export default function SupplyManagement() {
   };
 
   const generateReport = () => {
-    fetch("http://localhost:3000/api/supplier/read")
+    fetch("/api/supplier/read")
       .then((response) => {
         if (response.ok) {
           return response.json();

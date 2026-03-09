@@ -17,7 +17,7 @@ export default function DriverManagement() {
   }, []);
 
   const fetchDrivers = () => {
-    fetch("http://localhost:3000/api/driver/read")
+    fetch("/api/driver/read")
       .then((response) => {
         if (response.ok) {
           return response.json();

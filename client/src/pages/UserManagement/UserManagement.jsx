@@ -14,7 +14,7 @@ export default function UserManagement() {
   }, []);
 
   const fetchUsers = () => {
-    fetch("http://localhost:3000/api/user/read")
+    fetch("/api/user/read")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -35,7 +35,7 @@ export default function UserManagement() {
   const generateReport = () => {
     let yPos = 150; // Define yPos here
 
-    fetch("http://localhost:3000/api/user/read")
+    fetch("/api/user/read")
       .then((response) => {
         if (response.ok) {
           return response.json();

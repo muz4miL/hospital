@@ -30,7 +30,7 @@ export default function UserPaymentDetails() {
     e.preventDefault();
     try {
       const addPayment = await axios.post(
-        "http://localhost:3000/api/payment/create",
+        "/api/payment/create",
         value,
       );
       const response = addPayment.data;

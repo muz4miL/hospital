@@ -101,7 +101,7 @@ export default function Inventorycreateform() {
     e.preventDefault();
     try {
       const addInventory = await axios.post(
-        "http://localhost:3000/api/inventory/create",
+        "/api/inventory/create",
         value,
       );
       const response = addInventory.data;

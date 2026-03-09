@@ -77,25 +77,25 @@ export default function DriverCreateForm() {
 
     try {
       const existingDriverId = await axios.get(
-        `http://localhost:3000/api/driver/check?driverId=${value.driverId}`,
+        `/api/driver/check?driverId=${value.driverId}`,
       );
       if (existingDriverId.data.exists) {
         allErrors.push("Driver ID already exists");
       }
       const existingDriverLicense = await axios.get(
-        `http://localhost:3000/api/driver/check?driverLicense=${value.driverLicense}`,
+        `/api/driver/check?driverLicense=${value.driverLicense}`,
       );
       if (existingDriverLicense.data.exists) {
         allErrors.push("Driver license already exists");
       }
       const existingVehicleLicense = await axios.get(
-        `http://localhost:3000/api/driver/check?vehicleLicense=${value.vehicleLicense}`,
+        `/api/driver/check?vehicleLicense=${value.vehicleLicense}`,
       );
       if (existingVehicleLicense.data.exists) {
         allErrors.push("Vehicle license already exists");
       }
       const existingPassword = await axios.get(
-        `http://localhost:3000/api/driver/check?password=${value.password}`,
+        `/api/driver/check?password=${value.password}`,
       );
       if (existingPassword.data.exists) {
         allErrors.push("Password already exists");
@@ -109,7 +109,7 @@ export default function DriverCreateForm() {
       }
 
       const addDriver = await axios.post(
-        "http://localhost:3000/api/driver/create",
+        "/api/driver/create",
         value,
       );
       const response = addDriver.data;

@@ -101,27 +101,7 @@ export default function SideBar() {
         { title: "Salary Records", path: "/employee-salary-management" },
       ],
     },
-    {
-      title: "Delivery",
-      icon: <FiTruck />,
-      path: "/delivery-management",
-      submenu: true,
-      submenuItems: [
-        { title: "Tasks", path: "/taskpage" },
-        { title: "Drivers", path: "/driver-management" },
-      ],
-    },
     { title: "Users", icon: <FaRegUser />, path: "/user-management" },
-    {
-      title: "Promotions",
-      icon: <TbDiscount2 />,
-      path: "/promotion-management",
-      submenu: true,
-      submenuItems: [
-        { title: "All Promotions", path: "/promotion-management" },
-        { title: "Feedbacks", path: "/feedback-management" },
-      ],
-    },
   ];
 
   const toggleSubMenu = (index) => {

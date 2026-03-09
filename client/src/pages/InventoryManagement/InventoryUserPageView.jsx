@@ -51,7 +51,7 @@ export default function InventoryUserPageView() {
     try {
       setLoading(true);
       const fetchInventory = await axios.get(
-        "http://localhost:3000/api/inventory/read",
+        "/api/inventory/read",
       );
       const response = fetchInventory.data;
 

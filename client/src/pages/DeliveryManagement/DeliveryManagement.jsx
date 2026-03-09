@@ -13,7 +13,7 @@ export default function DeliveryManagement() {
   }, []);
 
   const fetchTasks = () => {
-    fetch("http://localhost:3000/api/task/read")
+    fetch("/api/task/read")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -41,7 +41,7 @@ export default function DeliveryManagement() {
   }, []);
 
   const fetchDrivers = () => {
-    fetch("http://localhost:3000/api/driver/read")
+    fetch("/api/driver/read")
       .then((response) => {
         if (response.ok) {
           return response.json();

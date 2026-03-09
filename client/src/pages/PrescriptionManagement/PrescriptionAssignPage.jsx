@@ -17,7 +17,7 @@ export default function PrescriptionManagement() {
   }, []);
 
   const fetchPrescriptions = () => {
-    fetch("http://localhost:3000/api/prescription/read")
+    fetch("/api/prescription/read")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -52,7 +52,7 @@ export default function PrescriptionManagement() {
   };
 
   const generateReport = () => {
-    fetch("http://localhost:3000/api/prescription/read")
+    fetch("/api/prescription/read")
       .then((response) => {
         if (response.ok) {
           return response.json();

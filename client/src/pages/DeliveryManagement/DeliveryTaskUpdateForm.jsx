@@ -21,7 +21,7 @@ export default function DeliveryTaskUpdateForm() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/task/get/${id}`)
+      .get(`/api/task/get/${id}`)
       .then((result) => {
         const task = result.data.task;
         task.deliDate = task.deliDate.split("T")[0];
@@ -34,7 +34,7 @@ export default function DeliveryTaskUpdateForm() {
     const fetchAvailableDrivers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/driver/read",
+          "/api/driver/read",
         );
         console.log(response.data);
         const filteredDrivers = response.data.driver.filter(
@@ -104,7 +104,7 @@ export default function DeliveryTaskUpdateForm() {
     }
 
     try {
-      await axios.put(`http://localhost:3000/api/task/update/${id}`, taskData);
+      await axios.put(`/api/task/update/${id}`, taskData);
       toast.success("Task updated successfully!");
       setTimeout(() => {
         navigate("/taskpage");

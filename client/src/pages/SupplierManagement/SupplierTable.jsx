@@ -17,14 +17,14 @@ function SupplierTable() {
   const fetchData = async () => {
     try {
       const fetchSupplier = await axios.get(
-        "http://localhost:3000/api/supplier/read",
+        "/api/supplier/read",
       );
       const response = fetchSupplier.data;
       const updatedSupplier = response.supplier.map((promo) => {
         if (new Date(promo.expiredAt) < new Date()) {
           promo.status = "Inactive";
           axios
-            .put(`http://localhost:3000/api/supplier/update/${promo._id}`, {
+            .put(`/api/supplier/update/${promo._id}`, {
               status: "Inactive",
             })
             .then((response) => {
@@ -69,7 +69,7 @@ function SupplierTable() {
   const handleDeleteConfirmed = async () => {
     try {
       await axios.delete(
-        `http://localhost:3000/api/supplier/delete/${deleteId}`,
+        `/api/supplier/delete/${deleteId}`,
       );
       setData((prevState) => ({
         ...prevState,
@@ -142,7 +142,7 @@ function SupplierTable() {
                     <td className="table-td text-zinc-400">{elem.contactNo}</td>
                     <td className="table-td">
                       <div className="flex gap-2">
-                        <Link to={`/update-Supplier/${elem._id}`}>
+                        <Link to={`/update-supplier/${elem._id}`}>
                           <button className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 rounded-lg px-3 py-1 text-xs transition-colors">
                             Edit
                           </button>

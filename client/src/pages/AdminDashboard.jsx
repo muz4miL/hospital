@@ -10,6 +10,11 @@ import {
   FiAlertCircle,
   FiCalendar,
   FiBarChart2,
+  FiX,
+  FiPrinter,
+  FiHash,
+  FiPercent,
+  FiBox,
 } from "react-icons/fi";
 import { BiTime } from "react-icons/bi";
 
@@ -19,6 +24,7 @@ export default function AdminDashboard() {
   const [lowStock, setLowStock] = useState(null);
   const [todaySummary, setTodaySummary] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [zReportOpen, setZReportOpen] = useState(false);
 
   useEffect(() => {
     fetchAllData();
@@ -109,12 +115,20 @@ export default function AdminDashboard() {
               })}
             </p>
           </div>
-          <Link
-            to="/pos"
-            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium transition-colors"
-          >
-            <FiShoppingCart /> Open POS
-          </Link>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setZReportOpen(true)}
+              className="flex items-center gap-2 px-5 py-2.5 bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 text-zinc-100 rounded-lg font-medium transition-colors"
+            >
+              <FiPrinter /> Close Register (Z-Report)
+            </button>
+            <Link
+              to="/pos"
+              className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium transition-colors"
+            >
+              <FiShoppingCart /> Open POS
+            </Link>
+          </div>
         </div>
 
         {/* Alert Banners */}
@@ -411,6 +425,99 @@ export default function AdminDashboard() {
           </Link>
         </div>
       </div>
+
+      {/* Z-Report Modal */}
+      {zReportOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setZReportOpen(false)}
+          />
+          {/* Modal */}
+          <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl shadow-black/40 w-full max-w-lg mx-4 overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
+              <div>
+                <h2 className="text-xl font-bold text-zinc-100">End of Day — Z-Report</h2>
+                <p className="text-zinc-500 text-sm mt-0.5">
+                  {new Date().toLocaleDateString("en-PK", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
+              <button
+                onClick={() => setZReportOpen(false)}
+                className="p-2 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors"
+              >
+                <FiX size={20} />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="px-6 py-5 space-y-4">
+              <div className="flex items-center gap-4 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                <div className="p-3 rounded-lg bg-emerald-500/20">
+                  <FiDollarSign className="text-emerald-400" size={24} />
+                </div>
+                <div>
+                  <p className="text-zinc-400 text-sm">Expected Cash in Drawer</p>
+                  <p className="text-2xl font-bold text-emerald-400">
+                    Rs. {(stats?.todayRevenue || 0).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div className="p-4 bg-zinc-800/60 border border-zinc-700/50 rounded-xl text-center">
+                  <FiHash className="mx-auto text-blue-400 mb-2" size={20} />
+                  <p className="text-2xl font-bold text-zinc-100">
+                    {stats?.todayTransactions || 0}
+                  </p>
+                  <p className="text-zinc-500 text-xs mt-1">Total Transactions</p>
+                </div>
+                <div className="p-4 bg-zinc-800/60 border border-zinc-700/50 rounded-xl text-center">
+                  <FiPercent className="mx-auto text-orange-400 mb-2" size={20} />
+                  <p className="text-2xl font-bold text-zinc-100">
+                    Rs. {(stats?.todayDiscounts || 0).toLocaleString()}
+                  </p>
+                  <p className="text-zinc-500 text-xs mt-1">Total Discounts</p>
+                </div>
+                <div className="p-4 bg-zinc-800/60 border border-zinc-700/50 rounded-xl text-center">
+                  <FiBox className="mx-auto text-purple-400 mb-2" size={20} />
+                  <p className="text-2xl font-bold text-zinc-100">
+                    {todaySummary?.topSelling?.reduce((sum, item) => sum + item.quantity, 0) || 0}
+                  </p>
+                  <p className="text-zinc-500 text-xs mt-1">Items Sold</p>
+                </div>
+              </div>
+
+              {todaySummary?.topSelling?.length > 0 && (
+                <div className="p-4 bg-zinc-800/40 border border-zinc-700/40 rounded-xl">
+                  <p className="text-zinc-400 text-xs font-medium mb-2">TOP SELLER TODAY</p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-zinc-100 font-medium">{todaySummary.topSelling[0].name}</p>
+                    <p className="text-emerald-400 font-bold">Rs. {todaySummary.topSelling[0].revenue.toLocaleString()}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-zinc-800 bg-zinc-900/50">
+              <button
+                onClick={() => setZReportOpen(false)}
+                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold text-lg transition-colors"
+              >
+                <FiPrinter size={20} /> Confirm & Print EOD Report
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

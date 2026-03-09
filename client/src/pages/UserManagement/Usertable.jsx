@@ -16,7 +16,7 @@ export default function Usertable() {
 
   const fetchData = async () => {
     try {
-      const fetchuser = await axios.get("http://localhost:3000/api/user/read");
+      const fetchuser = await axios.get("/api/user/read");
       const response = fetchuser.data;
       const updatedusers = response.user;
       console.log(response);
@@ -46,7 +46,7 @@ export default function Usertable() {
   const handleDeleteConfirmed = async () => {
     try {
       await axios.delete(
-        `http://localhost:3000/api/user/deleteall/${deleteId}`,
+        `/api/user/deleteall/${deleteId}`,
       );
       setData((prevState) => ({
         ...prevState,

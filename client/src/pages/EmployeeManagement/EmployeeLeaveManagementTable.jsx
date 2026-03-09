@@ -17,14 +17,14 @@ function EmployeeTable() {
   const fetchData = async () => {
     try {
       const fetchEmployee = await axios.get(
-        "http://localhost:3000/api/employeeLeave/read",
+        "/api/employeeLeave/read",
       );
       const response = fetchEmployee.data;
       const updatedEmployees = response.employee.map((emp) => {
         if (new Date(emp.expiredAt) < new Date()) {
           emp.status = "Inactive";
           axios
-            .put(`http://localhost:3000/api/employee/update/${emp._id}`, {
+            .put(`/api/employee/update/${emp._id}`, {
               status: "Inactive",
             })
             .then((response) => {
@@ -68,7 +68,7 @@ function EmployeeTable() {
   const handleDeleteConfirmed = async () => {
     try {
       await axios.delete(
-        `http://localhost:3000/api/employeeLeave/delete/${deleteId}`,
+        `/api/employeeLeave/delete/${deleteId}`,
       );
       setData((prevState) => ({
         ...prevState,

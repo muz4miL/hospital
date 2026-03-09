@@ -21,7 +21,7 @@ export default function PrescriptionUpdateForm() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/prescription/get/${id}`)
+      .get(`/api/prescription/get/${id}`)
       .then((result) => {
         const prescription = result.data.prescription;
 
@@ -56,7 +56,7 @@ export default function PrescriptionUpdateForm() {
 
     axios
       .put(
-        `http://localhost:3000/api/prescription/update/${id}`,
+        `/api/prescription/update/${id}`,
         prescriptionData,
       )
       .then(() => {

@@ -16,12 +16,12 @@ function PrescriptionAssignTable() {
 
     const fetchData = async () => {
         try {
-            const fetchPrescription = await axios.get('http://localhost:3000/api/prescription/read');
+            const fetchPrescription = await axios.get('/api/prescription/read');
             const response = fetchPrescription.data;
             const updatedPrescription = response.prescription.map(promo => {
                 if (new Date(promo.expiredAt) < new Date()) {
                     promo.status = 'Inactive';
-                    axios.put(`http://localhost:3000/api/prescription/update/${promo._id}`, { status: 'Inactive' })
+                    axios.put(`/api/prescription/update/${promo._id}`, { status: 'Inactive' })
                     .then(response => {
                         console.log('Prescription status updated:', response);
                     })
@@ -61,7 +61,7 @@ function PrescriptionAssignTable() {
 
     const handleDeleteConfirmed = async () => {
         try {
-            await axios.delete(`http://localhost:3000/api/prescription/delete/${deleteId}`);
+            await axios.delete(`/api/prescription/delete/${deleteId}`);
             setData(prevState => ({
                 ...prevState,
                 Prescription: prevState.prescription.filter(promo => promo._id !== deleteId)

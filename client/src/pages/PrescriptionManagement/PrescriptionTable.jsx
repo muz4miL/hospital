@@ -17,14 +17,14 @@ function PrescriptionTable() {
   const fetchData = async () => {
     try {
       const fetchPrescription = await axios.get(
-        "http://localhost:3000/api/prescription/read",
+        "/api/prescription/read",
       );
       const response = fetchPrescription.data;
       const updatedPrescription = response.prescription.map((promo) => {
         if (new Date(promo.expiredAt) < new Date()) {
           promo.status = "Inactive";
           axios
-            .put(`http://localhost:3000/api/prescription/update/${promo._id}`, {
+            .put(`/api/prescription/update/${promo._id}`, {
               status: "Inactive",
             })
             .then((response) => {
@@ -69,7 +69,7 @@ function PrescriptionTable() {
   const handleDeleteConfirmed = async () => {
     try {
       await axios.delete(
-        `http://localhost:3000/api/prescription/delete/${deleteId}`,
+        `/api/prescription/delete/${deleteId}`,
       );
       setData((prevState) => ({
         ...prevState,

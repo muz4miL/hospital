@@ -41,7 +41,7 @@ export default function EmployeeCreateForm() {
     e.preventDefault();
     try {
       const addEmployee = await axios.post(
-        "http://localhost:3000/api/employee/create",
+        "/api/employee/create",
         value,
       );
       const response = addEmployee.data;
